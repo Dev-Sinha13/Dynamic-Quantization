@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 
+from .artifacts import load_trace, trace_summary
 from .capacity import ModelGeometry, estimate_eager_capture
 from .heads import discover_receiver_heads, sentence_vertical_scores
 from .policy import CacheBudgetError, CacheMode, DelayedAnchorTracker, KVGeometry, plan_cache
@@ -39,6 +40,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     estimate.add_argument("--sequence-length", type=int, default=1024)
     estimate.add_argument("--batch-size", type=int, default=1)
+
+    inspect_trace = subparsers.add_parser(
+        "inspect-trace",
+        help="print a summary of a saved sentence-level attention trace",
+    )
+    inspect_trace.add_argument("path")
     return parser
 
 
@@ -67,6 +74,9 @@ def main(argv: list[str] | None = None) -> int:
             batch_size=args.batch_size,
         )
         print(json.dumps(estimate.as_gib(), indent=2))
+        return 0
+    if args.command == "inspect-trace":
+        print(json.dumps(trace_summary(load_trace(args.path)), indent=2))
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 
