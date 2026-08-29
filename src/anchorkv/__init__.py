@@ -8,6 +8,7 @@ from .heads import (
     query_head_to_kv_head,
     sentence_vertical_scores,
 )
+from .hf import HFTraceConfig, HFTraceResult, decoded_token_offsets, reduce_attention_layers
 from .policy import (
     AnchorDecision,
     AnchorState,
@@ -24,6 +25,8 @@ from .types import HeadScore, TokenSpan
 
 __all__ = [
     "HeadScore",
+    "HFTraceConfig",
+    "HFTraceResult",
     "AnchorDecision",
     "AnchorState",
     "AttentionTrace",
@@ -39,10 +42,12 @@ __all__ = [
     "TraceMetadata",
     "aggregate_receiver_scores_by_kv_head",
     "discover_receiver_heads",
+    "decoded_token_offsets",
     "estimate_eager_capture",
     "hash_text",
     "load_trace",
     "query_head_to_kv_head",
+    "reduce_attention_layers",
     "plan_cache",
     "sentence_character_spans",
     "sentence_vertical_scores",

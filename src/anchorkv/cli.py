@@ -11,6 +11,7 @@ import numpy as np
 from .artifacts import load_trace, trace_summary
 from .capacity import ModelGeometry, estimate_eager_capture
 from .heads import discover_receiver_heads, sentence_vertical_scores
+from .hf import HFTraceConfig, extract_hf_trace
 from .policy import CacheBudgetError, CacheMode, DelayedAnchorTracker, KVGeometry, plan_cache
 from .types import TokenSpan
 
@@ -46,6 +47,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="print a summary of a saved sentence-level attention trace",
     )
     inspect_trace.add_argument("path")
+
+    extract = subparsers.add_parser(
+        "extract-hf",
+        help="generate and save one real Hugging Face reasoning attention trace",
+    )
+    extract.add_argument("--prompt", required=True)
+    extract.add_argument("--sample-id", required=True)
+    extract.add_argument("--output", required=True)
+    extract.add_argument("--model", default="Qwen/Qwen3-0.6B")
+    extract.add_argument("--revision", default="main")
+    extract.add_argument("--max-sequence-length", type=int, default=1024)
+    extract.add_argument("--max-new-tokens", type=int, default=192)
+    extract.add_argument("--seed", type=int, default=7)
     return parser
 
 
@@ -77,6 +91,33 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "inspect-trace":
         print(json.dumps(trace_summary(load_trace(args.path)), indent=2))
+        return 0
+    if args.command == "extract-hf":
+        result = extract_hf_trace(
+            args.prompt,
+            sample_id=args.sample_id,
+            output_path=args.output,
+            config=HFTraceConfig(
+                model_id=args.model,
+                model_revision=args.revision,
+                max_sequence_length=args.max_sequence_length,
+                max_new_tokens=args.max_new_tokens,
+                seed=args.seed,
+            ),
+        )
+        print(
+            json.dumps(
+                {
+                    "artifact_path": str(result.artifact_path),
+                    "prompt_tokens": result.prompt_tokens,
+                    "generated_tokens": result.generated_tokens,
+                    "sequence_length": result.sequence_length,
+                    "peak_gpu_gib": round(result.peak_gpu_bytes / 1024**3, 4),
+                    "generated_text": result.generated_text,
+                },
+                indent=2,
+            )
+        )
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 
