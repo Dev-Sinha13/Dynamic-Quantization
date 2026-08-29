@@ -9,6 +9,7 @@ from typing import Any
 import numpy as np
 
 from .artifacts import load_trace, trace_summary
+from .analysis import discover_from_paths, save_manifest
 from .capacity import ModelGeometry, estimate_eager_capture
 from .heads import discover_receiver_heads, sentence_vertical_scores
 from .hf import HFTraceConfig, extract_hf_trace
@@ -60,6 +61,14 @@ def build_parser() -> argparse.ArgumentParser:
     extract.add_argument("--max-sequence-length", type=int, default=1024)
     extract.add_argument("--max-new-tokens", type=int, default=192)
     extract.add_argument("--seed", type=int, default=7)
+
+    discover = subparsers.add_parser(
+        "discover-heads",
+        help="rank receiver heads from two or more saved attention traces",
+    )
+    discover.add_argument("traces", nargs="+")
+    discover.add_argument("--top-k", type=int, default=16)
+    discover.add_argument("--output", required=True)
     return parser
 
 
@@ -118,6 +127,11 @@ def main(argv: list[str] | None = None) -> int:
                 indent=2,
             )
         )
+        return 0
+    if args.command == "discover-heads":
+        manifest = discover_from_paths(args.traces, top_k=args.top_k)
+        destination = save_manifest(manifest, args.output)
+        print(json.dumps({"manifest_path": str(destination), **manifest}, indent=2))
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 

@@ -1,6 +1,13 @@
 """AnchorKV: thought-anchor-guided KV-cache compression research tools."""
 
 from .artifacts import AttentionTrace, TraceMetadata, hash_text, load_trace, save_trace
+from .analysis import (
+    CausalEffect,
+    discover_from_paths,
+    kl_divergence_from_logits,
+    receiver_head_manifest,
+    score_causal_interventions,
+)
 from .capacity import CaptureEstimate, ModelGeometry, estimate_eager_capture
 from .heads import (
     aggregate_receiver_scores_by_kv_head,
@@ -34,6 +41,7 @@ __all__ = [
     "CacheMode",
     "CachePlan",
     "CaptureEstimate",
+    "CausalEffect",
     "DelayedAnchorTracker",
     "KVGeometry",
     "ModelGeometry",
@@ -42,16 +50,20 @@ __all__ = [
     "TraceMetadata",
     "aggregate_receiver_scores_by_kv_head",
     "discover_receiver_heads",
+    "discover_from_paths",
     "decoded_token_offsets",
     "estimate_eager_capture",
     "hash_text",
     "load_trace",
+    "kl_divergence_from_logits",
     "query_head_to_kv_head",
     "reduce_attention_layers",
+    "receiver_head_manifest",
     "plan_cache",
     "sentence_character_spans",
     "sentence_vertical_scores",
     "save_trace",
+    "score_causal_interventions",
     "token_spans_from_offsets",
 ]
 
