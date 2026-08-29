@@ -6,15 +6,35 @@ from .heads import (
     query_head_to_kv_head,
     sentence_vertical_scores,
 )
+from .policy import (
+    AnchorDecision,
+    AnchorState,
+    CacheBudgetError,
+    CacheMode,
+    CachePlan,
+    DelayedAnchorTracker,
+    KVGeometry,
+    PlannedSegment,
+    plan_cache,
+)
 from .segmentation import sentence_character_spans, token_spans_from_offsets
 from .types import HeadScore, TokenSpan
 
 __all__ = [
     "HeadScore",
+    "AnchorDecision",
+    "AnchorState",
+    "CacheBudgetError",
+    "CacheMode",
+    "CachePlan",
+    "DelayedAnchorTracker",
+    "KVGeometry",
+    "PlannedSegment",
     "TokenSpan",
     "aggregate_receiver_scores_by_kv_head",
     "discover_receiver_heads",
     "query_head_to_kv_head",
+    "plan_cache",
     "sentence_character_spans",
     "sentence_vertical_scores",
     "token_spans_from_offsets",
