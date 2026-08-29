@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.coverage
+.pytest_cache/
+.ruff_cache/
+.venv/
+build/
+dist/
+
+# Generated experiment artifacts and downloaded model/data caches.
+artifacts/
+results/
+.cache/
+

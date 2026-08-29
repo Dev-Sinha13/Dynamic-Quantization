@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anchorkv"
+version = "0.1.0"
+description = "Thought-anchor-guided KV-cache compression research toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Dev Sinha" }]
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+research = [
+  "torch>=2.2",
+  "transformers>=4.48",
+]
+dev = [
+  "pytest>=8",
+  "ruff>=0.9",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
