@@ -67,7 +67,7 @@ every result.
 
 ## Baselines
 
-1. Full BF16 KV cache
+1. Full FP16 KV cache
 2. Recent window with pinned initial tokens
 3. Random sentence retention
 4. Accumulated attention across every head
@@ -131,7 +131,7 @@ measured peak GPU allocation, decode throughput, and policy overhead.
 
 ### M4: Physical cache integration
 
-- BF16 and one quantized representation
+- FP16 and one quantized representation
 - Measured GPU allocations
 - Decode latency and throughput
 - Correctness tests against the full-cache model
@@ -141,4 +141,3 @@ measured peak GPU allocation, decode throughput, and policy overhead.
 - Selected-head statistics without materializing full attention
 - Concurrency-safe cache transitions
 - vLLM or another block-based serving backend
-

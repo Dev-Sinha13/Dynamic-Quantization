@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 
+from .capacity import ModelGeometry, estimate_eager_capture
 from .heads import discover_receiver_heads, sentence_vertical_scores
 from .policy import CacheBudgetError, CacheMode, DelayedAnchorTracker, KVGeometry, plan_cache
 from .types import TokenSpan
@@ -28,9 +29,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--budget-ratio",
         type=float,
         default=0.6,
-        help="fraction of the full BF16 cache available to the planner (default: 0.6)",
+        help="fraction of the full FP16 cache available to the planner (default: 0.6)",
     )
     demo.add_argument("--seed", type=int, default=7)
+
+    estimate = subparsers.add_parser(
+        "estimate-t4",
+        help="estimate eager-attention capture memory for Qwen3-0.6B on a 16 GiB T4",
+    )
+    estimate.add_argument("--sequence-length", type=int, default=1024)
+    estimate.add_argument("--batch-size", type=int, default=1)
     return parser
 
 
@@ -44,6 +52,21 @@ def main(argv: list[str] | None = None) -> int:
         except CacheBudgetError as error:
             raise SystemExit(str(error)) from error
         print(json.dumps(report, indent=2))
+        return 0
+    if args.command == "estimate-t4":
+        geometry = ModelGeometry(
+            parameters=600_000_000,
+            layers=28,
+            query_heads=16,
+            kv_heads=8,
+            head_dim=64,
+        )
+        estimate = estimate_eager_capture(
+            geometry,
+            sequence_length=args.sequence_length,
+            batch_size=args.batch_size,
+        )
+        print(json.dumps(estimate.as_gib(), indent=2))
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 
@@ -76,7 +99,7 @@ def run_synthetic_demo(budget_ratio: float = 0.6, *, seed: int = 7) -> dict[str,
 
     geometry = KVGeometry(layers=4, kv_heads=2, head_dim=8)
     full_cache_bytes = sum(
-        geometry.bytes_for(span.length, CacheMode.BF16) for span in spans
+        geometry.bytes_for(span.length, CacheMode.FP16) for span in spans
     )
     budget_bytes = int(full_cache_bytes * budget_ratio)
     plan = plan_cache(
@@ -119,4 +142,3 @@ def run_synthetic_demo(budget_ratio: float = 0.6, *, seed: int = 7) -> dict[str,
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

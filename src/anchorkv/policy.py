@@ -15,7 +15,7 @@ class CacheMode(str, Enum):
     EVICTED = "evicted"
     INT4 = "int4"
     INT8 = "int8"
-    BF16 = "bf16"
+    FP16 = "fp16"
 
 
 @dataclass(frozen=True, slots=True)
@@ -42,7 +42,7 @@ class KVGeometry:
             return 0
 
         elements = token_count * self.layers * self.kv_heads * self.head_dim * 2
-        if mode is CacheMode.BF16:
+        if mode is CacheMode.FP16:
             return elements * 2
 
         packed = elements if mode is CacheMode.INT8 else math.ceil(elements / 2)
@@ -182,8 +182,8 @@ def plan_cache(
 ) -> CachePlan:
     """Allocate mixed precision with protected anchors and greedy upgrades.
 
-    Provisional, detected-anchor, and recent segments are retained in BF16.
-    Remaining segments compete for INT4, INT8, and BF16 upgrades according to
+    Provisional, detected-anchor, and recent segments are retained in FP16.
+    Remaining segments compete for INT4, INT8, and FP16 upgrades according to
     marginal retained utility per added byte.
     """
 
@@ -216,9 +216,9 @@ def plan_cache(
             protected_reason = "recent"
 
         if protected_reason:
-            modes[state.segment_id] = CacheMode.BF16
+            modes[state.segment_id] = CacheMode.FP16
             reasons[state.segment_id] = protected_reason
-            used_bytes += geometry.bytes_for(state.token_count, CacheMode.BF16)
+            used_bytes += geometry.bytes_for(state.token_count, CacheMode.FP16)
 
     if used_bytes > budget_bytes:
         raise CacheBudgetError(
@@ -229,19 +229,19 @@ def plan_cache(
         CacheMode.EVICTED: 0.0,
         CacheMode.INT4: 0.72,
         CacheMode.INT8: 0.92,
-        CacheMode.BF16: 1.0,
+        CacheMode.FP16: 1.0,
     }
     next_mode = {
         CacheMode.EVICTED: CacheMode.INT4,
         CacheMode.INT4: CacheMode.INT8,
-        CacheMode.INT8: CacheMode.BF16,
+        CacheMode.INT8: CacheMode.FP16,
     }
 
     while True:
         candidates: list[tuple[float, int, CacheMode, int]] = []
         for state in states:
             current_mode = modes[state.segment_id]
-            if current_mode is CacheMode.BF16:
+            if current_mode is CacheMode.FP16:
                 continue
             upgraded_mode = next_mode[current_mode]
             current_bytes = geometry.bytes_for(state.token_count, current_mode)
@@ -278,6 +278,6 @@ def plan_cache(
         for state in sorted(states, key=lambda item: item.segment_id)
     )
     full_cache_bytes = sum(
-        geometry.bytes_for(state.token_count, CacheMode.BF16) for state in states
+        geometry.bytes_for(state.token_count, CacheMode.FP16) for state in states
     )
     return CachePlan(planned, budget_bytes, used_bytes, full_cache_bytes)

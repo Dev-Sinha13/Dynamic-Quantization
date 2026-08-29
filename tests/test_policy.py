@@ -17,10 +17,10 @@ class CachePolicyTests(unittest.TestCase):
     def test_quantized_modes_use_less_storage(self) -> None:
         int4 = self.geometry.bytes_for(16, CacheMode.INT4)
         int8 = self.geometry.bytes_for(16, CacheMode.INT8)
-        bf16 = self.geometry.bytes_for(16, CacheMode.BF16)
+        fp16 = self.geometry.bytes_for(16, CacheMode.FP16)
 
         self.assertLess(int4, int8)
-        self.assertLess(int8, bf16)
+        self.assertLess(int8, fp16)
 
     def test_anchor_decision_is_delayed(self) -> None:
         tracker = DelayedAnchorTracker(
@@ -50,7 +50,7 @@ class CachePolicyTests(unittest.TestCase):
         tracker.register(1, TokenSpan(4, 8, "detour"), emitted_step=1)
         tracker.observe(0, 0.2)
         tracker.observe(1, 0.01)
-        anchor_bytes = self.geometry.bytes_for(4, CacheMode.BF16)
+        anchor_bytes = self.geometry.bytes_for(4, CacheMode.FP16)
 
         plan = plan_cache(
             tracker.states(),
@@ -63,7 +63,7 @@ class CachePolicyTests(unittest.TestCase):
         )
 
         modes = {segment.segment_id: segment.mode for segment in plan.segments}
-        self.assertEqual(modes[0], CacheMode.BF16)
+        self.assertEqual(modes[0], CacheMode.FP16)
         self.assertEqual(modes[1], CacheMode.EVICTED)
         self.assertLessEqual(plan.used_bytes, plan.budget_bytes)
 
@@ -83,4 +83,3 @@ class CachePolicyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

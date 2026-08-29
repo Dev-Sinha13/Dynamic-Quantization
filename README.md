@@ -4,7 +4,7 @@
 
 AnchorKV is a research prototype for testing whether a small set of
 reasoning-critical attention heads can identify sentence-level steps that deserve
-more KV-cache capacity. It preserves provisional and anchor steps in BF16 while
+more KV-cache capacity. It preserves provisional and anchor steps in FP16 while
 allowing less important steps to use INT8, INT4, or eviction under a fixed byte
 budget.
 
@@ -47,7 +47,7 @@ Delayed anchor tracker                          |
                            v
                  Byte-budgeted planner
                   /       |       \
-               BF16     INT8/4   evict
+               FP16     INT8/4   evict
 ```
 
 The delayed tracker is necessary because a sentence can only be recognized as a
@@ -66,7 +66,7 @@ owns an independently configurable KV cache.
 - Receiver-head ranking using concentration and cross-trace stability
 - Query-head to GQA KV-head mapping and score aggregation
 - Delayed EMA-based thought-anchor decisions
-- Estimated BF16, INT8, and INT4 KV storage including scale metadata
+- Estimated FP16, INT8, and INT4 KV storage including scale metadata
 - Protected-anchor, fixed-byte-budget cache planning
 - A deterministic end-to-end synthetic demonstration
 - Unit tests for tensor shapes, GQA mapping, delay behavior, and budget safety
@@ -132,7 +132,7 @@ attention suppression, counterfactual replacement, and downstream accuracy.
 
 Similarly:
 
-- Quantized cache values cannot be restored to the original BF16 values by
+- Quantized cache values cannot be restored to the original FP16 values by
   dequantization.
 - Exact reconstruction of a middle chunk generally requires recomputing its
   preceding causal context or starting from a valid checkpoint.
@@ -181,4 +181,3 @@ planning**.
 ## License
 
 MIT
-
