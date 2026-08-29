@@ -12,6 +12,9 @@ license = { file = "LICENSE" }
 authors = [{ name = "Dev Sinha" }]
 dependencies = ["numpy>=1.24"]
 
+[project.scripts]
+anchorkv = "anchorkv.cli:main"
+
 [project.optional-dependencies]
 research = [
   "torch>=2.2",
@@ -31,4 +34,3 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-
