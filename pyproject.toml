@@ -18,7 +18,7 @@ anchorkv = "anchorkv.cli:main"
 [project.optional-dependencies]
 research = [
   "torch>=2.2",
-  "transformers>=4.48",
+  "transformers>=4.52.4",
 ]
 dev = [
   "pytest>=8",

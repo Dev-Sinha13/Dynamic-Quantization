@@ -111,7 +111,7 @@ measured peak GPU allocation, decode throughput, and policy overhead.
 - Byte-budget planning
 - Synthetic end-to-end test
 
-### M1: Attention trace extraction
+### M1: Attention trace extraction — implemented, GPU validation pending
 
 - One supported Hugging Face model family
 - Capture and immediately aggregate selected attention statistics

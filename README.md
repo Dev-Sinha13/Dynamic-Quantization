@@ -9,9 +9,10 @@ allowing less important steps to use INT8, INT4, or eviction under a fixed byte
 budget.
 
 > [!IMPORTANT]
-> The repository currently implements and tests the model-agnostic analysis and
-> planning core. It does not yet modify a live Hugging Face or vLLM cache, and its
-> storage calculations are estimates rather than measured kernel allocations.
+> The repository implements the model-agnostic analysis core and a bounded
+> Hugging Face trace-extraction path for Colab. It does not yet modify a live
+> Hugging Face or vLLM cache, and its storage calculations are estimates rather
+> than measured kernel allocations.
 
 ## Research question
 
@@ -69,11 +70,16 @@ owns an independently configurable KV cache.
 - Estimated FP16, INT8, and INT4 KV storage including scale metadata
 - Protected-anchor, fixed-byte-budget cache planning
 - A deterministic end-to-end synthetic demonstration
+- Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
+- Pickle-free, versioned attention-trace artifacts and head manifests
+- KL-based causal-intervention scoring utilities
 - Unit tests for tensor shapes, GQA mapping, delay behavior, and budget safety
 
 ## Quick start
 
 AnchorKV requires Python 3.10 or newer.
+
+[![Open the T4 experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)
 
 ```bash
 python -m venv .venv
@@ -122,6 +128,7 @@ src/anchorkv/
   cli.py           reproducible synthetic demo
 tests/             dependency-light unit tests
 docs/              experimental protocol and project roadmap
+notebooks/         bounded Google Colab experiments
 ```
 
 ## Correctness boundaries
@@ -144,7 +151,8 @@ Similarly:
 
 ## Evaluation plan
 
-The next milestone integrates one open reasoning model and evaluates:
+The Colab milestone integrates one open reasoning model. Subsequent causal and
+cache-simulation milestones will evaluate:
 
 - Full cache
 - Recent window plus attention sinks
@@ -157,6 +165,10 @@ Primary metrics are exact-answer accuracy, peak GPU memory, KV bytes, decode
 throughput, instrumentation overhead, and anchor-selection regret relative to a
 causal oracle. See [the research plan](docs/research-plan.md) for hypotheses and
 success criteria.
+
+For the first GPU run, follow the [T4 Colab handoff](docs/colab.md). The notebook
+pins the resolved Hugging Face model commit in every artifact and starts with a
+768-token trace bound rather than attempting the model's full context window.
 
 ## Related work
 
