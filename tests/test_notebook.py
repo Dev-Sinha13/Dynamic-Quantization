@@ -22,7 +22,26 @@ class NotebookTests(unittest.TestCase):
                 self.assertIsNone(cell["execution_count"])
                 self.assertEqual(cell["outputs"], [])
 
+    def test_standalone_colab_notebook_needs_no_repository_access(self) -> None:
+        path = Path(__file__).parents[1] / "notebooks" / "AnchorKV_T4_Standalone.ipynb"
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(notebook["nbformat"], 4)
+        self.assertEqual(notebook["metadata"]["accelerator"], "GPU")
+        all_source = "".join(
+            "".join(cell.get("source", [])) for cell in notebook["cells"]
+        )
+        self.assertNotIn("git clone", all_source)
+        self.assertNotIn("from anchorkv", all_source)
+        self.assertIn("Qwen/Qwen3-0.6B", all_source)
+        self.assertIn("MAX_SEQUENCE_LENGTH = 768", all_source)
+        self.assertIn("files.download(archive)", all_source)
+
+        for cell in notebook["cells"]:
+            if cell["cell_type"] == "code":
+                self.assertIsNone(cell["execution_count"])
+                self.assertEqual(cell["outputs"], [])
+
 
 if __name__ == "__main__":
     unittest.main()
-

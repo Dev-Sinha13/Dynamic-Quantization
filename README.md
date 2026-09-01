@@ -81,6 +81,11 @@ AnchorKV requires Python 3.10 or newer.
 
 [![Open the T4 experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)
 
+If GitHub access is unavailable or the repository is private, download and
+upload [`notebooks/AnchorKV_T4_Standalone.ipynb`](notebooks/AnchorKV_T4_Standalone.ipynb)
+directly to Colab. The standalone notebook embeds the experiment helpers and
+does not clone this repository.
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate       # Windows: .venv\Scripts\activate

@@ -9,6 +9,11 @@ Open [the AnchorKV T4 notebook](../notebooks/AnchorKV_T4_Trace_Collection.ipynb)
 or use the Colab badge in the main README. In Colab, select **Runtime → Change
 runtime type → T4 GPU** before running any cells.
 
+For a private repository, download
+[`AnchorKV_T4_Standalone.ipynb`](../notebooks/AnchorKV_T4_Standalone.ipynb),
+then choose **File → Upload notebook** in Colab. It embeds the required helpers
+and does not require GitHub access.
+
 The notebook will:
 
 1. Clone and install the current GitHub repository.
@@ -77,4 +82,3 @@ is causal attention suppression: mask access to one candidate sentence at a time
 save downstream logits, and rank the interventions with
 `score_causal_interventions`. That step should only begin after the trace format
 and memory envelope have been validated on the assigned GPU.
-
