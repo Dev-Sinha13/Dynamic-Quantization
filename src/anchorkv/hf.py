@@ -22,13 +22,16 @@ class HFTraceConfig:
     max_new_tokens: int = 192
     seed: int = 7
     device: str = "cuda"
-    enable_thinking: bool = False
+    enable_thinking: bool = True
+    min_reasoning_spans: int = 6
 
     def __post_init__(self) -> None:
         if not self.model_id:
             raise ValueError("model_id is required")
         if self.max_sequence_length <= 0 or self.max_new_tokens <= 0:
             raise ValueError("sequence limits must be positive")
+        if self.min_reasoning_spans < 4:
+            raise ValueError("min_reasoning_spans must be at least four for kurtosis")
 
 
 @dataclass(frozen=True, slots=True)
@@ -138,6 +141,11 @@ def extract_hf_trace(
     )
     if not spans:
         raise RuntimeError("the generated trace contained no sentence-like reasoning steps")
+    if len(spans) < config.min_reasoning_spans:
+        raise RuntimeError(
+            f"trace has only {len(spans)} reasoning spans; at least "
+            f"{config.min_reasoning_spans} are required for receiver-head discovery"
+        )
 
     if not hasattr(model, "set_attn_implementation"):
         raise RuntimeError(

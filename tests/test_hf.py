@@ -62,6 +62,12 @@ class HuggingFaceHelperTests(unittest.TestCase):
         self.assertFalse(_ends_with_eos([10, 22], [20, 21]))
         self.assertFalse(_ends_with_eos([], 20))
 
+    def test_requires_enough_spans_for_kurtosis(self) -> None:
+        from anchorkv.hf import HFTraceConfig
+
+        with self.assertRaisesRegex(ValueError, "at least four"):
+            HFTraceConfig(min_reasoning_spans=3)
+
 
 if __name__ == "__main__":
     unittest.main()

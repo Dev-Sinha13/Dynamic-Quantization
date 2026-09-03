@@ -80,6 +80,8 @@ def discover_receiver_heads(
         values = np.asarray(trace, dtype=np.float64)
         if values.ndim != 3 or values.shape[:2] != shape:
             raise ValueError("all traces must share [layers, query_heads] dimensions")
+        if values.shape[-1] < 4:
+            raise ValueError("each trace needs at least four sentences for kurtosis")
         per_trace.append(_pearson_kurtosis(values, axis=-1))
 
     stacked = np.stack(per_trace, axis=0)

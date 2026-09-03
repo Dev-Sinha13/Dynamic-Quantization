@@ -65,6 +65,12 @@ class HeadAnalysisTests(unittest.TestCase):
 
         self.assertEqual(mapping, [0, 0, 0, 0, 1, 1, 1, 1])
 
+    def test_rejects_degenerate_short_kurtosis_trace(self) -> None:
+        trace = np.ones((1, 2, 3), dtype=np.float64)
+
+        with self.assertRaisesRegex(ValueError, "at least four sentences"):
+            discover_receiver_heads([trace])
+
     def test_aggregates_receiver_scores_on_shared_kv_head(self) -> None:
         scores = [
             HeadScore(1, 0, 4.0, 0.5),
