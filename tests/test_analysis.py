@@ -4,6 +4,7 @@ import numpy as np
 
 from anchorkv.analysis import (
     kl_divergence_from_logits,
+    ranking_diagnostics,
     receiver_head_manifest,
     score_causal_interventions,
 )
@@ -62,6 +63,32 @@ class AnalysisTests(unittest.TestCase):
 
         self.assertEqual([effect.segment_id for effect in effects], [1, 0])
         self.assertGreater(effects[0].mean_kl, effects[1].mean_kl)
+
+    def test_ranking_diagnostics_reports_agreement_and_regret(self) -> None:
+        diagnostics = ranking_diagnostics(
+            np.array([0.9, 0.8, 0.1, 0.0]),
+            np.array([0.1, 0.2, 0.9, 0.0]),
+            top_k=2,
+        )
+
+        self.assertAlmostEqual(diagnostics.spearman, 0.2)
+        self.assertEqual(diagnostics.proxy_top_indices, (0, 1))
+        self.assertEqual(diagnostics.causal_top_indices, (2, 1))
+        self.assertEqual(diagnostics.top_k_overlap, 0.5)
+        self.assertAlmostEqual(diagnostics.top_k_regret, 0.4)
+        self.assertAlmostEqual(diagnostics.top_1_regret, 0.8)
+
+    def test_ranking_diagnostics_handles_ties_and_constant_proxy(self) -> None:
+        diagnostics = ranking_diagnostics(
+            np.ones(3),
+            np.array([0.0, 2.0, 1.0]),
+            top_k=1,
+        )
+
+        self.assertEqual(diagnostics.spearman, 0.0)
+        self.assertEqual(diagnostics.proxy_top_indices, (0,))
+        self.assertEqual(diagnostics.causal_top_indices, (1,))
+        self.assertEqual(diagnostics.top_1_regret, 2.0)
 
 
 if __name__ == "__main__":

@@ -21,6 +21,19 @@ class CausalEffect:
     max_kl: float
 
 
+@dataclass(frozen=True, slots=True)
+class RankingDiagnostics:
+    """Agreement between a proxy ranking and measured causal importance."""
+
+    spearman: float
+    top_k: int
+    top_k_overlap: float
+    top_k_regret: float
+    top_1_regret: float
+    proxy_top_indices: tuple[int, ...]
+    causal_top_indices: tuple[int, ...]
+
+
 def receiver_head_manifest(
     traces: Sequence[AttentionTrace],
     *,
@@ -132,8 +145,71 @@ def score_causal_interventions(
     return effects
 
 
+def ranking_diagnostics(
+    proxy_scores: NDArray[np.floating],
+    causal_scores: NDArray[np.floating],
+    *,
+    top_k: int = 3,
+) -> RankingDiagnostics:
+    """Measure whether a cheap proxy recovers causally important sentences.
+
+    Regret is measured in causal-score units. ``top_k_regret`` compares the
+    mean causal effect of the oracle top-k set with the mean effect of the set
+    selected by the proxy. Ties use deterministic, lower-index-first ordering.
+    """
+
+    proxy = np.asarray(proxy_scores, dtype=np.float64)
+    causal = np.asarray(causal_scores, dtype=np.float64)
+    if proxy.ndim != 1 or causal.ndim != 1 or proxy.shape != causal.shape:
+        raise ValueError("proxy_scores and causal_scores must be equal-length vectors")
+    if proxy.size < 2:
+        raise ValueError("ranking diagnostics require at least two candidates")
+    if not np.isfinite(proxy).all() or not np.isfinite(causal).all():
+        raise ValueError("ranking scores must be finite")
+    if top_k <= 0:
+        raise ValueError("top_k must be positive")
+
+    effective_k = min(top_k, proxy.size)
+    proxy_order = np.lexsort((np.arange(proxy.size), -proxy))
+    causal_order = np.lexsort((np.arange(causal.size), -causal))
+    proxy_top = tuple(int(index) for index in proxy_order[:effective_k])
+    causal_top = tuple(int(index) for index in causal_order[:effective_k])
+    overlap = len(set(proxy_top).intersection(causal_top)) / effective_k
+    top_k_regret = float(
+        np.mean(causal[list(causal_top)]) - np.mean(causal[list(proxy_top)])
+    )
+    top_1_regret = float(causal[causal_top[0]] - causal[proxy_top[0]])
+
+    proxy_ranks = _midranks(proxy)
+    causal_ranks = _midranks(causal)
+    proxy_centered = proxy_ranks - proxy_ranks.mean()
+    causal_centered = causal_ranks - causal_ranks.mean()
+    denominator = np.sqrt(
+        np.sum(proxy_centered**2) * np.sum(causal_centered**2)
+    )
+    spearman = (
+        0.0
+        if denominator <= 1e-12
+        else float(np.sum(proxy_centered * causal_centered) / denominator)
+    )
+    return RankingDiagnostics(
+        spearman=spearman,
+        top_k=effective_k,
+        top_k_overlap=float(overlap),
+        top_k_regret=top_k_regret,
+        top_1_regret=top_1_regret,
+        proxy_top_indices=proxy_top,
+        causal_top_indices=causal_top,
+    )
+
+
 def _log_softmax(values: NDArray[np.float64]) -> NDArray[np.float64]:
     maximum = np.max(values, axis=-1, keepdims=True)
     shifted = values - maximum
     return shifted - np.log(np.sum(np.exp(shifted), axis=-1, keepdims=True))
 
+
+def _midranks(values: NDArray[np.float64]) -> NDArray[np.float64]:
+    _, inverse, counts = np.unique(values, return_inverse=True, return_counts=True)
+    starts = np.cumsum(counts) - counts
+    return (starts + (counts - 1) / 2)[inverse].astype(np.float64)

@@ -3,8 +3,10 @@
 from .artifacts import AttentionTrace, TraceMetadata, hash_text, load_trace, save_trace
 from .analysis import (
     CausalEffect,
+    RankingDiagnostics,
     discover_from_paths,
     kl_divergence_from_logits,
+    ranking_diagnostics,
     receiver_head_manifest,
     score_causal_interventions,
 )
@@ -53,6 +55,7 @@ __all__ = [
     "KVGeometry",
     "ModelGeometry",
     "PlannedSegment",
+    "RankingDiagnostics",
     "TokenSpan",
     "TraceMetadata",
     "aggregate_receiver_scores_by_kv_head",
@@ -65,6 +68,7 @@ __all__ = [
     "hash_text",
     "load_trace",
     "kl_divergence_from_logits",
+    "ranking_diagnostics",
     "query_head_to_kv_head",
     "reduce_attention_layers",
     "receiver_head_manifest",
