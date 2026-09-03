@@ -52,6 +52,11 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("do not use this truncated trace", all_source)
         self.assertIn("run-summary.json", all_source)
         self.assertIn("'peak_gpu_gib'", all_source)
+        self.assertIn("causal-results.json", all_source)
+        self.assertIn("teacher_forced_all_head_sentence_suppression", all_source)
+        self.assertIn("attention_mask=mask", all_source)
+        self.assertIn("length_matched", all_source)
+        self.assertIn("mask_sanity_max_abs_logit", all_source)
         self.assertIn("files.download(archive)", all_source)
 
         for cell in notebook["cells"]:

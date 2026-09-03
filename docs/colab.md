@@ -67,6 +67,8 @@ artifacts/colab/
   run-summary.json
   receiver-heads.json
   receiver-heads.png
+  causal-results.json
+  causal-kl.png
 ```
 
 Each `.npz` contains:
@@ -82,6 +84,10 @@ The prompt itself is deliberately represented by a hash in the portable trace.
 The notebook source remains the record of the public benchmark prompts.
 `run-summary.json` records the GPU, package versions, generation configuration,
 completed text, token counts, and peak allocated GPU memory for each sample.
+`causal-results.json` records teacher-forced downstream KL and NLL changes for
+the head-selected sentence, a recency control, and a token-length-matched
+control. The sentence mask broadcasts across all heads, so this pilot evaluates
+thought-anchor causality rather than head-specific causality.
 
 ## If the notebook runs out of memory
 
