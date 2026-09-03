@@ -3,6 +3,9 @@
 The [first T4 smoke-run postmortem](experiments/2026-09-01-t4-smoke.md)
 documents why the initial truncated artifacts were rejected and what changed
 before the next run.
+The [non-thinking rerun](experiments/2026-09-03-t4-nonthinking.md) completed but
+was rejected because two answers were wrong and its 2–3 sentence traces make
+kurtosis degenerate.
 
 The repository is ready for its first real GPU-only step: collecting bounded
 sentence-level attention traces from Qwen3-0.6B.
