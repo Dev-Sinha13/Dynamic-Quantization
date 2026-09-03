@@ -9,6 +9,9 @@ kurtosis degenerate.
 The [320-token thinking-mode run](experiments/2026-09-03-t4-thinking-320.md)
 validated one sample, then correctly stopped when the second sample did not
 reach EOS within its generation allowance.
+The [successful 512-token T4 run](experiments/2026-09-03-t4-thinking-512.md)
+validated execution and trace quality; its initial head manifest was rejected
+after exposing a terminal-answer/EOS attention confound.
 
 The repository is ready for its first real GPU-only step: collecting bounded
 sentence-level attention traces from Qwen3-0.6B.
