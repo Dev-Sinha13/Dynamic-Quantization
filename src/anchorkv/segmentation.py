@@ -43,6 +43,9 @@ def token_spans_from_offsets(
 
     result: list[TokenSpan] = []
     for char_start, char_end in sentence_character_spans(text):
+        sentence_text = text[char_start:char_end]
+        if sentence_text.strip() in {"<think>", "</think>"}:
+            continue
         token_ids = [
             index
             for index, (token_start, token_end) in enumerate(token_offsets)
@@ -56,7 +59,7 @@ def token_spans_from_offsets(
             TokenSpan(
                 start=token_ids[0],
                 end=token_ids[-1] + 1,
-                text=text[char_start:char_end],
+                text=sentence_text,
             )
         )
     return result
@@ -68,4 +71,3 @@ def _trimmed_bounds(text: str, start: int, end: int) -> tuple[int, int]:
     while end > start and text[end - 1].isspace():
         end -= 1
     return start, end
-

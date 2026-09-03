@@ -24,7 +24,14 @@ class SegmentationTests(unittest.TestCase):
         self.assertEqual([(span.start, span.end) for span in spans], [(0, 2), (2, 4)])
         self.assertEqual([span.text for span in spans], ["Plan.", "Solve."])
 
+    def test_excludes_thinking_markup_from_reasoning_spans(self) -> None:
+        text = "<think>\nPlan carefully.\n</think>\nAnswer: 4."
+        offsets = [(index, index + 1) for index in range(len(text))]
+
+        spans = token_spans_from_offsets(text, offsets)
+
+        self.assertEqual([span.text for span in spans], ["Plan carefully.", "Answer: 4."])
+
 
 if __name__ == "__main__":
     unittest.main()
-
