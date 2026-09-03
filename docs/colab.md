@@ -6,6 +6,9 @@ before the next run.
 The [non-thinking rerun](experiments/2026-09-03-t4-nonthinking.md) completed but
 was rejected because two answers were wrong and its 2–3 sentence traces make
 kurtosis degenerate.
+The [320-token thinking-mode run](experiments/2026-09-03-t4-thinking-320.md)
+validated one sample, then correctly stopped when the second sample did not
+reach EOS within its generation allowance.
 
 The repository is ready for its first real GPU-only step: collecting bounded
 sentence-level attention traces from Qwen3-0.6B.
