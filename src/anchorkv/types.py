@@ -32,10 +32,13 @@ class HeadScore:
     query_head: int
     mean_kurtosis: float
     stability: float
+    mean_percentile: float | None = None
 
     @property
     def ranking_score(self) -> float:
-        """Favor concentrated heads whose behavior is stable across traces."""
+        """Favor heads that rank highly and consistently within each trace."""
 
-        return self.mean_kurtosis * self.stability
-
+        concentration = (
+            self.mean_kurtosis if self.mean_percentile is None else self.mean_percentile
+        )
+        return concentration * self.stability

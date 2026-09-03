@@ -182,7 +182,9 @@ def run_synthetic_demo(budget_ratio: float = 0.6, *, seed: int = 7) -> dict[str,
                 "layer": head.layer,
                 "query_head": head.query_head,
                 "mean_kurtosis": round(head.mean_kurtosis, 4),
+                "mean_percentile": round(head.mean_percentile or 0.0, 4),
                 "stability": round(head.stability, 4),
+                "ranking_score": round(head.ranking_score, 4),
             }
             for head in receiver_heads
         ],

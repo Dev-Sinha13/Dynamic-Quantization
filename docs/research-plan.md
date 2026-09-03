@@ -16,6 +16,8 @@ attention concentration than the median head.
 Evidence:
 
 - Head-wise concentration distribution
+- Within-trace percentile ranking to avoid comparing raw kurtosis across
+  different sentence counts
 - Split-half or bootstrap rank stability
 - Cross-seed stability
 

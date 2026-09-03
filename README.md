@@ -64,7 +64,7 @@ owns an independently configurable KV cache.
 - Sentence and newline-based reasoning-step segmentation
 - Mapping tokenizer offset spans to sentence-level token spans
 - Token-to-sentence vertical attention aggregation
-- Receiver-head ranking using concentration and cross-trace stability
+- Receiver-head ranking using kurtosis plus within-trace percentile stability
 - Query-head to GQA KV-head mapping and score aggregation
 - Delayed EMA-based thought-anchor decisions
 - Estimated FP16, INT8, and INT4 KV storage including scale metadata
@@ -99,7 +99,8 @@ produces a JSON cache plan:
 ```json
 {
   "receiver_heads": [
-    {"layer": 1, "query_head": 2, "mean_kurtosis": 2.3324, "stability": 1.0}
+    {"layer": 1, "query_head": 2, "mean_kurtosis": 2.3324,
+     "mean_percentile": 1.0, "stability": 1.0, "ranking_score": 1.0}
   ],
   "cache": {
     "budget_bytes": 2457,

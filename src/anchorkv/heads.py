@@ -60,8 +60,10 @@ def discover_receiver_heads(
     """Rank heads by concentrated, repeatable sentence-level attention.
 
     Each trace is a ``[layers, query_heads, sentences]`` vertical-score array.
-    Pearson kurtosis measures attentional concentration. Stability penalizes
-    heads whose concentration changes substantially across traces.
+    Pearson kurtosis measures attentional concentration. Because raw kurtosis
+    is sensitive to the number and distribution of sentences in a trace, heads
+    are selected by their within-trace percentile ranks. Stability penalizes
+    heads whose percentile rank changes substantially across traces.
     """
 
     if not traces:
@@ -82,8 +84,13 @@ def discover_receiver_heads(
 
     stacked = np.stack(per_trace, axis=0)
     means = stacked.mean(axis=0)
-    standard_deviations = stacked.std(axis=0)
-    stability = 1.0 / (1.0 + standard_deviations / np.maximum(np.abs(means), 1e-12))
+    percentile_ranks = np.stack([_percentile_ranks(values) for values in per_trace])
+    mean_percentiles = percentile_ranks.mean(axis=0)
+    percentile_deviations = percentile_ranks.std(axis=0)
+    stability = 1.0 / (
+        1.0
+        + percentile_deviations / np.maximum(np.abs(mean_percentiles), 1e-12)
+    )
 
     ranked = [
         HeadScore(
@@ -91,6 +98,7 @@ def discover_receiver_heads(
             query_head=head,
             mean_kurtosis=float(means[layer, head]),
             stability=float(stability[layer, head]),
+            mean_percentile=float(mean_percentiles[layer, head]),
         )
         for layer in range(shape[0])
         for head in range(shape[1])
@@ -157,6 +165,18 @@ def _pearson_kurtosis(values: NDArray[np.float64], axis: int) -> NDArray[np.floa
     )
 
 
+def _percentile_ranks(values: NDArray[np.float64]) -> NDArray[np.float64]:
+    """Return tie-aware within-array percentile ranks in the closed interval [0, 1]."""
+
+    flattened = np.asarray(values, dtype=np.float64).ravel()
+    if flattened.size == 1:
+        return np.ones_like(values, dtype=np.float64)
+    _, inverse, counts = np.unique(flattened, return_inverse=True, return_counts=True)
+    starts = np.cumsum(counts) - counts
+    midranks = starts + (counts - 1) / 2
+    return (midranks[inverse] / (flattened.size - 1)).reshape(values.shape)
+
+
 def _validate_spans(spans: Sequence[TokenSpan], sequence_length: int) -> None:
     previous_end = 0
     for span in spans:
@@ -165,4 +185,3 @@ def _validate_spans(spans: Sequence[TokenSpan], sequence_length: int) -> None:
         if span.end > sequence_length:
             raise ValueError("span exceeds attention sequence length")
         previous_end = span.end
-

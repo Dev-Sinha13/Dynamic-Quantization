@@ -40,6 +40,7 @@ class AnalysisTests(unittest.TestCase):
 
         strongest = manifest["receiver_heads"][0]
         self.assertEqual((strongest["layer"], strongest["query_head"]), (0, 0))
+        self.assertEqual(strongest["mean_percentile"], 1.0)
         self.assertEqual(manifest["source_samples"], ["a", "b"])
         self.assertEqual(manifest["kv_heads"][0]["kv_head"], 0)
 
@@ -65,4 +66,3 @@ class AnalysisTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
