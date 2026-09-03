@@ -18,6 +18,24 @@ class FakeTokenizer:
         return self.pieces[token_ids[0]]
 
 
+class FakeByteFallbackTokenizer:
+    all_special_ids = [99]
+    pieces = {1: "12 ", 2: "�", 3: "�", 4: " 3", 99: ""}
+
+    def decode(self, token_ids, **_kwargs):
+        if list(token_ids) == [1, 2, 3, 4, 99]:
+            return "12 ÷ 3"
+        return "".join(self.pieces[token_id] for token_id in token_ids)
+
+    def __call__(self, text, **_kwargs):
+        if text != "12 ÷ 3":
+            raise ValueError("unexpected text")
+        return {
+            "input_ids": [1, 2, 3, 4],
+            "offset_mapping": [(0, 3), (3, 4), (3, 4), (4, 6)],
+        }
+
+
 class FakeChatTokenizer:
     def __init__(self) -> None:
         self.enable_thinking = None
@@ -33,6 +51,15 @@ class HuggingFaceHelperTests(unittest.TestCase):
 
         self.assertEqual(text, "Plan. Solve.")
         self.assertEqual(offsets, [(0, 4), (4, 6), (6, 11), (11, 12)])
+
+    def test_preserves_multibyte_text_with_verified_retokenized_offsets(self) -> None:
+        text, offsets = decoded_token_offsets(
+            FakeByteFallbackTokenizer(),
+            [1, 2, 3, 4, 99],
+        )
+
+        self.assertEqual(text, "12 ÷ 3")
+        self.assertEqual(offsets, [(0, 3), (3, 4), (3, 4), (4, 6), (6, 6)])
 
     def test_reduces_attention_without_stacking_token_matrices(self) -> None:
         layer_zero = np.zeros((1, 2, 6, 6), dtype=np.float32)

@@ -47,6 +47,8 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("MIN_REASONING_SPANS = 6", all_source)
         self.assertIn("MIN_FUTURE_TOKENS = 32", all_source)
         self.assertIn("EXPECTED_ANSWER_TERMS", all_source)
+        self.assertIn("return_offsets_mapping=True", all_source)
+        self.assertIn("did not round-trip to the generated token IDs", all_source)
         self.assertIn("query_end=query_end", all_source)
         self.assertIn(
             "end + prompt_tokens <= query_end - min_future_tokens",

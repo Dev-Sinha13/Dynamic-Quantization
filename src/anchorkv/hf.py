@@ -216,12 +216,52 @@ def extract_hf_trace(
 
 
 def decoded_token_offsets(tokenizer: Any, token_ids: Sequence[int]) -> tuple[str, list[tuple[int, int]]]:
-    """Decode tokens individually and return offsets into the joined text."""
+    """Decode text with byte-safe offsets aligned to the original token IDs.
+
+    Fast tokenizers are first decoded as a complete sequence and retokenized to
+    recover character offsets. The result is accepted only when the content IDs
+    round-trip exactly. A per-token fallback supports minimal or slow tokenizers.
+    """
+
+    ids = [int(token_id) for token_id in token_ids]
+    full_text = tokenizer.decode(
+        ids,
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=False,
+    )
+    if callable(tokenizer):
+        try:
+            encoded = tokenizer(
+                full_text,
+                add_special_tokens=False,
+                return_offsets_mapping=True,
+            )
+            encoded_ids = [int(token_id) for token_id in encoded["input_ids"]]
+            encoded_offsets = [tuple(map(int, pair)) for pair in encoded["offset_mapping"]]
+            special_ids = set(getattr(tokenizer, "all_special_ids", ()))
+            content_ids = [token_id for token_id in ids if token_id not in special_ids]
+            if encoded_ids == content_ids and len(encoded_offsets) == len(content_ids):
+                aligned_offsets: list[tuple[int, int]] = []
+                content_index = 0
+                for token_id in ids:
+                    if token_id in special_ids:
+                        cursor = (
+                            encoded_offsets[content_index][0]
+                            if content_index < len(encoded_offsets)
+                            else len(full_text)
+                        )
+                        aligned_offsets.append((cursor, cursor))
+                    else:
+                        aligned_offsets.append(encoded_offsets[content_index])
+                        content_index += 1
+                return full_text, aligned_offsets
+        except (KeyError, TypeError, ValueError):
+            pass
 
     pieces: list[str] = []
     offsets: list[tuple[int, int]] = []
     cursor = 0
-    for token_id in token_ids:
+    for token_id in ids:
         piece = tokenizer.decode(
             [token_id],
             skip_special_tokens=True,
