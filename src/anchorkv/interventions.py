@@ -18,6 +18,7 @@ class ControlSelection:
     anchor_index: int
     recency_index: int
     length_matched_index: int
+    position_matched_index: int
 
 
 def causal_attention_mask(
@@ -67,8 +68,8 @@ def select_control_indices(
     if not 0 <= anchor_index < len(spans):
         raise ValueError("anchor_index is out of range")
     eligible = [index for index in range(len(spans)) if index != anchor_index]
-    if len(eligible) < 2:
-        raise ValueError("at least three spans are required for two controls")
+    if len(eligible) < 3:
+        raise ValueError("at least four spans are required for three controls")
 
     recency_index = eligible[-1]
     random_pool = [index for index in eligible if index != recency_index]
@@ -81,10 +82,24 @@ def select_control_indices(
     ]
     generator = np.random.default_rng(seed)
     length_matched_index = int(generator.choice(matched))
+    position_pool = [
+        index
+        for index in eligible
+        if index not in {recency_index, length_matched_index}
+    ]
+    anchor_midpoint = (spans[anchor_index].start + spans[anchor_index].end) / 2
+    position_matched_index = min(
+        position_pool,
+        key=lambda index: (
+            abs((spans[index].start + spans[index].end) / 2 - anchor_midpoint),
+            index,
+        ),
+    )
     return ControlSelection(
         anchor_index=anchor_index,
         recency_index=recency_index,
         length_matched_index=length_matched_index,
+        position_matched_index=position_matched_index,
     )
 
 
@@ -100,6 +115,7 @@ def downstream_window(
         spans[selection.anchor_index],
         spans[selection.recency_index],
         spans[selection.length_matched_index],
+        spans[selection.position_matched_index],
     )
     start = max(span.end for span in selected)
     if start >= query_end:

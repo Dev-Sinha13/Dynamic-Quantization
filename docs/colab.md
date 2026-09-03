@@ -50,6 +50,7 @@ Maximum total sequence: 768 tokens
 Maximum generated tokens: 512
 Thinking mode: enabled, with EOS and answer validation
 Minimum reasoning spans: 6
+Minimum downstream horizon per candidate: 32 tokens
 Samples: 3
 ```
 
@@ -86,7 +87,7 @@ The notebook source remains the record of the public benchmark prompts.
 completed text, token counts, and peak allocated GPU memory for each sample.
 `causal-results.json` records teacher-forced downstream KL and NLL changes for
 the head-selected sentence, a recency control, and a token-length-matched
-control. The sentence mask broadcasts across all heads, so this pilot evaluates
+and position-matched control. The sentence mask broadcasts across all heads, so this pilot evaluates
 thought-anchor causality rather than head-specific causality.
 
 ## If the notebook runs out of memory

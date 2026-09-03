@@ -24,6 +24,7 @@ class HFTraceConfig:
     device: str = "cuda"
     enable_thinking: bool = True
     min_reasoning_spans: int = 6
+    min_future_tokens: int = 32
 
     def __post_init__(self) -> None:
         if not self.model_id:
@@ -32,6 +33,8 @@ class HFTraceConfig:
             raise ValueError("sequence limits must be positive")
         if self.min_reasoning_spans < 4:
             raise ValueError("min_reasoning_spans must be at least four for kurtosis")
+        if self.min_future_tokens <= 0:
+            raise ValueError("min_future_tokens must be positive")
 
 
 @dataclass(frozen=True, slots=True)
@@ -140,7 +143,7 @@ def extract_hf_trace(
             text=span.text,
         )
         for span in generated_spans
-        if span.end + prompt_tokens < query_end
+        if span.end + prompt_tokens <= query_end - config.min_future_tokens
     )
     if not spans:
         raise RuntimeError("the generated trace contained no sentence-like reasoning steps")

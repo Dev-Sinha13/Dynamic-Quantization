@@ -28,22 +28,39 @@ class InterventionTests(unittest.TestCase):
             TokenSpan(2, 5),
             TokenSpan(5, 7),
             TokenSpan(7, 11),
+            TokenSpan(11, 16),
         ]
 
         first = select_control_indices(spans, anchor_index=0, seed=7)
         second = select_control_indices(spans, anchor_index=0, seed=7)
 
         self.assertEqual(first, second)
-        self.assertEqual(len({first.anchor_index, first.recency_index, first.length_matched_index}), 3)
+        self.assertEqual(
+            len(
+                {
+                    first.anchor_index,
+                    first.recency_index,
+                    first.length_matched_index,
+                    first.position_matched_index,
+                }
+            ),
+            4,
+        )
         self.assertEqual(first.length_matched_index, 2)
 
     def test_common_window_starts_after_every_selected_span(self) -> None:
-        spans = [TokenSpan(0, 2), TokenSpan(2, 5), TokenSpan(5, 7), TokenSpan(7, 9)]
+        spans = [
+            TokenSpan(0, 2),
+            TokenSpan(2, 5),
+            TokenSpan(5, 7),
+            TokenSpan(7, 9),
+            TokenSpan(9, 11),
+        ]
         selection = select_control_indices(spans, anchor_index=1, seed=3)
 
         start, end = downstream_window(spans, selection, query_end=12)
 
-        self.assertEqual(start, 9)
+        self.assertEqual(start, 11)
         self.assertEqual(end, 12)
 
 

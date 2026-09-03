@@ -45,9 +45,13 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("MAX_NEW_TOKENS = 512", all_source)
         self.assertIn("enable_thinking=True", all_source)
         self.assertIn("MIN_REASONING_SPANS = 6", all_source)
+        self.assertIn("MIN_FUTURE_TOKENS = 32", all_source)
         self.assertIn("EXPECTED_ANSWER_TERMS", all_source)
         self.assertIn("query_end=query_end", all_source)
-        self.assertIn("end + prompt_tokens < query_end", all_source)
+        self.assertIn(
+            "end + prompt_tokens <= query_end - min_future_tokens",
+            all_source,
+        )
         self.assertIn("head_dim = 600_000_000, 28, 16, 8, 128", all_source)
         self.assertIn("do not use this truncated trace", all_source)
         self.assertIn("run-summary.json", all_source)
@@ -56,6 +60,7 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("teacher_forced_all_head_sentence_suppression", all_source)
         self.assertIn("attention_mask=mask", all_source)
         self.assertIn("length_matched", all_source)
+        self.assertIn("position_matched", all_source)
         self.assertIn("mask_sanity_max_abs_logit", all_source)
         self.assertIn("files.download(archive)", all_source)
 
