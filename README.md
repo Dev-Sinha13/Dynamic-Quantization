@@ -1,6 +1,6 @@
 # AnchorKV
 
-**Causally validated, thought-anchor-guided KV-cache compression for reasoning models.**
+**Causal evaluation of thought-anchor-guided KV-cache compression for reasoning models.**
 
 AnchorKV is a research prototype for testing whether a small set of
 reasoning-critical attention heads can identify sentence-level steps that deserve
@@ -27,6 +27,20 @@ The project separates three claims that must be evaluated independently:
    logits or final answers.
 3. **Systems value:** protecting those sentences improves the
    quality-memory-latency frontier.
+
+## Preliminary T4 result
+
+A three-example Qwen3-0.6B pilot on a Tesla T4 found that suppressing the
+receiver-head-selected sentence increased mean downstream KL divergence to
+**0.4723**, compared with **0.0240** for a token-length-matched control and
+**0.0117** for recency. Peak causal-stage GPU allocation was **1.43 GiB**.
+
+![Pilot causal sentence suppression](docs/assets/causal-kl.png)
+
+This is deliberately reported as a pilot: two examples drive most of the
+effect, suppression broadcasts across all heads, and every selected anchor was
+the final solution sentence before the answer. See the
+[full result and limitations](docs/experiments/2026-09-03-t4-causal-pilot.md).
 
 ## Design
 
@@ -73,6 +87,7 @@ owns an independently configurable KV cache.
 - Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
 - Pickle-free, versioned attention-trace artifacts and head manifests
 - KL-based causal-intervention scoring utilities
+- Teacher-forced 4D attention-mask suppression with matched controls
 - Unit tests for tensor shapes, GQA mapping, delay behavior, and budget safety
 
 ## Quick start
