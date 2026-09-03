@@ -1,5 +1,11 @@
 # T4 causal-suppression pilot: 2026-09-03
 
+> [!WARNING]
+> This result is superseded by the
+> [horizon- and position-controlled rerun](2026-09-03-t4-causal-controlled.md),
+> which did not support the anchor-validity hypothesis. This page is retained
+> as an audit record of how the answer-proximity confound was discovered.
+
 ## Outcome
 
 The first corrected causal pilot supports the AnchorKV sentence-causality

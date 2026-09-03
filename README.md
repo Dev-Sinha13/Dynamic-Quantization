@@ -30,17 +30,21 @@ The project separates three claims that must be evaluated independently:
 
 ## Preliminary T4 result
 
-A three-example Qwen3-0.6B pilot on a Tesla T4 found that suppressing the
-receiver-head-selected sentence increased mean downstream KL divergence to
-**0.4723**, compared with **0.0240** for a token-length-matched control and
-**0.0117** for recency. Peak causal-stage GPU allocation was **1.43 GiB**.
+An initial three-example Qwen3-0.6B pilot appeared positive, but every selected
+anchor was the final solution sentence before the answer. A controlled rerun
+required a 32-token downstream horizon and added a position-matched control.
+It **did not support the anchor-validity hypothesis**: recency suppression had
+mean downstream KL **0.1006**, versus **0.0066** for the attention-selected
+sentence. The selected sentence was the first reasoning span in every trace,
+including generic text such as “Okay, let's see.”
 
-![Pilot causal sentence suppression](docs/assets/causal-kl.png)
+![Controlled causal sentence suppression](docs/experiments/data/causal-controlled/causal-kl.png)
 
-This is deliberately reported as a pilot: two examples drive most of the
-effect, suppression broadcasts across all heads, and every selected anchor was
-the final solution sentence before the answer. See the
-[full result and limitations](docs/experiments/2026-09-03-t4-causal-pilot.md).
+This is a useful negative result. It exposes boundary-token attention as a
+confound rather than presenting the earlier effect as validation. Peak
+causal-stage GPU allocation was **1.52 GiB** on a Tesla T4. See the
+[controlled result](docs/experiments/2026-09-03-t4-causal-controlled.md) and the
+[superseded initial pilot](docs/experiments/2026-09-03-t4-causal-pilot.md).
 
 ## Design
 

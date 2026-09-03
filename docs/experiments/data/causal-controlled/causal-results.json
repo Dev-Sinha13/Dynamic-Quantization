@@ -1,0 +1,222 @@
+{
+  "aggregate": {
+    "anchor": {
+      "mean_delta_nll": 0.01424138310054938,
+      "mean_kl": 0.0066209795186296105
+    },
+    "length_matched": {
+      "mean_delta_nll": 0.0008761690308650335,
+      "mean_kl": 0.0004966369184937017
+    },
+    "position_matched": {
+      "mean_delta_nll": 0.006189597770571709,
+      "mean_kl": 0.0022020681256738803
+    },
+    "recency": {
+      "mean_delta_nll": 0.09848146513104439,
+      "mean_kl": 0.10058957400421302
+    }
+  },
+  "hypothesis_supported_in_pilot": false,
+  "limitations": [
+    "three-prompt pilot",
+    "teacher-forced replay",
+    "sentence suppression broadcasts across all heads"
+  ],
+  "mask_sanity_max_abs_logit": 0.0,
+  "method": "teacher_forced_all_head_sentence_suppression",
+  "model_id": "Qwen/Qwen3-0.6B",
+  "model_revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "peak_gpu_gib": 1.523859977722168,
+  "receiver_head": {
+    "layer": 26,
+    "mean_kurtosis": 16.05012315834147,
+    "mean_percentile": 0.9619686800894854,
+    "query_head": 10,
+    "ranking_score": 0.9124460027223272,
+    "stability": 0.948519449341582
+  },
+  "samples": [
+    {
+      "conditions": {
+        "anchor": {
+          "delta_nll": 0.024962157011032104,
+          "intervention_nll": 0.12920410931110382,
+          "max_kl": 0.4630597233772278,
+          "mean_kl": 0.014737838879227638,
+          "p95_kl": 0.06795912981033325,
+          "reference_nll": 0.10424195230007172,
+          "span_index": 0,
+          "span_tokens": 6,
+          "text": "Okay, let's see.",
+          "token_end": 57,
+          "token_start": 51
+        },
+        "length_matched": {
+          "delta_nll": 0.0024098530411720276,
+          "intervention_nll": 0.10665180534124374,
+          "max_kl": 0.038681402802467346,
+          "mean_kl": 0.0011359635973349214,
+          "p95_kl": 0.0030458448454737663,
+          "reference_nll": 0.10424195230007172,
+          "span_index": 14,
+          "span_tokens": 6,
+          "text": "Yep, that seems right.",
+          "token_end": 253,
+          "token_start": 247
+        },
+        "position_matched": {
+          "delta_nll": 0.012394122779369354,
+          "intervention_nll": 0.11663607507944107,
+          "max_kl": 0.0918566882610321,
+          "mean_kl": 0.004871172830462456,
+          "p95_kl": 0.025912748649716377,
+          "reference_nll": 0.10424195230007172,
+          "span_index": 1,
+          "span_tokens": 29,
+          "text": "The problem says that 3 notebooks cost $12, and we need to find out how much 7 notebooks cost at the same rate.",
+          "token_end": 86,
+          "token_start": 57
+        },
+        "recency": {
+          "delta_nll": 0.00712556391954422,
+          "intervention_nll": 0.11136751621961594,
+          "max_kl": 0.7900302410125732,
+          "mean_kl": 0.03985065594315529,
+          "p95_kl": 0.20218542218208313,
+          "reference_nll": 0.10424195230007172,
+          "span_index": 16,
+          "span_tokens": 21,
+          "text": "And I need to end with 'Answer: ...' so I'll put that in the final sentence.",
+          "token_end": 282,
+          "token_start": 261
+        }
+      },
+      "evaluation_token_end": 353,
+      "evaluation_token_start": 282,
+      "evaluation_tokens": 71,
+      "sample_id": "math-000"
+    },
+    {
+      "conditions": {
+        "anchor": {
+          "delta_nll": 0.014817237854003906,
+          "intervention_nll": 0.09862309694290161,
+          "max_kl": 0.0677260011434555,
+          "mean_kl": 0.004128085449337959,
+          "p95_kl": 0.02996814250946045,
+          "reference_nll": 0.0838058590888977,
+          "span_index": 0,
+          "span_tokens": 19,
+          "text": "Okay, so there's a train that goes 180 miles in 3 hours.",
+          "token_end": 77,
+          "token_start": 58
+        },
+        "length_matched": {
+          "delta_nll": 0.0002496093511581421,
+          "intervention_nll": 0.08405546844005585,
+          "max_kl": 0.004995482042431831,
+          "mean_kl": 0.0002391590242041275,
+          "p95_kl": 0.001365302479825914,
+          "reference_nll": 0.0838058590888977,
+          "span_index": 9,
+          "span_tokens": 20,
+          "text": "Plugging in the numbers, that would be 180 miles divided by 3 hours.",
+          "token_end": 206,
+          "token_start": 186
+        },
+        "position_matched": {
+          "delta_nll": 0.007767878472805023,
+          "intervention_nll": 0.09157373756170273,
+          "max_kl": 0.01254474651068449,
+          "mean_kl": 0.0011636379640549421,
+          "p95_kl": 0.00854378193616867,
+          "reference_nll": 0.0838058590888977,
+          "span_index": 1,
+          "span_tokens": 17,
+          "text": "The question is asking how far it travels in 5 hours at the same speed.",
+          "token_end": 94,
+          "token_start": 77
+        },
+        "recency": {
+          "delta_nll": 0.26916956901550293,
+          "intervention_nll": 0.35297542810440063,
+          "max_kl": 3.989814043045044,
+          "mean_kl": 0.2413644790649414,
+          "p95_kl": 1.235329508781433,
+          "reference_nll": 0.0838058590888977,
+          "span_index": 24,
+          "span_tokens": 36,
+          "text": "A train travels 180 miles in 3 hours, so its speed is $ \\frac{180}{3} = 60 $ miles per hour.",
+          "token_end": 424,
+          "token_start": 388
+        }
+      },
+      "evaluation_token_end": 470,
+      "evaluation_token_start": 424,
+      "evaluation_tokens": 46,
+      "sample_id": "math-001"
+    },
+    {
+      "conditions": {
+        "anchor": {
+          "delta_nll": 0.002944754436612129,
+          "intervention_nll": 0.03098314069211483,
+          "max_kl": 0.01220219861716032,
+          "mean_kl": 0.000997014227323234,
+          "p95_kl": 0.006066134199500084,
+          "reference_nll": 0.0280383862555027,
+          "span_index": 0,
+          "span_tokens": 6,
+          "text": "Okay, let's see.",
+          "token_end": 62,
+          "token_start": 56
+        },
+        "length_matched": {
+          "delta_nll": -3.0955299735069275e-05,
+          "intervention_nll": 0.02800743095576763,
+          "max_kl": 0.0014901719987392426,
+          "mean_kl": 0.00011478813394205645,
+          "p95_kl": 0.0006624032976105809,
+          "reference_nll": 0.0280383862555027,
+          "span_index": 14,
+          "span_tokens": 6,
+          "text": "Yep, that seems right.",
+          "token_end": 213,
+          "token_start": 207
+        },
+        "position_matched": {
+          "delta_nll": -0.0015932079404592514,
+          "intervention_nll": 0.02644517831504345,
+          "max_kl": 0.012919507920742035,
+          "mean_kl": 0.0005713935825042427,
+          "p95_kl": 0.0016381479799747467,
+          "reference_nll": 0.0280383862555027,
+          "span_index": 1,
+          "span_tokens": 10,
+          "text": "Maria has twice as many marbles as Lee.",
+          "token_end": 72,
+          "token_start": 62
+        },
+        "recency": {
+          "delta_nll": 0.019149262458086014,
+          "intervention_nll": 0.047187648713588715,
+          "max_kl": 0.4126615524291992,
+          "mean_kl": 0.02055358700454235,
+          "p95_kl": 0.07097640633583069,
+          "reference_nll": 0.0280383862555027,
+          "span_index": 26,
+          "span_tokens": 22,
+          "text": "Simplifying, $ 3x = 36 $, which means $ x = 12 $.",
+          "token_end": 380,
+          "token_start": 358
+        }
+      },
+      "evaluation_token_end": 416,
+      "evaluation_token_start": 380,
+      "evaluation_tokens": 36,
+      "sample_id": "math-002"
+    }
+  ],
+  "schema_version": 1
+}
