@@ -1,5 +1,9 @@
 # T4 Colab handoff
 
+The [first T4 smoke-run postmortem](experiments/2026-09-01-t4-smoke.md)
+documents why the initial truncated artifacts were rejected and what changed
+before the next run.
+
 The repository is ready for its first real GPU-only step: collecting bounded
 sentence-level attention traces from Qwen3-0.6B.
 
