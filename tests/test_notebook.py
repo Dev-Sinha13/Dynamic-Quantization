@@ -19,6 +19,8 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("enable_thinking=False", all_source)
         self.assertIn("head_dim=128", all_source)
         self.assertIn("model_info(MODEL_ID).sha", all_source)
+        self.assertIn("run-summary.json", all_source)
+        self.assertIn("'peak_gpu_gib'", all_source)
 
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
@@ -42,6 +44,8 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("enable_thinking=False", all_source)
         self.assertIn("head_dim = 600_000_000, 28, 16, 8, 128", all_source)
         self.assertIn("do not use this truncated trace", all_source)
+        self.assertIn("run-summary.json", all_source)
+        self.assertIn("'peak_gpu_gib'", all_source)
         self.assertIn("files.download(archive)", all_source)
 
         for cell in notebook["cells"]:

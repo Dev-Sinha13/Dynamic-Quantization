@@ -50,7 +50,9 @@ artifacts/colab/
   math-000.npz
   math-001.npz
   math-002.npz
+  run-summary.json
   receiver-heads.json
+  receiver-heads.png
 ```
 
 Each `.npz` contains:
@@ -64,6 +66,8 @@ Each `.npz` contains:
 
 The prompt itself is deliberately represented by a hash in the portable trace.
 The notebook source remains the record of the public benchmark prompts.
+`run-summary.json` records the GPU, package versions, generation configuration,
+completed text, token counts, and peak allocated GPU memory for each sample.
 
 ## If the notebook runs out of memory
 
