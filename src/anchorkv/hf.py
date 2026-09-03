@@ -122,14 +122,16 @@ def extract_hf_trace(
     generated_token_ids = full_ids[0, prompt_tokens:].tolist()
     generated_text, generated_offsets = decoded_token_offsets(tokenizer, generated_token_ids)
     eos_token_ids = model.generation_config.eos_token_id
-    if len(generated_token_ids) >= allowed_new_tokens and not _ends_with_eos(
+    ended_with_eos = _ends_with_eos(
         generated_token_ids,
         eos_token_ids,
-    ):
+    )
+    if len(generated_token_ids) >= allowed_new_tokens and not ended_with_eos:
         raise RuntimeError(
             f"generation reached the {allowed_new_tokens}-token limit before EOS; "
             "increase max_new_tokens or disable thinking before collecting the trace"
         )
+    query_end = int(full_ids.shape[-1]) - int(ended_with_eos)
     generated_spans = token_spans_from_offsets(generated_text, generated_offsets)
     spans = tuple(
         TokenSpan(
@@ -138,6 +140,7 @@ def extract_hf_trace(
             text=span.text,
         )
         for span in generated_spans
+        if span.end + prompt_tokens < query_end
     )
     if not spans:
         raise RuntimeError("the generated trace contained no sentence-like reasoning steps")
@@ -164,7 +167,11 @@ def extract_hf_trace(
         )
     if replay.attentions is None:
         raise RuntimeError("the model did not return attention tensors in eager mode")
-    vertical_scores = reduce_attention_layers(replay.attentions, spans)
+    vertical_scores = reduce_attention_layers(
+        replay.attentions,
+        spans,
+        query_end=query_end,
+    )
 
     model_config = model.config
     layers = int(model_config.num_hidden_layers)
@@ -226,6 +233,8 @@ def decoded_token_offsets(tokenizer: Any, token_ids: Sequence[int]) -> tuple[str
 def reduce_attention_layers(
     attention_layers: Sequence[Any],
     spans: Sequence[TokenSpan],
+    *,
+    query_end: int | None = None,
 ) -> NDArray[np.float32]:
     """Reduce one layer at a time to avoid an additional full-attention stack."""
 
@@ -238,6 +247,9 @@ def reduce_attention_layers(
         values = np.asarray(layer, dtype=np.float32)
         if values.ndim != 3 or values.shape[-1] != values.shape[-2]:
             raise ValueError("each attention layer must have shape [heads, tokens, tokens]")
+        effective_query_end = values.shape[-1] if query_end is None else query_end
+        if not 0 < effective_query_end <= values.shape[-1]:
+            raise ValueError("query_end must be within the attention sequence")
         if expected_heads is None:
             expected_heads = values.shape[0]
         elif values.shape[0] != expected_heads:
@@ -247,9 +259,9 @@ def reduce_attention_layers(
         for sentence_index, span in enumerate(spans):
             if span.end > values.shape[-1]:
                 raise ValueError("sentence span exceeds the attention sequence length")
-            if span.end == values.shape[-1]:
+            if span.end >= effective_query_end:
                 continue
-            future = values[:, span.end :, span.start : span.end]
+            future = values[:, span.end : effective_query_end, span.start : span.end]
             sentence_scores[:, sentence_index] = (
                 future.sum(axis=-1).mean(axis=-1) / span.length
             )

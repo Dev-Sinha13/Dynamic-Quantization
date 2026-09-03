@@ -46,6 +46,8 @@ class NotebookTests(unittest.TestCase):
         self.assertIn("enable_thinking=True", all_source)
         self.assertIn("MIN_REASONING_SPANS = 6", all_source)
         self.assertIn("EXPECTED_ANSWER_TERMS", all_source)
+        self.assertIn("query_end=query_end", all_source)
+        self.assertIn("end + prompt_tokens < query_end", all_source)
         self.assertIn("head_dim = 600_000_000, 28, 16, 8, 128", all_source)
         self.assertIn("do not use this truncated trace", all_source)
         self.assertIn("run-summary.json", all_source)

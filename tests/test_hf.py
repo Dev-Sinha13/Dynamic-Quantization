@@ -48,6 +48,19 @@ class HuggingFaceHelperTests(unittest.TestCase):
         self.assertAlmostEqual(float(reduced[1, 1, 1]), 0.25)
         self.assertEqual(float(reduced[0, 0, 2]), 0.0)
 
+    def test_excludes_trailing_eos_query_from_reduction(self) -> None:
+        attention = np.zeros((1, 1, 6, 6), dtype=np.float32)
+        attention[0, 0, 2:5, 0:2] = 0.5
+        attention[0, 0, 5, 0:2] = 10.0
+
+        reduced = reduce_attention_layers(
+            [attention],
+            [TokenSpan(0, 2)],
+            query_end=5,
+        )
+
+        self.assertAlmostEqual(float(reduced[0, 0, 0]), 0.5)
+
     def test_disables_unbounded_thinking_for_bounded_capture(self) -> None:
         tokenizer = FakeChatTokenizer()
 

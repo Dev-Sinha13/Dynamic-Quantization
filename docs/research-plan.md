@@ -18,6 +18,8 @@ Evidence:
 - Head-wise concentration distribution
 - Within-trace percentile ranking to avoid comparing raw kurtosis across
   different sentence counts
+- Exclusion of the terminal answer span and trailing EOS query from receiver
+  scoring
 - Split-half or bootstrap rank stability
 - Cross-seed stability
 
