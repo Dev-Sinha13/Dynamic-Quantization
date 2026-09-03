@@ -15,6 +15,12 @@ from .heads import (
     query_head_to_kv_head,
     sentence_vertical_scores,
 )
+from .interventions import (
+    ControlSelection,
+    causal_attention_mask,
+    downstream_window,
+    select_control_indices,
+)
 from .hf import HFTraceConfig, HFTraceResult, decoded_token_offsets, reduce_attention_layers
 from .policy import (
     AnchorDecision,
@@ -42,6 +48,7 @@ __all__ = [
     "CachePlan",
     "CaptureEstimate",
     "CausalEffect",
+    "ControlSelection",
     "DelayedAnchorTracker",
     "KVGeometry",
     "ModelGeometry",
@@ -49,9 +56,11 @@ __all__ = [
     "TokenSpan",
     "TraceMetadata",
     "aggregate_receiver_scores_by_kv_head",
+    "causal_attention_mask",
     "discover_receiver_heads",
     "discover_from_paths",
     "decoded_token_offsets",
+    "downstream_window",
     "estimate_eager_capture",
     "hash_text",
     "load_trace",
@@ -64,6 +73,7 @@ __all__ = [
     "sentence_vertical_scores",
     "save_trace",
     "score_causal_interventions",
+    "select_control_indices",
     "token_spans_from_offsets",
 ]
 

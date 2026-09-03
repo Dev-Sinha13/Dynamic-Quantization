@@ -35,6 +35,12 @@ Evidence:
 - Final-answer accuracy delta
 - Counterfactual sentence replacement
 
+The first intervention uses an eager-attention 4D additive mask. It blocks all
+future queries from attending to one selected sentence and compares the
+teacher-forced downstream logit KL against recency and token-length-matched
+controls over one common evaluation window. This validates sentence causality;
+head-specific masking is a subsequent refinement.
+
 ### H3: Cache allocation value
 
 At an equal KV-byte budget, receiver-head anchor retention preserves more full
