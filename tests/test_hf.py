@@ -2,7 +2,12 @@ import unittest
 
 import numpy as np
 
-from anchorkv.hf import decoded_token_offsets, reduce_attention_layers
+from anchorkv.hf import (
+    _ends_with_eos,
+    _render_chat_prompt,
+    decoded_token_offsets,
+    reduce_attention_layers,
+)
 from anchorkv.types import TokenSpan
 
 
@@ -11,6 +16,15 @@ class FakeTokenizer:
 
     def decode(self, token_ids, **_kwargs):
         return self.pieces[token_ids[0]]
+
+
+class FakeChatTokenizer:
+    def __init__(self) -> None:
+        self.enable_thinking = None
+
+    def apply_chat_template(self, _messages, **kwargs):
+        self.enable_thinking = kwargs["enable_thinking"]
+        return "rendered"
 
 
 class HuggingFaceHelperTests(unittest.TestCase):
@@ -34,7 +48,20 @@ class HuggingFaceHelperTests(unittest.TestCase):
         self.assertAlmostEqual(float(reduced[1, 1, 1]), 0.25)
         self.assertEqual(float(reduced[0, 0, 2]), 0.0)
 
+    def test_disables_unbounded_thinking_for_bounded_capture(self) -> None:
+        tokenizer = FakeChatTokenizer()
+
+        rendered = _render_chat_prompt(tokenizer, "problem", enable_thinking=False)
+
+        self.assertEqual(rendered, "rendered")
+        self.assertFalse(tokenizer.enable_thinking)
+
+    def test_detects_eos_for_scalar_and_multiple_stop_tokens(self) -> None:
+        self.assertTrue(_ends_with_eos([10, 20], 20))
+        self.assertTrue(_ends_with_eos([10, 21], [20, 21]))
+        self.assertFalse(_ends_with_eos([10, 22], [20, 21]))
+        self.assertFalse(_ends_with_eos([], 20))
+
 
 if __name__ == "__main__":
     unittest.main()
-

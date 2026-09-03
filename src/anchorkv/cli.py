@@ -89,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
             layers=28,
             query_heads=16,
             kv_heads=8,
-            head_dim=64,
+            head_dim=128,
         )
         estimate = estimate_eager_capture(
             geometry,

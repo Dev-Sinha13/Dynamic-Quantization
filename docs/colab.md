@@ -34,7 +34,8 @@ Model: Qwen/Qwen3-0.6B
 Precision: FP16
 Batch size: 1
 Maximum total sequence: 768 tokens
-Maximum generated tokens: 128
+Maximum generated tokens: 192
+Thinking mode: disabled for bounded, complete answers
 Samples: 3
 ```
 
@@ -68,7 +69,7 @@ The notebook source remains the record of the public benchmark prompts.
 
 1. Restart the runtime to clear all CUDA state.
 2. Reduce `max_sequence_length` from 768 to 512.
-3. Reduce `max_new_tokens` from 128 to 64.
+3. Reduce `max_new_tokens` from 192 to 128.
 4. Keep batch size one.
 5. Do not request hidden states or scores from generation.
 

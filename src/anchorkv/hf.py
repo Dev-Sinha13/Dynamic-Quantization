@@ -22,6 +22,7 @@ class HFTraceConfig:
     max_new_tokens: int = 192
     seed: int = 7
     device: str = "cuda"
+    enable_thinking: bool = False
 
     def __post_init__(self) -> None:
         if not self.model_id:
@@ -75,7 +76,11 @@ def extract_hf_trace(
         config.model_id,
         revision=config.model_revision,
     )
-    rendered_prompt = _render_chat_prompt(tokenizer, prompt)
+    rendered_prompt = _render_chat_prompt(
+        tokenizer,
+        prompt,
+        enable_thinking=config.enable_thinking,
+    )
     inputs = tokenizer(rendered_prompt, return_tensors="pt")
     prompt_tokens = int(inputs["input_ids"].shape[-1])
     allowed_new_tokens = min(
@@ -113,6 +118,15 @@ def extract_hf_trace(
     full_ids = generated_ids[:, : config.max_sequence_length]
     generated_token_ids = full_ids[0, prompt_tokens:].tolist()
     generated_text, generated_offsets = decoded_token_offsets(tokenizer, generated_token_ids)
+    eos_token_ids = model.generation_config.eos_token_id
+    if len(generated_token_ids) >= allowed_new_tokens and not _ends_with_eos(
+        generated_token_ids,
+        eos_token_ids,
+    ):
+        raise RuntimeError(
+            f"generation reached the {allowed_new_tokens}-token limit before EOS; "
+            "increase max_new_tokens or disable thinking before collecting the trace"
+        )
     generated_spans = token_spans_from_offsets(generated_text, generated_offsets)
     spans = tuple(
         TokenSpan(
@@ -192,7 +206,7 @@ def decoded_token_offsets(tokenizer: Any, token_ids: Sequence[int]) -> tuple[str
     for token_id in token_ids:
         piece = tokenizer.decode(
             [token_id],
-            skip_special_tokens=False,
+            skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
         pieces.append(piece)
@@ -237,7 +251,14 @@ def reduce_attention_layers(
     return np.stack(reduced_layers, axis=0)
 
 
-def _render_chat_prompt(tokenizer: Any, prompt: str) -> str:
+def _ends_with_eos(token_ids: Sequence[int], eos_token_id: int | Sequence[int] | None) -> bool:
+    if not token_ids or eos_token_id is None:
+        return False
+    eos_ids = {eos_token_id} if isinstance(eos_token_id, int) else set(eos_token_id)
+    return token_ids[-1] in eos_ids
+
+
+def _render_chat_prompt(tokenizer: Any, prompt: str, *, enable_thinking: bool) -> str:
     if not hasattr(tokenizer, "apply_chat_template"):
         return prompt
     messages = [{"role": "user", "content": prompt}]
@@ -246,7 +267,7 @@ def _render_chat_prompt(tokenizer: Any, prompt: str) -> str:
             messages,
             tokenize=False,
             add_generation_prompt=True,
-            enable_thinking=True,
+            enable_thinking=enable_thinking,
         )
     except TypeError:
         return tokenizer.apply_chat_template(
@@ -254,4 +275,3 @@ def _render_chat_prompt(tokenizer: Any, prompt: str) -> str:
             tokenize=False,
             add_generation_prompt=True,
         )
-
