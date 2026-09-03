@@ -68,6 +68,14 @@ class HuggingFaceHelperTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "at least four"):
             HFTraceConfig(min_reasoning_spans=3)
 
+    def test_default_generation_budget_fits_bounded_t4_trace(self) -> None:
+        from anchorkv.hf import HFTraceConfig
+
+        config = HFTraceConfig()
+
+        self.assertEqual(config.max_new_tokens, 512)
+        self.assertLess(config.max_new_tokens, config.max_sequence_length)
+
 
 if __name__ == "__main__":
     unittest.main()

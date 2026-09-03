@@ -19,7 +19,7 @@ class HFTraceConfig:
     model_id: str = "Qwen/Qwen3-0.6B"
     model_revision: str = "main"
     max_sequence_length: int = 1024
-    max_new_tokens: int = 192
+    max_new_tokens: int = 512
     seed: int = 7
     device: str = "cuda"
     enable_thinking: bool = True

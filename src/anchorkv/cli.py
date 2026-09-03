@@ -59,7 +59,7 @@ def build_parser() -> argparse.ArgumentParser:
     extract.add_argument("--model", default="Qwen/Qwen3-0.6B")
     extract.add_argument("--revision", default="main")
     extract.add_argument("--max-sequence-length", type=int, default=1024)
-    extract.add_argument("--max-new-tokens", type=int, default=192)
+    extract.add_argument("--max-new-tokens", type=int, default=512)
     extract.add_argument("--seed", type=int, default=7)
 
     discover = subparsers.add_parser(

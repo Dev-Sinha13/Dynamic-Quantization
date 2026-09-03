@@ -41,7 +41,7 @@ Model: Qwen/Qwen3-0.6B
 Precision: FP16
 Batch size: 1
 Maximum total sequence: 768 tokens
-Maximum generated tokens: 320
+Maximum generated tokens: 512
 Thinking mode: enabled, with EOS and answer validation
 Minimum reasoning spans: 6
 Samples: 3
@@ -81,7 +81,7 @@ completed text, token counts, and peak allocated GPU memory for each sample.
 
 1. Restart the runtime to clear all CUDA state.
 2. Reduce `max_sequence_length` from 768 to 512.
-3. Reduce `max_new_tokens` from 320 to 256 only if generations still reach EOS.
+3. Reduce `max_new_tokens` from 512 to 384 only if generations still reach EOS.
 4. Keep batch size one.
 5. Do not request hidden states or scores from generation.
 
