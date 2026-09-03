@@ -41,6 +41,13 @@ teacher-forced downstream logit KL against recency and token-length-matched
 controls over one common evaluation window. This validates sentence causality;
 head-specific masking is a subsequent refinement.
 
+Status: **not yet supported**. A three-trace controlled pilot found that raw
+receiver-head attention selected the first reasoning span in every trace and
+lost to recency by roughly 15 times in mean KL. The next iteration measures the
+causal effect of every eligible sentence over one common downstream window and
+evaluates proxy-oracle Spearman correlation, top-k overlap, and regret. Boundary
+spans are reported both included and excluded to expose attention-sink bias.
+
 ### H3: Cache allocation value
 
 At an equal KV-byte budget, receiver-head anchor retention preserves more full

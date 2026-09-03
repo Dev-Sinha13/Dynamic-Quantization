@@ -69,7 +69,8 @@ artifacts/colab/
   receiver-heads.json
   receiver-heads.png
   causal-results.json
-  causal-kl.png
+  selector-causal-kl.png
+  attention-causal-scatter.png
 ```
 
 Each `.npz` contains:
@@ -86,9 +87,12 @@ The notebook source remains the record of the public benchmark prompts.
 `run-summary.json` records the GPU, package versions, generation configuration,
 completed text, token counts, and peak allocated GPU memory for each sample.
 `causal-results.json` records teacher-forced downstream KL and NLL changes for
-the head-selected sentence, a recency control, and a token-length-matched
-and position-matched control. The sentence mask broadcasts across all heads, so this pilot evaluates
-thought-anchor causality rather than head-specific causality.
+every eligible sentence over one shared evaluation window. It reports Spearman
+rank correlation, top-k overlap, and causal regret for raw receiver-head,
+cross-head-normalized, and all-head attention. Recency, random selection, and a
+causal oracle are included as selector baselines. The sentence mask broadcasts
+across all heads, so this evaluates sentence-level causality rather than
+head-specific causality.
 
 ## If the notebook runs out of memory
 
@@ -103,8 +107,8 @@ cache bytes as measured GPU savings.
 
 ## Boundary after this notebook
 
-The notebook discovers correlational receiver heads. The next research milestone
-is causal attention suppression: mask access to one candidate sentence at a time,
-save downstream logits, and rank the interventions with
-`score_causal_interventions`. That step should only begin after the trace format
-and memory envelope have been validated on the assigned GPU.
+The notebook discovers correlational receiver heads and measures causal effects
+for every eligible sentence. A larger prompt set is required before deciding
+whether any attention proxy is predictive enough to drive cache allocation.
+Head-specific suppression and a live cache policy should only follow a positive,
+confidence-bounded ranking result.
