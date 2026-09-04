@@ -9,10 +9,10 @@ allowing less important steps to use INT8, INT4, or eviction under a fixed byte
 budget.
 
 > [!IMPORTANT]
-> The repository implements the model-agnostic analysis core and a bounded
-> Hugging Face trace-extraction path for Colab. It does not yet modify a live
-> Hugging Face or vLLM cache, and its storage calculations are estimates rather
-> than measured kernel allocations.
+> The repository now includes a physical PyTorch reference backend with FP16,
+> symmetric INT8, and packed INT4 KV tensors. It measures real payload and scale
+> storage, but it is not yet wired into a live generation loop or a fused vLLM
+> attention kernel. Reported decode speedups therefore remain out of scope.
 
 ## Research question
 
@@ -67,6 +67,12 @@ Delayed anchor tracker                          |
                  Byte-budgeted planner
                   /       |       \
                FP16     INT8/4   evict
+                 \        |        /
+                  Physical KV block store
+                           |
+               declarative global/focus/local
+                           |
+                 dense execution materialization
 ```
 
 The delayed tracker is necessary because a sentence can only be recognized as a
@@ -87,6 +93,11 @@ owns an independently configurable KV cache.
 - Delayed EMA-based thought-anchor decisions
 - Estimated FP16, INT8, and INT4 KV storage including scale metadata
 - Protected-anchor, fixed-byte-budget cache planning
+- Physical FP16, symmetric INT8, and nibble-packed INT4 KV storage
+- Per-block requantization with real payload and scale byte accounting
+- Multi-layer Hugging Face legacy-cache conversion
+- Incremental `<global>`, `<focus>`, `<local>`, `<anchor>`, and `<archive>` parser
+- Declarative block visibility and dense execution-time materialization
 - A deterministic end-to-end synthetic demonstration
 - Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
 - Pickle-free, versioned attention-trace artifacts and head manifests
@@ -130,6 +141,20 @@ produces a JSON cache plan:
 }
 ```
 
+Install the research dependencies and run the physical backend demonstration:
+
+```bash
+python -m pip install -e ".[research]"
+anchorkv requantize-demo --archive-mode int4
+```
+
+The deterministic demonstration stores a 192-token synthetic multi-region KV
+cache. Archiving its two context regions as packed INT4 reduces actual tensor
+storage from **12,288 bytes to 6,272 bytes** (1.96×), with maximum absolute
+reconstruction error 0.278 for the seeded sample. These are tensor-storage
+measurements, not CUDA-kernel latency results. See the
+[requantization backend documentation](docs/requantization-backend.md).
+
 Run the dependency-light test suite with:
 
 ```bash
@@ -150,7 +175,8 @@ src/anchorkv/
   segmentation.py  sentence and token spans
   heads.py         receiver-head analysis and GQA mapping
   policy.py        delayed anchors and cache-budget planning
-  cli.py           reproducible synthetic demo
+  backend.py       physical quantization and declarative cache state
+  cli.py           reproducible policy and requantization demos
 tests/             dependency-light unit tests
 docs/              experimental protocol and project roadmap
 notebooks/         bounded Google Colab experiments
@@ -177,7 +203,7 @@ Similarly:
 ## Evaluation plan
 
 The Colab milestone integrates one open reasoning model. Subsequent causal and
-cache-simulation milestones will evaluate:
+physical-cache milestones will evaluate:
 
 - Full cache
 - Recent window plus attention sinks
@@ -210,10 +236,13 @@ cache compression is unexplored. It builds on:
 - [Thought-Aware Attention Matching](https://arxiv.org/abs/2608.12331), which
   combines reasoning segmentation, adaptive budgets, and pivotal-token
   protection.
+- [Declarative Attention](https://arxiv.org/abs/2609.02737), which lets models
+  declare global, focused, and local context visibility and implements the
+  resulting policy through block-aligned vLLM cache tables.
 
 AnchorKV's intended extension is **training-free receiver-head discovery,
-causal validation, delayed online decisions, and explicit GQA-aware cache
-planning**.
+causal validation, delayed online decisions, declarative precision control,
+and explicit GQA-aware physical cache storage**.
 
 ## License
 
