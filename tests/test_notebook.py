@@ -4,6 +4,44 @@ from pathlib import Path
 
 
 class NotebookTests(unittest.TestCase):
+    def test_requantization_notebook_is_standalone_and_compiles(self) -> None:
+        path = (
+            Path(__file__).parents[1]
+            / "notebooks"
+            / "AnchorKV_T4_Requantization.ipynb"
+        )
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(notebook["nbformat"], 4)
+        self.assertEqual(notebook["metadata"]["accelerator"], "GPU")
+        all_source = "".join(
+            "".join(cell.get("source", [])) for cell in notebook["cells"]
+        )
+        self.assertNotIn("git clone", all_source)
+        self.assertNotIn("from anchorkv", all_source)
+        self.assertIn("Qwen/Qwen3-0.6B", all_source)
+        self.assertIn("MAX_PROMPT_TOKENS = 640", all_source)
+        self.assertIn("MAX_NEW_TOKENS = 32", all_source)
+        self.assertIn("TEACHER_FORCED_STEPS = 24", all_source)
+        self.assertIn("torch.bitwise_left_shift", all_source)
+        self.assertIn("DynamicCache(cache_data)", all_source)
+        self.assertIn("<anchor segments=", all_source)
+        self.assertIn("<archive segments=", all_source)
+        self.assertIn("teacher_mean_kl", all_source)
+        self.assertIn("peak_gpu_gib_dense_reference", all_source)
+        self.assertIn("requantization-results.json", all_source)
+        self.assertIn("model_info(MODEL_ID).sha", all_source)
+
+        for index, cell in enumerate(notebook["cells"]):
+            if cell["cell_type"] != "code":
+                continue
+            self.assertIsNone(cell["execution_count"])
+            self.assertEqual(cell["outputs"], [])
+            source = "".join(cell["source"])
+            if source.startswith("%pip "):
+                source = "# " + source
+            compile(source, f"{path}:cell-{index}", "exec")
+
     def test_colab_notebook_is_clean_and_t4_bounded(self) -> None:
         path = Path(__file__).parents[1] / "notebooks" / "AnchorKV_T4_Trace_Collection.ipynb"
         notebook = json.loads(path.read_text(encoding="utf-8"))
