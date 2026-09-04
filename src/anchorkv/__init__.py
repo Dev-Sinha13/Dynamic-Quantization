@@ -15,6 +15,7 @@ from .backend import (
     SegmentRecord,
     SegmentRole,
     quantize_tensor,
+    stack_legacy_cache,
 )
 from .analysis import (
     CausalEffect,
@@ -98,6 +99,7 @@ __all__ = [
     "ranking_diagnostics",
     "query_head_to_kv_head",
     "quantize_tensor",
+    "stack_legacy_cache",
     "reduce_attention_layers",
     "receiver_head_manifest",
     "plan_cache",

@@ -226,6 +226,30 @@ def quantize_tensor(
     return PackedTensor(mode, shape, source.dtype, payload, scales, group_size, original_numel)
 
 
+def stack_legacy_cache(past_key_values: Any) -> tuple[Any, Any]:
+    """Stack a Hugging Face cache into layer-first key and value tensors."""
+
+    _require_torch()
+    legacy = (
+        past_key_values.to_legacy_cache()
+        if hasattr(past_key_values, "to_legacy_cache")
+        else past_key_values
+    )
+    layers = tuple(legacy)
+    if not layers:
+        raise ValueError("past_key_values must contain at least one layer")
+    if any(len(layer) != 2 for layer in layers):
+        raise ValueError("each legacy cache layer must contain one key and one value tensor")
+    keys = [layer[0] for layer in layers]
+    values = [layer[1] for layer in layers]
+    reference_shape = keys[0].shape
+    if any(key.shape != reference_shape for key in keys) or any(
+        value.shape != reference_shape for value in values
+    ):
+        raise ValueError("all legacy cache tensors must share one shape")
+    return torch.stack(keys, dim=0), torch.stack(values, dim=0)
+
+
 @dataclass(frozen=True, slots=True)
 class KVBlock:
     block_id: int
@@ -273,6 +297,18 @@ class MaterializedCache:
     positions: Any
     block_ids: tuple[int, ...]
     segment_ids: tuple[int, ...]
+
+    def to_legacy_cache(self) -> tuple[tuple[Any, Any], ...]:
+        """Convert stacked layer tensors to Hugging Face's legacy cache tuple."""
+
+        if self.key.ndim != 5 or self.value.ndim != 5:
+            raise ValueError(
+                "legacy conversion requires [layers, batch, heads, tokens, head_dim] tensors"
+            )
+        return tuple(
+            (self.key[layer], self.value[layer])
+            for layer in range(int(self.key.shape[0]))
+        )
 
 
 @dataclass(slots=True)
@@ -326,8 +362,11 @@ class DeclarativeKVCache:
             raise ValueError("token_start must be non-negative")
         if not isinstance(key, torch.Tensor) or not isinstance(value, torch.Tensor):
             raise TypeError("key and value must be torch tensors")
-        if key.shape != value.shape or key.ndim != 4:
-            raise ValueError("key and value must share [batch, heads, tokens, head_dim] shape")
+        if key.shape != value.shape or key.ndim not in {4, 5}:
+            raise ValueError(
+                "key and value must share [batch, heads, tokens, head_dim] or "
+                "[layers, batch, heads, tokens, head_dim] shape"
+            )
         token_count = int(key.shape[-2])
         if token_count <= 0:
             raise ValueError("segments must contain at least one token")

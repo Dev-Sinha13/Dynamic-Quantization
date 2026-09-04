@@ -13,6 +13,7 @@ from anchorkv.backend import (
     LossyPromotionError,
     SegmentRole,
     quantize_tensor,
+    stack_legacy_cache,
 )
 from anchorkv.policy import CacheMode, CachePlan, PlannedSegment
 
@@ -151,6 +152,32 @@ class DeclarativeCacheTests(unittest.TestCase):
         self.cache.feed_declarations('<focus segments="1">')
 
         self.assertEqual(self.cache.visible_segment_ids(), (0, 3))
+
+    def test_stacked_layers_convert_to_legacy_hugging_face_cache(self) -> None:
+        cache = DeclarativeKVCache(block_size=4, group_size=16)
+        key = torch.randn(3, 1, 2, 6, 8)
+        value = torch.randn(3, 1, 2, 6, 8)
+        cache.add_segment(0, key, value, token_start=0)
+        cache.requantize_segment(0, CacheMode.INT8)
+
+        materialized = cache.materialize_visible(dtype=torch.float32)
+        legacy = materialized.to_legacy_cache()
+
+        self.assertEqual(len(legacy), 3)
+        self.assertEqual(legacy[0][0].shape, (1, 2, 6, 8))
+        self.assertLess(float((materialized.key - key).abs().max()), 0.03)
+
+    def test_stacks_legacy_hugging_face_cache(self) -> None:
+        legacy = tuple(
+            (torch.randn(1, 2, 6, 8), torch.randn(1, 2, 6, 8))
+            for _ in range(3)
+        )
+
+        key, value = stack_legacy_cache(legacy)
+
+        self.assertEqual(key.shape, (3, 1, 2, 6, 8))
+        self.assertEqual(value.shape, (3, 1, 2, 6, 8))
+        torch.testing.assert_close(key[1], legacy[1][0])
 
     def test_applies_cache_plan_to_physical_blocks(self) -> None:
         modes = [CacheMode.FP16, CacheMode.INT4, CacheMode.INT8, CacheMode.FP16]
