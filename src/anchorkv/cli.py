@@ -10,6 +10,7 @@ import numpy as np
 
 from .artifacts import load_trace, trace_summary
 from .analysis import discover_from_paths, save_manifest
+from .backend import BackendUnavailableError, DeclarativeKVCache, SegmentRole
 from .capacity import ModelGeometry, estimate_eager_capture
 from .heads import discover_receiver_heads, sentence_vertical_scores
 from .hf import HFTraceConfig, extract_hf_trace
@@ -69,6 +70,17 @@ def build_parser() -> argparse.ArgumentParser:
     discover.add_argument("traces", nargs="+")
     discover.add_argument("--top-k", type=int, default=16)
     discover.add_argument("--output", required=True)
+
+    requantize = subparsers.add_parser(
+        "requantize-demo",
+        help="run real blockwise KV quantization and report physical tensor bytes",
+    )
+    requantize.add_argument(
+        "--archive-mode",
+        choices=(CacheMode.INT4.value, CacheMode.INT8.value),
+        default=CacheMode.INT4.value,
+    )
+    requantize.add_argument("--seed", type=int, default=7)
     return parser
 
 
@@ -132,6 +144,16 @@ def main(argv: list[str] | None = None) -> int:
         manifest = discover_from_paths(args.traces, top_k=args.top_k)
         destination = save_manifest(manifest, args.output)
         print(json.dumps({"manifest_path": str(destination), **manifest}, indent=2))
+        return 0
+    if args.command == "requantize-demo":
+        try:
+            report = run_requantization_demo(
+                archive_mode=CacheMode(args.archive_mode),
+                seed=args.seed,
+            )
+        except BackendUnavailableError as error:
+            raise SystemExit(str(error)) from error
+        print(json.dumps(report, indent=2))
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 
@@ -205,6 +227,75 @@ def run_synthetic_demo(budget_ratio: float = 0.6, *, seed: int = 7) -> dict[str,
             ],
         },
     }
+
+
+def run_requantization_demo(
+    *,
+    archive_mode: CacheMode = CacheMode.INT4,
+    seed: int = 7,
+) -> dict[str, Any]:
+    """Quantize physical KV tensors and exercise declarative cache state."""
+
+    try:
+        import torch
+    except ImportError as error:  # pragma: no cover - depends on optional installation
+        raise BackendUnavailableError(
+            "requantize-demo requires PyTorch: pip install anchorkv[research]"
+        ) from error
+
+    torch.manual_seed(seed)
+    cache = DeclarativeKVCache(
+        block_size=16,
+        group_size=64,
+        archive_mode=archive_mode,
+    )
+    specifications = (
+        (0, 16, SegmentRole.SINK),
+        (1, 16, SegmentRole.SCAFFOLD),
+        (2, 64, SegmentRole.CONTEXT),
+        (3, 64, SegmentRole.CONTEXT),
+        (4, 32, SegmentRole.RESPONSE),
+    )
+    originals: dict[int, tuple[Any, Any]] = {}
+    token_start = 0
+    for segment_id, token_count, role in specifications:
+        key = torch.randn(1, 2, token_count, 8, dtype=torch.float32)
+        value = torch.randn(1, 2, token_count, 8, dtype=torch.float32)
+        originals[segment_id] = (key, value)
+        cache.add_segment(
+            segment_id,
+            key,
+            value,
+            token_start=token_start,
+            role=role,
+        )
+        token_start += token_count
+
+    cache.feed_declarations(
+        '<anchor segments="4"><archive segments="2,3"><focus segments="3">'
+    )
+    restored = cache.materialize_segments(
+        [3],
+        dtype=torch.float32,
+    )
+    restored_key, restored_value = restored.key, restored.value
+    original_key, original_value = originals[3]
+    errors = torch.cat(
+        (
+            (restored_key - original_key).reshape(-1),
+            (restored_value - original_value).reshape(-1),
+        )
+    ).abs()
+    report = cache.storage_report()
+    report.update(
+        {
+            "archive_mode": archive_mode.value,
+            "max_abs_error": float(errors.max()),
+            "mean_abs_error": float(errors.mean()),
+            "materialized_focus_tokens": int(cache.materialize_visible().key.shape[-2]),
+        }
+    )
+    return report
 
 
 if __name__ == "__main__":

@@ -364,6 +364,37 @@ class DeclarativeKVCache:
             raise RuntimeError(f"segment {segment_id} has mixed block modes")
         return next(iter(modes))
 
+    def storage_report(self) -> dict[str, object]:
+        """Return JSON-safe physical storage and state-machine statistics."""
+
+        return {
+            "full_precision_bytes": self.full_precision_bytes,
+            "resident_bytes": self.resident_bytes,
+            "compression_ratio": self.compression_ratio,
+            "attention_mode": self.parser.state.mode.value,
+            "focus_segment_ids": list(self.parser.state.focus_segment_ids),
+            "visible_segment_ids": list(self.visible_segment_ids()),
+            "segments": [
+                {
+                    "segment_id": segment_id,
+                    "role": record.role.value,
+                    "token_start": record.token_start,
+                    "token_end": record.token_end,
+                    "tokens": record.token_end - record.token_start,
+                    "blocks": len(self._segment_blocks[segment_id]),
+                    "mode": self.segment_mode(segment_id).value,
+                    "protected": record.protected,
+                    "stored_bytes": sum(
+                        block.stored_bytes for block in self._blocks_for_segment(segment_id)
+                    ),
+                }
+                for segment_id, record in sorted(
+                    self._segments.items(),
+                    key=lambda item: item[1].token_start,
+                )
+            ],
+        }
+
     def protect_segment(self, segment_id: int) -> None:
         record = self._get_segment(segment_id)
         if self.segment_mode(segment_id) is not CacheMode.FP16:
