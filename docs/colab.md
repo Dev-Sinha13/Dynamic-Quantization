@@ -13,8 +13,17 @@ The [successful 512-token T4 run](experiments/2026-09-03-t4-thinking-512.md)
 validated execution and trace quality; its initial head manifest was rejected
 after exposing a terminal-answer/EOS attention confound.
 
-The repository is ready for its first real GPU-only step: collecting bounded
-sentence-level attention traces from Qwen3-0.6B.
+The repository provides bounded GPU workflows for collecting sentence-level
+attention traces and testing physical KV requantization on Qwen3-0.6B.
+
+There are now two standalone T4 workflows:
+
+- `AnchorKV_T4_Standalone.ipynb` reproduces attention-head discovery and causal
+  sentence suppression.
+- `AnchorKV_T4_Requantization.ipynb` captures Qwen3-0.6B's real KV tensors,
+  physically packs semantic segments, reconstructs a live `DynamicCache`, and
+  measures storage, controlled logit drift, greedy drift, latency, and peak CUDA
+  allocation.
 
 ## Start the notebook
 
@@ -26,6 +35,36 @@ For a private repository, download
 [`AnchorKV_T4_Standalone.ipynb`](../notebooks/AnchorKV_T4_Standalone.ipynb),
 then choose **File → Upload notebook** in Colab. It embeds the required helpers
 and does not require GitHub access.
+
+To test the new requantization backend instead, upload
+[`AnchorKV_T4_Requantization.ipynb`](../notebooks/AnchorKV_T4_Requantization.ipynb).
+It is also standalone and uses a 640-token prompt cap, 32 greedy decode tokens,
+and 24 controlled teacher-forced steps.
+
+## Physical requantization workflow
+
+The requantization notebook compares four policies over the same captured
+prompt cache:
+
+1. FP16 reference storage.
+2. Uniform groupwise INT8.
+3. Uniform packed INT4.
+4. Declarative INT4, where `<anchor>` keeps the instruction, relevant evidence,
+   and query in FP16 while `<archive>` demotes distractor segments.
+
+It saves `requantization-results.json`, a CSV table, and a storage–fidelity plot.
+The JSON pins the resolved model revision and records exact packed payload and
+scale bytes. Teacher-forced KL and top-1 agreement use identical token histories
+across policies; greedy common-prefix length exposes compounding decode changes.
+
+The notebook intentionally reports CUDA memory as
+`peak_gpu_gib_dense_reference`. Hugging Face's stock attention path consumes a
+dense materialized cache, so that number must not be presented as a packed-cache
+GPU saving. The physical `resident_bytes` result is valid; a fused or paged
+mixed-precision attention kernel is still required to realize that saving during
+attention.
+
+## Trace collection workflow
 
 The notebook will:
 

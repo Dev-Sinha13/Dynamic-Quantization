@@ -11,8 +11,9 @@ budget.
 > [!IMPORTANT]
 > The repository now includes a physical PyTorch reference backend with FP16,
 > symmetric INT8, and packed INT4 KV tensors. It measures real payload and scale
-> storage, but it is not yet wired into a live generation loop or a fused vLLM
-> attention kernel. Reported decode speedups therefore remain out of scope.
+> storage and is wired into a standalone Hugging Face reference decode notebook.
+> Stock attention still materializes a dense FP16 cache, so this is not yet a
+> fused vLLM attention kernel and reported decode speedups remain out of scope.
 
 ## Research question
 
@@ -98,6 +99,8 @@ owns an independently configurable KV cache.
 - Multi-layer Hugging Face legacy-cache conversion
 - Incremental `<global>`, `<focus>`, `<local>`, `<anchor>`, and `<archive>` parser
 - Declarative block visibility and dense execution-time materialization
+- Standalone Qwen3-0.6B live-cache requantization, controlled replay, and greedy
+  decoding experiment for a T4
 - A deterministic end-to-end synthetic demonstration
 - Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
 - Pickle-free, versioned attention-trace artifacts and head manifests
@@ -109,12 +112,16 @@ owns an independently configurable KV cache.
 
 AnchorKV requires Python 3.10 or newer.
 
-[![Open the T4 experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)
+[![Open trace collection in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)
+
+[![Open requantization test in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Requantization.ipynb)
 
 If GitHub access is unavailable or the repository is private, download and
-upload [`notebooks/AnchorKV_T4_Standalone.ipynb`](notebooks/AnchorKV_T4_Standalone.ipynb)
-directly to Colab. The standalone notebook embeds the experiment helpers and
-does not clone this repository.
+upload either [`notebooks/AnchorKV_T4_Standalone.ipynb`](notebooks/AnchorKV_T4_Standalone.ipynb)
+for attention/causal analysis or
+[`notebooks/AnchorKV_T4_Requantization.ipynb`](notebooks/AnchorKV_T4_Requantization.ipynb)
+for the live physical-cache test. Both embed their required helpers and do not
+clone this repository.
 
 ```bash
 python -m venv .venv

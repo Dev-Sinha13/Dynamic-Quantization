@@ -129,12 +129,19 @@ storage adds a data-plane requirement: the selected kernel must understand the
 block's dtype and scales, or the runtime must stage dequantized blocks into a
 temporary execution buffer.
 
+The standalone
+[`AnchorKV_T4_Requantization.ipynb`](../notebooks/AnchorKV_T4_Requantization.ipynb)
+now completes the first correctness milestone: it captures Qwen3-0.6B's real
+prompt cache, packs it under homogeneous and declarative mixed policies,
+reconstructs `DynamicCache`, and measures controlled logit and answer deltas.
+Its dense execution allocation is labeled separately from physical packed
+storage.
+
 The next implementation milestones are therefore:
 
-1. Integrate the reference backend into a manual Hugging Face decode loop and
-   verify logit and answer deltas for homogeneous and mixed policies.
-2. Benchmark CUDA quantization, materialization, peak allocation, and decode
-   latency on a T4.
+1. Run the standalone notebook on a T4 and record the pinned result artifact.
+2. Benchmark CUDA-native quantization, materialization, peak allocation, and
+   decode latency on a T4.
 3. Choose either separate dtype-specific block pools or one dequantization
    staging pool for the vLLM prototype.
 4. Align semantic spans outward to vLLM physical block boundaries and resolve
