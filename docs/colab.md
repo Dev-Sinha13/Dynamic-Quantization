@@ -1,5 +1,12 @@
 # T4 Colab handoff
 
+**Current complete workflow:** upload
+[`AnchorKV_T4_All_In_One.ipynb`](../notebooks/AnchorKV_T4_All_In_One.ipynb)
+to a fresh T4 runtime. It combines quality evaluation, equal budgets, automatic
+selection diagnostics, online cache aging, experimental packed attention, and
+report export. See [the complete guide](all-in-one-colab.md). The earlier
+notebooks described below remain available to reproduce previous experiments.
+
 The [first T4 smoke-run postmortem](experiments/2026-09-01-t4-smoke.md)
 documents why the initial truncated artifacts were rejected and what changed
 before the next run.

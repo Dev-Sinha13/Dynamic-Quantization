@@ -12,8 +12,10 @@ budget.
 > The repository now includes a physical PyTorch reference backend with FP16,
 > symmetric INT8, and packed INT4 KV tensors. It measures real payload and scale
 > storage and is wired into a standalone Hugging Face reference decode notebook.
-> Stock attention still materializes a dense FP16 cache, so this is not yet a
-> fused vLLM attention kernel and reported decode speedups remain out of scope.
+> The first T4 run validated cache reconstruction. A new all-in-one notebook adds
+> continuous paging and an experimental Triton kernel that reads packed blocks;
+> its GPU correctness and performance remain pending a Colab run. No inference
+> speedup or production serving integration is claimed.
 
 ## Research question
 
@@ -101,6 +103,8 @@ owns an independently configurable KV cache.
 - Declarative block visibility and dense execution-time materialization
 - Standalone Qwen3-0.6B live-cache requantization, controlled replay, and greedy
   decoding experiment for a T4
+- All-in-one equal-budget benchmark with automatic selection diagnostics,
+  continuous cache aging, and gated experimental Triton packed attention
 - A deterministic end-to-end synthetic demonstration
 - Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
 - Pickle-free, versioned attention-trace artifacts and head manifests
@@ -111,6 +115,14 @@ owns an independently configurable KV cache.
 ## Quick start
 
 AnchorKV requires Python 3.10 or newer.
+
+For the complete current workflow, upload
+[`AnchorKV_T4_All_In_One.ipynb`](notebooks/AnchorKV_T4_All_In_One.ipynb)
+to a **fresh T4 Colab runtime** and run all cells. It embeds every required
+project module and exports a complete evidence bundle. See the
+[all-in-one guide](docs/all-in-one-colab.md) for scope and interpretation.
+
+[![Open the all-in-one experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_All_In_One.ipynb)
 
 [![Open trace collection in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)
 
@@ -161,6 +173,12 @@ storage from **12,288 bytes to 6,272 bytes** (1.96×), with maximum absolute
 reconstruction error 0.278 for the seeded sample. These are tensor-storage
 measurements, not CUDA-kernel latency results. See the
 [requantization backend documentation](docs/requantization-backend.md).
+
+The [first real T4 requantization run](docs/experiments/2026-09-05-requantization-smoke.md)
+achieved 2.87× packed storage compression for the manually protected policy and
+identical generated tokens across policies, but no inference GPU-memory saving.
+It also exposed answer repetition and evaluation limitations addressed by the
+new notebook. Its archive is preserved with the report.
 
 Run the dependency-light test suite with:
 

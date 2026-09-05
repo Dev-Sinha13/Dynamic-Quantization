@@ -1,5 +1,12 @@
 # Requantization backend
 
+This page describes the original block-store reference API. A separate
+experimental online implementation now lives in `packed_decode.py`, with a
+Triton single-token attention kernel in `triton_decode.py`. The
+[all-in-one notebook](all-in-one-colab.md) embeds both, numerical gates, and the
+benchmark. Its GPU results are pending; the older T4 archive only tests dense
+cache reconstruction.
+
 ## Status
 
 AnchorKV has a functional PyTorch reference backend for physical KV-cache
