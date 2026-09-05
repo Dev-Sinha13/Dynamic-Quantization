@@ -1,9 +1,31 @@
+import ast
 import json
 import unittest
 from pathlib import Path
 
 
 class NotebookTests(unittest.TestCase):
+    def test_all_in_one_embeds_current_sources_and_compiles(self) -> None:
+        root = Path(__file__).parents[1]
+        path = root / 'notebooks' / 'AnchorKV_T4_All_In_One.ipynb'
+        notebook = json.loads(path.read_text(encoding='utf-8'))
+        embedded = None
+        for index, cell in enumerate(notebook['cells']):
+            if cell['cell_type'] != 'code':
+                continue
+            self.assertIsNone(cell['execution_count'])
+            self.assertEqual(cell['outputs'], [])
+            source = ''.join(cell['source'])
+            tree = ast.parse(source, filename=f'{path}:cell-{index}')
+            for node in tree.body:
+                if (isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)
+                        and node.targets[0].id == 'EMBEDDED_SOURCES'):
+                    embedded = ast.literal_eval(node.value)
+        self.assertIsNotNone(embedded)
+        for name in ('packed_decode.py', 'triton_decode.py', 'colab_experiment.py'):
+            self.assertEqual(embedded[name], (root / 'src' / 'anchorkv' / name).read_text(encoding='utf-8'))
+            compile(embedded[name], name, 'exec')
+
     def test_requantization_notebook_is_standalone_and_compiles(self) -> None:
         path = (
             Path(__file__).parents[1]
