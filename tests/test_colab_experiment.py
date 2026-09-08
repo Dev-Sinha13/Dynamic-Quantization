@@ -13,6 +13,47 @@ except ImportError:
 
 @unittest.skipIf(torch is None, 'optional torch dependency is unavailable')
 class ExperimentTests(unittest.TestCase):
+    def test_controlled_decode_uses_exact_history_and_ages_cache(self):
+        try:
+            from transformers import Qwen3Config, Qwen3ForCausalLM
+        except ImportError:
+            self.skipTest('optional transformers dependency is unavailable')
+        from anchorkv.benchmark_suite import controlled_decode
+        torch.set_num_threads(2)
+        config = Qwen3Config(vocab_size=100, hidden_size=128, intermediate_size=256,
+                             num_hidden_layers=1, num_attention_heads=4,
+                             num_key_value_heads=2, head_dim=64)
+        config._attn_implementation = 'sdpa'
+        model = Qwen3ForCausalLM(config).half().eval()
+        with torch.inference_mode():
+            output = model(input_ids=torch.randint(0, 100, (1, 53)), use_cache=True)
+            source = cache_cpu(output.past_key_values)
+            del output
+        inputs = list(range(48))
+        seen = []
+        def capture(module, args, kwargs):
+            seen.extend(kwargs['input_ids'][0].tolist())
+        handle = model.register_forward_pre_hook(capture, with_kwargs=True)
+        try:
+            rows = [controlled_decode(model, source, Settings(recent_pages=1), policy,
+                                      inputs, 40, warmup_tokens=8, protected={0}, backend='dense')
+                    for policy in ('native_fp16', 'paged_fp16', 'int4')]
+        finally:
+            handle.remove()
+        self.assertEqual(seen, inputs * 3)
+        for row in rows:
+            self.assertEqual(row['final_cache']['tokens'], 101)
+            self.assertEqual(row['measurement_start_cache']['tokens'], 61)
+            self.assertGreater(row['steady_tokens_per_second'], 0)
+            self.assertIsNone(row['measured_cuda_timeline_seconds'])
+            self.assertNotIn('answer_correct', row)
+        self.assertGreater(rows[-1]['new_measured_demotions'], 0)
+        self.assertLess(rows[-1]['final_cache']['resident_bytes'], rows[0]['final_cache']['resident_bytes'])
+        self.assertEqual(len({r['input_sha256'] for r in rows}), 1)
+        self.assertEqual(model.config._attn_implementation, 'sdpa')
+        with self.assertRaises(ValueError):
+            controlled_decode(model, source, Settings(), 'int4', [1], 128)
+
     def test_answers_require_exact_text_and_track_completion(self):
         self.assertTrue(answer_check(' 7319\n', '7319', True)['completed_correct'])
         self.assertFalse(answer_check('7319\nAnswer: 7319', '7319', True)['answer_correct'])
