@@ -25,7 +25,7 @@ class SuiteSettings:
 
 
 def task_spec(task, seed):
-    rng = random.Random(seed)
+    rng = random.Random(f'{task}:{seed}')
     code_a, code_b = rng.sample(range(1000, 9999), 2)
     crates, each, removed = rng.randint(11, 29), rng.randint(12, 24), rng.randint(5, 19)
     if task == 'retrieval':
@@ -111,6 +111,7 @@ def quality_plans(candidates, scores, evidence, suite):
     for policy in ('native_fp16', 'paged_fp16', 'int8', 'int4'):
         plans.append({'variant': policy, 'policy': policy, 'budget': None,
                       'random_seed': None, 'extra_fp16_pages': 0,
+                      'assignment_seconds': 0.0,
                       'protected': [] if policy.endswith('fp16') else [0]})
     if not candidates or len(set(suite.budgets)) != len(suite.budgets):
         raise ValueError('need eligible pages and unique budgets')
@@ -121,10 +122,13 @@ def quality_plans(candidates, scores, evidence, suite):
         for policy in ('recent', 'automatic', 'oracle', 'random'):
             seeds = suite.random_seeds if policy == 'random' else (None,)
             for seed in seeds:
+                started = time.perf_counter()
                 pages = choose_pages(policy, candidates, count, scores=scores,
                                      evidence=evidence, seed=seed or 0) | {0}
+                assignment_seconds = time.perf_counter() - started
                 plans.append({'variant': f'{policy}-b{budget}-s{seed}', 'policy': policy,
                               'budget': budget, 'random_seed': seed,
+                              'assignment_seconds': assignment_seconds,
                               'extra_fp16_pages': count, 'protected': sorted(pages)})
     if len({p['variant'] for p in plans}) != len(plans):
         raise ValueError('duplicate selector seeds')

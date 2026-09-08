@@ -108,6 +108,9 @@ owns an independently configurable KV cache.
   decoding experiment for a T4
 - All-in-one equal-budget benchmark with automatic selection diagnostics,
   continuous cache aging, and gated experimental Triton packed attention
+- Expanded synthetic retrieval/multi-fact/arithmetic suite, matched budgets and
+  random seeds, family-level comparisons, and separate 128/256/512-token decode
+  workloads (new GPU measurements pending)
 - A deterministic end-to-end synthetic demonstration
 - Bounded SDPA-generation/eager-replay extraction for Qwen3-0.6B
 - Pickle-free, versioned attention-trace artifacts and head manifests

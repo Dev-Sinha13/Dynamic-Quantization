@@ -3,8 +3,10 @@
 Upload [`AnchorKV_T4_All_In_One.ipynb`](../notebooks/AnchorKV_T4_All_In_One.ipynb)
 to a **fresh** Colab T4 runtime. The file embeds its Python and Triton sources;
 it does not clone the repository or import a separately installed AnchorKV.
-Use Runtime > Run all. Expect tens of minutes, depending on allocator overhead
-and whether the experimental packed path passes its gates.
+Use Runtime > Run all. The expanded default may take over an hour, depending on
+allocator overhead and the runtime. There is no guaranteed completion time for
+a free Colab session. The configuration cell includes a smaller wiring-check
+configuration. Keep the defaults for the broader experiment when practical.
 
 The notebook deliberately pins Transformers 4.57.6 to constrain its attention
 interface. Start a fresh runtime rather than reusing the earlier notebook's
@@ -36,6 +38,51 @@ reconstruction. Those measurements are explicitly labeled `dense`.
    age into compressed storage. Do not score this diagnostic as answer accuracy.
 8. Export per-case data, bootstrap comparisons, raw generations, selected pages,
    numerical gates, environment/source hashes, plots, and a Markdown report.
+9. Run the expanded quality suite: 36 prompts, comprising three synthetic tasks
+   (retrieval, two-fact retrieval, and three-fact arithmetic), two content seeds,
+   target lengths 768/1536, and early/middle/late evidence. Complete records and
+   queries are fitted with the pinned tokenizer before loading model weights.
+10. Compare two extra-FP16-page fractions (10% and 25% of eligible full pages)
+    and three random seeds at each budget. Physical initial bytes must match.
+    Four baselines plus twelve mixed variants give 16 variants per prompt;
+    each gets one greedy answer and one gold-history diagnostic. These 576
+    variant measurements are not 576 independent questions.
+11. Run controlled decode with 32 warm-up inputs plus 128/256/512 measured inputs,
+    six policies, and three timing repetitions after an excluded full-workload
+    warm-up for every policy/length. All policies receive identical GPU-resident
+    inputs; no sampling, EOS stopping, or per-token CPU-logit copies. This is a
+    synthetic throughput workload using one longest prefix, not task accuracy.
+    The phase is skipped if the packed gate fails. New workload results still
+    require a Colab run; the original pilot does not validate their performance.
+
+## Expanded outputs and interpretation
+
+`expanded-quality.json` and `expanded-selection.json` checkpoint each variant
+and case. `expanded-per-case.csv` averages random draws before comparisons;
+`expanded-breakdown.csv` separates tasks, lengths and positions.
+`expanded-failures.json` retains wrong answers and missing EOS completions.
+`expanded-paired-comparisons.json` bootstraps task/content-seed family means,
+not correlated position/length variants or random draws. With just six default
+synthetic families, these intervals remain exploratory. Arithmetic is evaluated
+with thinking disabled; it is not evidence about internal reasoning anchors.
+
+`decode-workload.json` exports exact inputs, selected pages, and separate
+prefill/snapshot and scoring costs. `decode-warmups.json` contains excluded full
+workload warm-ups. `controlled-decode.json` checkpoints each measured run and
+reports setup, in-cache warm-up, steady-state wall time, CUDA timeline elapsed
+time, cache growth/demotions, and scoped GPU allocations. CUDA-event duration
+includes launch gaps and is not a pure kernel-time sum. The primary tokens/s
+uses synchronized wall time. Allocation baselines exclude already-resident
+weights and prepared inputs; absolute peaks are also retained. Prefill is outside
+the setup/decode peak window. `accounted_workload_seconds` adds shared prefill,
+automatic scoring where used, per-plan assignment, setup, warm-up and measured
+decode, not just the fast portion.
+
+The final zip contains both `report.md` (original pilot) and
+`expanded-report.md` (new quality and throughput). Checkpoints survive cell
+interruptions while the runtime remains alive, but `/content` is not persistent
+storage. You can run the final download cell early to retrieve partial evidence;
+there is no automatic resume after losing the runtime.
 
 ## Packed attention implementation
 
@@ -62,8 +109,8 @@ after each run so it cannot retain an earlier GPU cache.
 
 - The automatic score is a proposed heuristic, not a validated receiver-head
   detector. Its evidence must come from equal-budget comparisons on new data.
-- The semantic oracle receives the evidence location. Its result is an upper
-  reference for the supplied evidence, not learned selection performance.
+- The semantic oracle receives the evidence location. It is a labeled control,
+  not a causal upper bound or learned selection performance.
 - Precision changes continuously, but the protected set is chosen once per
   prompt. Generated `<focus>`/`<local>` tags are not parsed or used by this suite.
 - Equal budgets apply to initial mixed-policy caches. Different generated
@@ -92,7 +139,8 @@ integration such as vLLM; and benchmark long-context throughput under load.
 ## Maintaining the standalone file
 
 Edit `src/anchorkv/packed_decode.py`, `triton_decode.py`,
-`colab_experiment.py`, and `notebooks/all_in_one_cells.py`, then regenerate with:
+`colab_experiment.py`, `benchmark_suite.py`, `notebooks/all_in_one_cells.py`, and
+`notebooks/expanded_cells.py`, then regenerate with:
 
 ```bash
 python notebooks/build_all_in_one.py

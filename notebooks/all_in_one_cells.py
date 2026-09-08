@@ -8,9 +8,10 @@
 # demoted KV pages; experimental packed Triton attention; repeated measurements;
 # and a downloadable report with machine-readable results and source snapshots.
 #
-# Default pilot: six prompts, two context lengths, three evidence positions,
-# three timing repetitions. Allow tens of minutes; Python page allocation and
-# reference fallbacks can be slow. A larger suite is configurable below.
+# Includes the original six-question pilot followed by an expanded 36-prompt
+# quality suite and separate 128/256/512-token throughput workloads. Budget an
+# extended Colab session (potentially over an hour); no runtime guarantee.
+# Configure the expanded suite below before running. All settings are exported.
 # The automatic score is a new hypothesis, not an already validated thought-anchor
 # detector. The oracle uses labeled evidence solely as a comparison. Packed
 # attention must pass numerical tests on your GPU before its results are accepted.
@@ -60,9 +61,23 @@ from anchorkv_notebook.colab_experiment import (
     save_json, clean, sync, eos_ids,
 )
 from anchorkv_notebook.packed_decode import kl_divergence
+from anchorkv_notebook.benchmark_suite import (
+    SuiteSettings, build_quality_suite, quality_plans, paired_family_differences,
+    controlled_decode,
+)
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 settings = Settings()
+suite = SuiteSettings()
+RUN_EXPANDED_QUALITY = True
+RUN_CONTROLLED_DECODE = True
+# Short wiring check only (not strong statistical evidence):
+# suite.content_seeds = (7,)
+# suite.lengths = (768,)
+# suite.positions = ('middle',)
+# suite.decode_repeats = 1
+# For a longer-context follow-up, change BOTH:
+# settings.max_prompt_tokens = 4096; suite.lengths = (1536, 4096)
 # Optional expanded run (slower):
 # settings.lengths = (384, 896, 1408)
 # settings.repeats = 5
@@ -87,6 +102,17 @@ display(pd.DataFrame([{'case': c['case_id'], 'tokens': len(c['ids']),
                       'evidence_position': c['position'], 'answer': c['answer']} for c in cases]))
 save_json(OUTPUT / 'prompts.json', cases)
 save_json(OUTPUT / 'settings.json', asdict(settings))
+expanded_cases = build_quality_suite(tokenizer, settings, suite)
+save_json(OUTPUT / 'expanded-prompts.json', expanded_cases)
+save_json(OUTPUT / 'suite-settings.json', {
+    **asdict(suite), 'run_quality': RUN_EXPANDED_QUALITY,
+    'run_controlled_decode': RUN_CONTROLLED_DECODE,
+})
+print('Expanded quality:', len(expanded_cases), 'prompts;',
+      len({c['family_id'] for c in expanded_cases}), 'matched families.')
+display(pd.DataFrame([{'task': c['task'], 'seed': c['content_seed'],
+                      'tokens': len(c['ids']), 'position': c['position'],
+                      'answer': c['answer']} for c in expanded_cases]))
 
 # %% [markdown]
 # ## Load weights after validating every prompt
@@ -341,6 +367,8 @@ report = [
 ]
 (OUTPUT / 'report.md').write_text('\n'.join(report), encoding='utf-8')
 print('Report:', OUTPUT / 'report.md')
+
+# EXPANDED_CELLS
 
 # %% [markdown]
 # ## Download the complete evidence bundle

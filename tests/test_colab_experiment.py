@@ -13,6 +13,31 @@ except ImportError:
 
 @unittest.skipIf(torch is None, 'optional torch dependency is unavailable')
 class ExperimentTests(unittest.TestCase):
+    def test_expanded_prompts_with_cached_pinned_qwen_tokenizer(self):
+        from pathlib import Path
+        root = Path(__file__).parents[1]
+        snapshot = root / '.cache/hf/models--Qwen--Qwen3-0.6B/snapshots' / Settings().revision
+        if not snapshot.is_dir():
+            self.skipTest('optional pinned tokenizer cache is unavailable')
+        try:
+            from transformers import AutoTokenizer
+        except ImportError:
+            self.skipTest('optional transformers dependency is unavailable')
+        from anchorkv.benchmark_suite import SuiteSettings, build_quality_suite
+        tokenizer = AutoTokenizer.from_pretrained(str(snapshot), local_files_only=True)
+        cases = build_quality_suite(tokenizer, Settings(), SuiteSettings())
+        self.assertEqual(len(cases), 36)
+        self.assertEqual(len({c['family_id'] for c in cases}), 6)
+        for case in cases:
+            self.assertLessEqual(len(case['ids']), case['target_length'])
+            self.assertGreater(len(case['ids']), case['target_length'] - 100)
+            self.assertEqual(tokenizer(case['prompt'], add_special_tokens=False).input_ids, case['ids'])
+            self.assertTrue(case['evidence_pages'])
+            self.assertLess(max(case['evidence_pages']), (len(case['ids']) + 15) // 16)
+            gold = tokenizer(case['answer'], add_special_tokens=False).input_ids
+            self.assertEqual(tokenizer.decode(gold), case['answer'])
+            self.assertLess(len(gold) + 1, Settings().max_new_tokens)
+
     def test_controlled_decode_uses_exact_history_and_ages_cache(self):
         try:
             from transformers import Qwen3Config, Qwen3ForCausalLM
