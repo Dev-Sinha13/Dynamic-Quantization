@@ -76,8 +76,9 @@ after each run so it cannot retain an earlier GPU cache.
   outside that GPU number. CPU analysis remains an experimental overhead.
 - Timing repetitions are collapsed per case before bootstrapping. Six questions
   are a smoke/pilot set; even a positive interval would need broader replication.
-- Kernel numerical tests and integrated GPU measurements remain pending until
-  the exported notebook is run on a T4. CPU tests do not validate CUDA code.
+- The [submitted packed T4 pilot](experiments/2026-09-05-packed-t4-pilot.md)
+  passed its numerical gates. This validates that configuration, not every
+  future workload. CPU tests do not validate CUDA code.
 
 ## Remaining work after a successful run
 

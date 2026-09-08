@@ -14,8 +14,11 @@ budget.
 > storage and is wired into a standalone Hugging Face reference decode notebook.
 > The first T4 run validated cache reconstruction. A new all-in-one notebook adds
 > continuous paging and an experimental Triton kernel that reads packed blocks;
-> its GPU correctness and performance remain pending a Colab run. No inference
-> speedup or production serving integration is claimed.
+> the submitted T4 pilot passed 42 attention checks and four model checks.
+> Mixed automatic retention reduced resident KV bytes by 57.1%, but accounted
+> runtime was 2.03x slower than stock FP16 and it did not establish an advantage
+> over random retention. No inference speedup or production integration is claimed.
+> See the [packed T4 results](docs/experiments/2026-09-05-packed-t4-pilot.md).
 
 ## Research question
 
