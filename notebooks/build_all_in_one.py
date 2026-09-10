@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def build():
     sources = {'__init__.py': ''}
-    for name in ('packed_decode.py', 'triton_decode.py', 'colab_experiment.py', 'benchmark_suite.py'):
+    for name in ('packed_decode.py', 'triton_decode.py', 'colab_experiment.py', 'benchmark_suite.py', 'run_control.py'):
         sources[name] = (ROOT / 'src' / 'anchorkv' / name).read_text(encoding='utf-8')
     digest = hashlib.sha256(json.dumps(sources, sort_keys=True).encode()).hexdigest()
     bootstrap = (
@@ -27,6 +27,7 @@ def build():
     script = (ROOT / 'notebooks' / 'all_in_one_cells.py').read_text(encoding='utf-8')
     script = script.replace('# EXPANDED_CELLS',
                             (ROOT / 'notebooks' / 'expanded_cells.py').read_text(encoding='utf-8'))
+    bootstrap += f'WORKFLOW_SHA256 = {hashlib.sha256(script.encode()).hexdigest()!r}\n'
     cells = []
     for section in script.split('# %%')[1:]:
         header, body = section.split('\n', 1)
@@ -36,6 +37,9 @@ def build():
                              for line in body.rstrip().splitlines()) + '\n'
         else:
             body = body.replace('# EMBED_RUNTIME', bootstrap).strip() + '\n'
+            # Keep the historical pilot available without charging every new run for it.
+            if body.startswith(('raw_rows = []', 'stress_case = cases[0]', 'raw = pd.DataFrame(raw_rows)')):
+                body = 'if RUN_LEGACY_PILOT:\n' + ''.join('    ' + line + '\n' for line in body.splitlines())
         cell = {'cell_type': 'markdown' if markdown else 'code',
                 'id': f'anchorkv-{len(cells):02}', 'metadata': {}, 'source': body.splitlines(keepends=True)}
         if not markdown:

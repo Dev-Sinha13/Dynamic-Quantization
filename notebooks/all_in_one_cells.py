@@ -8,10 +8,10 @@
 # demoted KV pages; experimental packed Triton attention; repeated measurements;
 # and a downloadable report with machine-readable results and source snapshots.
 #
-# Includes the original six-question pilot followed by an expanded 36-prompt
-# quality suite and separate 128/256/512-token throughput workloads. Budget an
-# extended Colab session (potentially over an hour); no runtime guarantee.
-# Configure the expanded suite below before running. All settings are exported.
+# Defaults to a six-prompt quick check, with the old pilot disabled. Each new
+# phase has a cooperative time budget and resumable atomic checkpoints.
+# A running GPU operation is not forcibly terminated: limits are soft, not a
+# runtime guarantee. Full research settings are opt-in below.
 # The automatic score is a new hypothesis, not an already validated thought-anchor
 # detector. The oracle uses labeled evidence solely as a comparison. Packed
 # attention must pass numerical tests on your GPU before its results are accepted.
@@ -68,7 +68,21 @@ from anchorkv_notebook.benchmark_suite import (
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 settings = Settings()
-suite = SuiteSettings()
+PROFILE = 'quick'  # 'full' restores the larger research matrix.
+RUN_LEGACY_PILOT = False
+QUALITY_MINUTES = 10
+DECODE_MINUTES = 10
+RESUME_DIRECTORY = None  # Existing NEW-format output folder, or None for a new run.
+# For persistence across runtime loss, mount Drive yourself and use a folder there.
+if PROFILE == 'quick':
+    suite = SuiteSettings(content_seeds=(7, 19), lengths=(768,), positions=('middle',),
+                          budgets=(0.25,), random_seeds=(7, 19),
+                          decode_lengths=(128,), decode_repeats=2)
+    settings.max_new_tokens = 16
+elif PROFILE == 'full':
+    suite = SuiteSettings()
+else:
+    raise ValueError('PROFILE must be quick or full')
 RUN_EXPANDED_QUALITY = True
 RUN_CONTROLLED_DECODE = True
 # Short wiring check only (not strong statistical evidence):
@@ -85,7 +99,8 @@ RUN_CONTROLLED_DECODE = True
 # Re-run with different settings.seed values for broader evidence.
 REQUEST_PACKED_KERNEL = True
 RUN_SENSITIVITY_AUDIT = True
-OUTPUT = Path('/content/anchorkv-complete-results') / time.strftime('%Y%m%d-%H%M%S')
+OUTPUT = (Path(RESUME_DIRECTORY) if RESUME_DIRECTORY else
+          Path('/content/anchorkv-complete-results') / time.strftime('%Y%m%d-%H%M%S'))
 OUTPUT.mkdir(parents=True, exist_ok=True)
 torch.manual_seed(settings.seed)
 torch.cuda.manual_seed_all(settings.seed)
@@ -100,14 +115,25 @@ for target in settings.lengths:
 assert all(len(case['ids']) <= settings.max_prompt_tokens for case in cases)
 display(pd.DataFrame([{'case': c['case_id'], 'tokens': len(c['ids']),
                       'evidence_position': c['position'], 'answer': c['answer']} for c in cases]))
-save_json(OUTPUT / 'prompts.json', cases)
-save_json(OUTPUT / 'settings.json', asdict(settings))
 expanded_cases = build_quality_suite(tokenizer, settings, suite)
-save_json(OUTPUT / 'expanded-prompts.json', expanded_cases)
-save_json(OUTPUT / 'suite-settings.json', {
-    **asdict(suite), 'run_quality': RUN_EXPANDED_QUALITY,
-    'run_controlled_decode': RUN_CONTROLLED_DECODE,
-})
+from anchorkv_notebook.run_control import RunControl
+# Validate before overwriting any artifacts; old notebooks have no safe resume manifest.
+if RESUME_DIRECTORY and not (OUTPUT / 'resume-manifest.json').exists():
+    raise ValueError('This folder has no compatible resume manifest. Keep old results and start a new run.')
+checkpoint = RunControl(OUTPUT, {'settings': asdict(settings), 'suite': asdict(suite),
+    'source_sha256': EMBEDDED_SOURCE_SHA256,
+    'workflow_sha256': WORKFLOW_SHA256,
+    'prompt_hashes': [c['prompt_sha256'] for c in expanded_cases]})
+checkpoint.save('prompts.json', cases)
+checkpoint.save('settings.json', asdict(settings))
+checkpoint.save('expanded-prompts.json', expanded_cases)
+checkpoint.save('suite-settings.json', asdict(suite))
+variants = 4 + len(suite.budgets) * (3 + len(suite.random_seeds))
+print(f'Plan: {len(expanded_cases)} prompts x {variants} variants; '
+      f'{len(expanded_cases) * (2 * variants + 1)} quality forwards/replays. '
+      f'Decode: {6 * len(suite.decode_lengths) * (suite.decode_repeats + 1)} workloads.')
+print('Soft phase limits:', QUALITY_MINUTES, 'quality minutes;', DECODE_MINUTES, 'decode minutes.')
+print('To resume, keep this folder and set RESUME_DIRECTORY to:', str(OUTPUT))
 print('Expanded quality:', len(expanded_cases), 'prompts;',
       len({c['family_id'] for c in expanded_cases}), 'matched families.')
 display(pd.DataFrame([{'task': c['task'], 'seed': c['content_seed'],
@@ -140,7 +166,10 @@ environment = {
     'model_id': settings.model_id, 'model_revision': settings.revision,
     'source_sha256': EMBEDDED_SOURCE_SHA256,
 }
-save_json(OUTPUT / 'environment.json', environment)
+if (OUTPUT / 'environment.json').exists():
+    if json.loads((OUTPUT / 'environment.json').read_text()) != environment:
+        raise ValueError('Resume environment changed; use a new output directory for comparable results.')
+checkpoint.save('environment.json', environment)
 print(environment)
 
 # %% [markdown]

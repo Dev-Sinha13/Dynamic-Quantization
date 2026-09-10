@@ -22,7 +22,7 @@ class NotebookTests(unittest.TestCase):
                         and node.targets[0].id == 'EMBEDDED_SOURCES'):
                     embedded = ast.literal_eval(node.value)
         self.assertIsNotNone(embedded)
-        for name in ('packed_decode.py', 'triton_decode.py', 'colab_experiment.py', 'benchmark_suite.py'):
+        for name in ('packed_decode.py', 'triton_decode.py', 'colab_experiment.py', 'benchmark_suite.py', 'run_control.py'):
             self.assertEqual(embedded[name], (root / 'src' / 'anchorkv' / name).read_text(encoding='utf-8'))
             compile(embedded[name], name, 'exec')
         all_source = '\n'.join(''.join(c['source']) for c in notebook['cells'])

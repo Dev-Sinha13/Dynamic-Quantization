@@ -128,6 +128,10 @@ to a **fresh T4 Colab runtime** and run all cells. It embeds every required
 project module and exports a complete evidence bundle. See the
 [all-in-one guide](docs/all-in-one-colab.md) for scope and interpretation.
 
+The default quick profile runs six prompts with per-phase soft time limits,
+visible progress and resumable checkpoints. The larger research matrix and
+historical pilot are opt-in; partial runs are explicitly labeled.
+
 [![Open the all-in-one experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_All_In_One.ipynb)
 
 [![Open trace collection in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dev-Sinha13/Dynamic-Quantization/blob/main/notebooks/AnchorKV_T4_Trace_Collection.ipynb)

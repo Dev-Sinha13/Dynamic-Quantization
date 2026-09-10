@@ -5,37 +5,60 @@
 # questions, not a standardized reasoning benchmark or thought-anchor test.
 # Thinking is disabled and answers are scored strictly (including comma format).
 # The same facts appear at multiple lengths and positions within each family.
-# Default: 36 prompts, six families, 16 policy variants per prompt. Each variant
+# Quick default: six prompts, six families, nine policy variants per prompt. Each variant
 # gets one greedy answer and one gold-history diagnostic, not timing repeats.
-# Two budget fractions specify extra protected pages among eligible full pages;
-# exact bytes and realized page counts are retained. Three random selector draws
+# Budget fractions specify extra protected pages among eligible full pages;
+# exact bytes and realized page counts are retained. Repeated random selector draws
 # are averaged within each case before comparison. No claim is based on repeated
 # timings being additional questions. Automatic scoring is computed once per
 # prompt, never fitted using answers. Quality timing includes instrumentation and
 # is not the throughput result. Raw results checkpoint after every variant.
 
 # %%
-expanded_rows = []
-expanded_selections = []
+expanded_rows = checkpoint.load('expanded-quality.json')
+expanded_selections = checkpoint.load('expanded-selection.json')
+previous_backend = checkpoint.load('resume-backend.json')
+if previous_backend and previous_backend != {'backend': BACKEND}:
+    raise ValueError('Backend changed since checkpoint; start a new output directory.')
+checkpoint.save('resume-backend.json', {'backend': BACKEND})
+checkpoint.start('expanded-quality', QUALITY_MINUTES)
+done = {(r['case_id'], r['variant']) for r in expanded_rows}
+expected_variants = 4 + len(suite.budgets) * (3 + len(suite.random_seeds))
 if RUN_EXPANDED_QUALITY:
     for case in expanded_cases:
-        print('Expanded quality:', case['case_id'], flush=True)
+        if sum(c == case['case_id'] for c, _ in done) == expected_variants:
+            continue
+        if not checkpoint.allow():
+            break
+        checkpoint.log(f"Preparing {case['case_id']}; {len(done)} variants already saved")
         source = prefill_case(model, case)
         candidates = list(range(1, (len(case['ids']) - 1) // settings.block - settings.recent_pages))
-        scores, _, score_seconds = automatic_scores(model, source, case, candidates, settings)
-        planning_started = time.perf_counter()
-        plans = quality_plans(candidates, scores, case['evidence_pages'], suite)
-        planning_seconds = time.perf_counter() - planning_started
-        expanded_selections.append({'case_id': case['case_id'], 'scores': scores,
+        existing = next((r for r in expanded_selections if r['case_id'] == case['case_id']), None)
+        if existing:
+            plans, score_seconds = existing['plans'], existing['score_seconds']
+        else:
+            checkpoint.log('Computing automatic scores')
+            scores, _, score_seconds = automatic_scores(model, source, case, candidates, settings)
+            planning_started = time.perf_counter()
+            plans = quality_plans(candidates, scores, case['evidence_pages'], suite)
+            planning_seconds = time.perf_counter() - planning_started
+            expanded_selections.append({'case_id': case['case_id'], 'scores': scores,
                                     'score_seconds': score_seconds, 'plans': plans,
                                     'all_plan_assignment_seconds': planning_seconds})
-        save_json(OUTPUT / 'expanded-selection.json', expanded_selections)
+            checkpoint.save('expanded-selection.json', expanded_selections)
         forced = tokenizer(case['answer'], add_special_tokens=False).input_ids + [tokenizer.eos_token_id]
         _, reference = run_policy(model, tokenizer, source, case, settings,
                                   'native_fp16', forced=forced, backend=BACKEND)
-        initial_by_budget = {}
+        initial_by_budget = {r['budget']: r['initial_resident_bytes'] for r in expanded_rows
+                             if r['case_id'] == case['case_id'] and r['budget'] is not None}
         random.Random(case['content_seed'] + len(expanded_rows)).shuffle(plans)
         for plan in plans:
+            key = (case['case_id'], plan['variant'])
+            if key in done:
+                continue
+            if not checkpoint.allow():
+                break
+            checkpoint.log(f"{case['case_id']} / {plan['variant']}: gold-history replay")
             diagnostic, logits = run_policy(model, tokenizer, source, case, settings,
                 plan['policy'], plan['protected'], backend=BACKEND, forced=forced)
             if plan['budget'] is not None:
@@ -43,6 +66,7 @@ if RUN_EXPANDED_QUALITY:
                 assert previous == diagnostic['initial_resident_bytes'], 'Unequal physical initial budget'
             divergence = kl_divergence(reference, logits)
             gold_nll = -logits.log_softmax(-1).gather(-1, torch.tensor(forced).unsqueeze(-1)).mean()
+            checkpoint.log(f"{case['case_id']} / {plan['variant']}: greedy answer")
             free, _ = run_policy(model, tokenizer, source, case, settings,
                 plan['policy'], plan['protected'], backend=BACKEND)
             expanded_rows.append({**free, **plan,
@@ -54,9 +78,14 @@ if RUN_EXPANDED_QUALITY:
                 'top1_agreement': float((reference.argmax(-1) == logits.argmax(-1)).float().mean()),
                 'score_seconds': score_seconds if plan['policy'] == 'automatic' else 0,
                 'timing_scope': 'instrumented quality path, not steady-state throughput'})
-            save_json(OUTPUT / 'expanded-quality.json', expanded_rows)
-        del source, reference, logits
+            checkpoint.save('expanded-quality.json', expanded_rows)
+            done.add(key)
+            checkpoint.log(f'Saved {len(done)}/{len(expanded_cases) * expected_variants} quality variants')
+        del source, reference
         clean()
+    checkpoint.save('expanded-quality-status.json', {
+        'status': 'complete' if len(done) == len(expanded_cases) * expected_variants else 'paused_time_budget',
+        'saved_variants': len(done), 'expected_variants': len(expanded_cases) * expected_variants})
 else:
     save_json(OUTPUT / 'expanded-quality-status.json', {'status': 'disabled'})
 
@@ -64,8 +93,9 @@ else:
 # ## Controlled long decode: no per-token CPU logits or sampling
 #
 # For each policy and measured length, run one full untimed workload to warm the
-# exact path, then three shuffled timing repetitions. Each fresh cache receives
-# 32 warm-up inputs followed by exactly 128, 256, or 512 measured inputs. The
+# exact path, then shuffled timing repetitions (two in quick mode). Each fresh
+# cache receives 32 warm-up inputs followed by 128 measured inputs in quick mode,
+# or 128/256/512 in full mode. The
 # inputs are identical across policies, preallocated on GPU, and exported; EOS
 # does not stop this synthetic workload. It is NOT an accuracy/reasoning test.
 # This measures the model plus Python cache adapter, online packing, and attention,
@@ -78,10 +108,13 @@ else:
 # packed throughput. This phase is new and needs validation on your T4.
 
 # %%
-decode_rows = []
-decode_warmups = []
+decode_rows = checkpoint.load('controlled-decode.json')
+decode_warmups = checkpoint.load('decode-warmups.json')
+checkpoint.start('controlled-decode', DECODE_MINUTES)
+decode_done = {(r['measured_tokens'], r['variant'], r['repeat']) for r in decode_rows}
 if RUN_CONTROLLED_DECODE and BACKEND == 'packed':
     # One representative longest prefix isolates runtime scaling, not generality.
+    checkpoint.log('Preparing the fixed-history decode workload')
     decode_case = max(expanded_cases, key=lambda c: len(c['ids']))
     sync()
     started = time.perf_counter()
@@ -105,19 +138,37 @@ if RUN_CONTROLLED_DECODE and BACKEND == 'packed':
         'scope': 'synthetic fixed-input replay; never score as task accuracy',
     })
     for length in suite.decode_lengths:
+        if all((length, p['variant'], rep) in decode_done for p in plans for rep in range(suite.decode_repeats)):
+            continue
+        if not checkpoint.allow():
+            break
         inputs = workload[:suite.decode_warmup_tokens + length]
         warm_order = list(plans)
         random.Random(settings.seed + length).shuffle(warm_order)
         for plan in warm_order:
+            if all((length, plan['variant'], rep) in decode_done for rep in range(suite.decode_repeats)):
+                continue
+            if not checkpoint.allow():
+                break
+            checkpoint.log(f"Warming {plan['variant']} / {length} tokens (excluded from results)")
             row = controlled_decode(model, source, settings, plan['policy'], inputs, length,
                 suite.decode_warmup_tokens, plan['protected'], BACKEND)
             decode_warmups.append({**row, **plan, 'phase': 'excluded_full_workload_warmup'})
-            save_json(OUTPUT / 'decode-warmups.json', decode_warmups)
-        expected_initial = None
+            checkpoint.save('decode-warmups.json', decode_warmups)
+        expected_initial = next((r['initial_cache']['resident_bytes'] for r in decode_rows
+                                 if r['measured_tokens'] == length and r['budget'] is not None), None)
         for repetition in range(suite.decode_repeats):
+            if not checkpoint.allow():
+                break
             order = list(plans)
             random.Random(settings.seed + length + repetition).shuffle(order)
             for plan in order:
+                key = (length, plan['variant'], repetition)
+                if key in decode_done:
+                    continue
+                if not checkpoint.allow():
+                    break
+                checkpoint.log(f"Measuring {plan['variant']} / {length} tokens / repeat {repetition + 1}")
                 row = controlled_decode(model, source, settings, plan['policy'], inputs, length,
                     suite.decode_warmup_tokens, plan['protected'], BACKEND)
                 if plan['budget'] is not None:
@@ -133,11 +184,15 @@ if RUN_CONTROLLED_DECODE and BACKEND == 'packed':
                 row['accounted_workload_seconds'] = (row['setup_warmup_decode_seconds'] +
                     row['prefill_snapshot_seconds'] + row['selector_seconds'])
                 decode_rows.append(row)
-                save_json(OUTPUT / 'controlled-decode.json', decode_rows)
+                checkpoint.save('controlled-decode.json', decode_rows)
+                decode_done.add(key)
                 print('Decode:', length, 'tokens;', plan['variant'], 'repeat', repetition + 1,
                       round(row['steady_tokens_per_second'], 2), 'tokens/s', flush=True)
     del source
     clean()
+    checkpoint.save('controlled-decode-status.json', {
+        'status': 'complete' if len(decode_done) == len(plans) * len(suite.decode_lengths) * suite.decode_repeats else 'paused_time_budget',
+        'saved_runs': len(decode_done)})
 else:
     save_json(OUTPUT / 'controlled-decode-status.json', {
         'status': 'skipped', 'reason': 'disabled' if not RUN_CONTROLLED_DECODE else 'packed gate did not pass'})
@@ -155,12 +210,17 @@ else:
 expanded_report = ['# Expanded benchmark report', '',
     f'Backend: {BACKEND}; packed gate: {gates["packed_status"]}.',
     f'Quality prompts: {len(expanded_cases)}; families: {len({c["family_id"] for c in expanded_cases})}.',
-    'Synthetic tasks only; arithmetic uses thinking-disabled exact final answers.', '',
+    'Synthetic tasks only; arithmetic uses thinking-disabled exact final answers.',
+    f'Generation cap: {settings.max_new_tokens} tokens; decode repeats: {suite.decode_repeats}.', '',
     'Quality timings contain CPU-logit instrumentation. Use controlled decode for throughput.',
     'Controlled decode uses one prefix and synthetic inputs, not naturally generated reasoning.',
     'CUDA timeline elapsed time is not pure kernel execution time.', '',
 ]
 if expanded_rows:
+    # Never bootstrap an incomplete matched case or silently compare different case sets.
+    complete_ids = {c['case_id'] for c in expanded_cases
+                    if sum(r['case_id'] == c['case_id'] for r in expanded_rows) == expected_variants}
+    complete_rows = [r for r in expanded_rows if r['case_id'] in complete_ids]
     frame = pd.DataFrame(expanded_rows)
     frame['budget'] = frame['budget'].fillna(-1)  # -1 denotes non-mixed baselines in CSV only.
     keys = ['case_id', 'family_id', 'task', 'content_seed', 'target_length', 'position', 'policy', 'budget']
@@ -176,10 +236,10 @@ if expanded_rows:
     failures = [r for r in expanded_rows if not r['completed_correct']]
     save_json(OUTPUT / 'expanded-failures.json', failures)
     comparisons = []
-    for budget in suite.budgets:
+    for budget in suite.budgets if complete_rows else ():
         for control in ('random', 'recent', 'oracle'):
             for metric in ('mean_kl', 'completed_correct'):
-                differences = paired_family_differences(expanded_rows, control, metric, budget)
+                differences = paired_family_differences(complete_rows, control, metric, budget)
                 values = list(differences.values())
                 comparisons.append({'control': control, 'budget': budget, 'metric': metric,
                     'direction': 'automatic minus control', 'family_differences': differences,
@@ -188,13 +248,16 @@ if expanded_rows:
                     'warning': 'Few synthetic families; exploratory, not broad validation'})
     save_json(OUTPUT / 'expanded-paired-comparisons.json', comparisons)
     display(quality_summary.round(6))
-    expanded_report += ['## Quality (random draws averaged per case)', '',
+    expanded_report += [f'Complete matched cases: {len(complete_ids)} / {len(expanded_cases)}.',
+                        'Partial tables are descriptive only; comparisons exclude incomplete cases.',
+                        '## Quality (random draws averaged per case)', '',
                         '```', quality_summary.to_string(index=False), '```', '',
                         f'Incomplete or incorrect runs: {len(failures)} / {len(expanded_rows)}.', '']
 if decode_rows:
     decode_frame = pd.json_normalize(decode_rows)
     decode_frame.to_csv(OUTPUT / 'controlled-decode.csv', index=False)
     decode_summary = decode_frame.groupby(['policy', 'measured_tokens'], as_index=False).agg(
+        timing_runs=('steady_tokens_per_second', 'size'),
         median_tokens_per_second=('steady_tokens_per_second', 'median'),
         min_tokens_per_second=('steady_tokens_per_second', 'min'),
         max_tokens_per_second=('steady_tokens_per_second', 'max'),
@@ -205,7 +268,7 @@ if decode_rows:
         measured_peak_allocated_bytes=('measured_peak_allocated_bytes', 'median'))
     decode_summary.to_csv(OUTPUT / 'controlled-decode-summary.csv', index=False)
     display(decode_summary.round(4))
-    expanded_report += ['## Controlled throughput (one prefix; three repeats by default)', '',
+    expanded_report += ['## Controlled throughput (one prefix; see actual counts and settings)', '',
                         '```', decode_summary.to_string(index=False), '```', '']
 expanded_report += ['## What to decide next', '',
     '- Does automatic retention improve completed accuracy or KL over multiple random draws at equal bytes?',

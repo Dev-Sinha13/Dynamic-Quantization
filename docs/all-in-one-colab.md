@@ -3,10 +3,38 @@
 Upload [`AnchorKV_T4_All_In_One.ipynb`](../notebooks/AnchorKV_T4_All_In_One.ipynb)
 to a **fresh** Colab T4 runtime. The file embeds its Python and Triton sources;
 it does not clone the repository or import a separately installed AnchorKV.
-Use Runtime > Run all. The expanded default may take over an hour, depending on
-allocator overhead and the runtime. There is no guaranteed completion time for
-a free Colab session. The configuration cell includes a smaller wiring-check
-configuration. Keep the defaults for the broader experiment when practical.
+Use Runtime > Run all. **The default is now `PROFILE = 'quick'`.** It runs six
+prompts (three tasks, two content seeds, one length and position), one matched
+budget and two random draws: 54 policy variants / 114 quality generation-replay
+calls, rather than the old 576 variants / 1,188 calls. Answers are capped at 16
+tokens; missing EOS is still reported as incomplete, not counted as a success.
+Throughput uses 128 measured tokens and two repetitions (18 workloads including
+excluded warm-ups). The historical six-question pilot is disabled by default.
+
+Quality and throughput each have a **10-minute soft limit**. Limits are checked
+between work units; they cannot interrupt an in-flight GPU operation, and do
+not cover installation, downloads, model loading, numerical gates or export.
+This is not a promise of a 20-minute total runtime. Progress prints before each
+replay, greedy answer, warm-up and timing run, plus saved counts and elapsed time.
+At the limit, the phase checkpoints and the remaining cells produce partial
+reports and a downloadable zip. The full matrix remains opt-in with
+`PROFILE = 'full'`; increase the phase budgets intentionally if desired.
+
+## Resume without repeating completed measurements
+
+- In the same live runtime, rerun the quality or throughput cell. Completed
+  variant/run keys are skipped, and each invocation gets a fresh phase budget.
+- To rerun setup, set `RESUME_DIRECTORY` to the printed output directory first.
+  Configuration, prompts, source hash, environment and backend must match.
+- To survive runtime loss, mount Google Drive yourself and use a persistent
+  output folder there. `/content` alone is temporary. For a first persistent
+  run, set `OUTPUT` to a new Drive folder and keep `RESUME_DIRECTORY = None`;
+  on later runs point `RESUME_DIRECTORY` to that folder.
+- Checkpoints use atomic replacement, and incomplete matched cases are excluded
+  from paired comparisons. Partial summary tables are descriptive only.
+- Correctness gates and necessary setup/warm-ups run again; measured rows do not.
+- Older output bundles have no resume manifest and cannot be silently imported.
+  Keep those results separately and start the new quick notebook in a fresh run.
 
 The notebook deliberately pins Transformers 4.57.6 to constrain its attention
 interface. Start a fresh runtime rather than reusing the earlier notebook's
@@ -16,7 +44,7 @@ recorded rather than replaced. If Triton is missing or fails a correctness gate,
 the notebook records that failure and runs quality measurements using dense
 reconstruction. Those measurements are explicitly labeled `dense`.
 
-## Included experiments
+## Available experiments (historical pilot and full matrix are opt-in)
 
 1. Build six chat-template retrieval prompts spanning two context lengths and
    three evidence positions. Validate token bounds before loading model weights.
@@ -31,14 +59,14 @@ reconstruction. Those measurements are explicitly labeled `dense`.
    locations. Audit it against single-page quantization effects separately.
 5. Independently recompute the first answer distribution under each policy,
    check exact completed answers, stop at EOS, and measure gold-history KL/NLL.
-6. Repeatedly benchmark in shuffled order after warming each policy. Retain
+6. In the optional historical pilot, benchmark in shuffled order after warming each policy. Retain
    setup, decode, selection, shared prefill, and accounted total times; distinguish
    actual allocated CUDA memory from payload-plus-scale-and-table bytes.
 7. Force a separate 96-token continuation to verify that newly generated pages
    age into compressed storage. Do not score this diagnostic as answer accuracy.
 8. Export per-case data, bootstrap comparisons, raw generations, selected pages,
    numerical gates, environment/source hashes, plots, and a Markdown report.
-9. Run the expanded quality suite: 36 prompts, comprising three synthetic tasks
+9. In the full profile, run 36 prompts, comprising three synthetic tasks
    (retrieval, two-fact retrieval, and three-fact arithmetic), two content seeds,
    target lengths 768/1536, and early/middle/late evidence. Complete records and
    queries are fitted with the pinned tokenizer before loading model weights.
@@ -47,7 +75,7 @@ reconstruction. Those measurements are explicitly labeled `dense`.
     Four baselines plus twelve mixed variants give 16 variants per prompt;
     each gets one greedy answer and one gold-history diagnostic. These 576
     variant measurements are not 576 independent questions.
-11. Run controlled decode with 32 warm-up inputs plus 128/256/512 measured inputs,
+11. In the full profile, run decode with 32 warm-up inputs plus 128/256/512 measured inputs,
     six policies, and three timing repetitions after an excluded full-workload
     warm-up for every policy/length. All policies receive identical GPU-resident
     inputs; no sampling, EOS stopping, or per-token CPU-logit copies. This is a
@@ -78,11 +106,11 @@ the setup/decode peak window. `accounted_workload_seconds` adds shared prefill,
 automatic scoring where used, per-plan assignment, setup, warm-up and measured
 decode, not just the fast portion.
 
-The final zip contains both `report.md` (original pilot) and
-`expanded-report.md` (new quality and throughput). Checkpoints survive cell
+The final zip contains `expanded-report.md` (new quality and throughput), plus
+`report.md` when the optional original pilot runs. Checkpoints survive cell
 interruptions while the runtime remains alive, but `/content` is not persistent
 storage. You can run the final download cell early to retrieve partial evidence;
-there is no automatic resume after losing the runtime.
+resume requires retaining the folder and using the same manifest-compatible configuration.
 
 ## Packed attention implementation
 
