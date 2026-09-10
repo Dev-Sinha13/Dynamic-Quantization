@@ -1,5 +1,16 @@
 # Complete T4 notebook
 
+The completed 64-token arithmetic follow-up has a
+[CPU-only rescoring report](experiments/data/arithmetic-followup-rescore/report.md).
+It preserves strict scores and adds a post-hoc, conservative final-integer
+metric with per-response extraction reasons in `rescore.json`. No GPU rerun
+was used. Reproduce into a new directory with:
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m anchorkv.rescore_arithmetic path/to/results.zip path/to/new-output
+```
+
 For the arithmetic follow-up to the completed quick run, upload
 [`AnchorKV_T4_Arithmetic_Followup.ipynb`](../notebooks/AnchorKV_T4_Arithmetic_Followup.ipynb)
 to a fresh T4 runtime and Run all. It reruns the same two arithmetic prompts and
