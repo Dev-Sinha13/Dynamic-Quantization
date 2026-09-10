@@ -1,0 +1,1362 @@
+[
+  {
+    "case_id": "heldout-addition-00-clean",
+    "family_id": "heldout-addition-00",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "clean",
+    "operands": [
+      85,
+      27,
+      0
+    ],
+    "answer": "112",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 85 units.\nZephyr received: 27 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "c4dc2751948fe52098c509b033dd037d57d720d210f2e1e34bd9d9f3ce9c4eda"
+  },
+  {
+    "case_id": "heldout-addition-00-early",
+    "family_id": "heldout-addition-00",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "early",
+    "operands": [
+      85,
+      27,
+      0
+    ],
+    "answer": "112",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 85 units.\nZephyr received: 27 units.\nCedar0 inventory: 649 units; Cedar0 shipment: 90 units.\nCedar1 inventory: 426 units; Cedar1 shipment: 50 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 638 units; Cedar3 shipment: 27 units.\nCedar4 inventory: 725 units; Cedar4 shipment: 77 units.\nCedar5 inventory: 627 units; Cedar5 shipment: 29 units.\nCedar6 inventory: 267 units; Cedar6 shipment: 22 units.\nCedar7 inventory: 288 units; Cedar7 shipment: 12 units.\nCedar8 inventory: 556 units; Cedar8 shipment: 97 units.\nCedar9 inventory: 384 units; Cedar9 shipment: 25 units.\nCedar10 inventory: 241 units; Cedar10 shipment: 19 units.\nCedar11 inventory: 973 units; Cedar11 shipment: 56 units.\nCedar12 inventory: 296 units; Cedar12 shipment: 39 units.\nCedar13 inventory: 475 units; Cedar13 shipment: 54 units.\nCedar14 inventory: 914 units; Cedar14 shipment: 39 units.\nCedar15 inventory: 960 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 245 units; Cedar16 shipment: 91 units.\nCedar17 inventory: 875 units; Cedar17 shipment: 54 units.\nCedar18 inventory: 979 units; Cedar18 shipment: 87 units.\nCedar19 inventory: 731 units; Cedar19 shipment: 30 units.\nCedar20 inventory: 852 units; Cedar20 shipment: 57 units.\nCedar21 inventory: 233 units; Cedar21 shipment: 12 units.\nCedar22 inventory: 768 units; Cedar22 shipment: 20 units.\nCedar23 inventory: 943 units; Cedar23 shipment: 60 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "33795123eae8c9a8bb55eb328b363dfce601619885889bfb6a018a19bf922638"
+  },
+  {
+    "case_id": "heldout-addition-00-middle",
+    "family_id": "heldout-addition-00",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "middle",
+    "operands": [
+      85,
+      27,
+      0
+    ],
+    "answer": "112",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 649 units; Cedar0 shipment: 90 units.\nCedar1 inventory: 426 units; Cedar1 shipment: 50 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 638 units; Cedar3 shipment: 27 units.\nCedar4 inventory: 725 units; Cedar4 shipment: 77 units.\nCedar5 inventory: 627 units; Cedar5 shipment: 29 units.\nCedar6 inventory: 267 units; Cedar6 shipment: 22 units.\nCedar7 inventory: 288 units; Cedar7 shipment: 12 units.\nCedar8 inventory: 556 units; Cedar8 shipment: 97 units.\nCedar9 inventory: 384 units; Cedar9 shipment: 25 units.\nCedar10 inventory: 241 units; Cedar10 shipment: 19 units.\nCedar11 inventory: 973 units; Cedar11 shipment: 56 units.\nZephyr opening inventory: 85 units.\nZephyr received: 27 units.\nCedar12 inventory: 296 units; Cedar12 shipment: 39 units.\nCedar13 inventory: 475 units; Cedar13 shipment: 54 units.\nCedar14 inventory: 914 units; Cedar14 shipment: 39 units.\nCedar15 inventory: 960 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 245 units; Cedar16 shipment: 91 units.\nCedar17 inventory: 875 units; Cedar17 shipment: 54 units.\nCedar18 inventory: 979 units; Cedar18 shipment: 87 units.\nCedar19 inventory: 731 units; Cedar19 shipment: 30 units.\nCedar20 inventory: 852 units; Cedar20 shipment: 57 units.\nCedar21 inventory: 233 units; Cedar21 shipment: 12 units.\nCedar22 inventory: 768 units; Cedar22 shipment: 20 units.\nCedar23 inventory: 943 units; Cedar23 shipment: 60 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "e23c2eaaed813940b837254bb909aa26d9b2b78d3b81048873607f135dc0a580"
+  },
+  {
+    "case_id": "heldout-addition-00-late",
+    "family_id": "heldout-addition-00",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "late",
+    "operands": [
+      85,
+      27,
+      0
+    ],
+    "answer": "112",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 649 units; Cedar0 shipment: 90 units.\nCedar1 inventory: 426 units; Cedar1 shipment: 50 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 638 units; Cedar3 shipment: 27 units.\nCedar4 inventory: 725 units; Cedar4 shipment: 77 units.\nCedar5 inventory: 627 units; Cedar5 shipment: 29 units.\nCedar6 inventory: 267 units; Cedar6 shipment: 22 units.\nCedar7 inventory: 288 units; Cedar7 shipment: 12 units.\nCedar8 inventory: 556 units; Cedar8 shipment: 97 units.\nCedar9 inventory: 384 units; Cedar9 shipment: 25 units.\nCedar10 inventory: 241 units; Cedar10 shipment: 19 units.\nCedar11 inventory: 973 units; Cedar11 shipment: 56 units.\nCedar12 inventory: 296 units; Cedar12 shipment: 39 units.\nCedar13 inventory: 475 units; Cedar13 shipment: 54 units.\nCedar14 inventory: 914 units; Cedar14 shipment: 39 units.\nCedar15 inventory: 960 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 245 units; Cedar16 shipment: 91 units.\nCedar17 inventory: 875 units; Cedar17 shipment: 54 units.\nCedar18 inventory: 979 units; Cedar18 shipment: 87 units.\nCedar19 inventory: 731 units; Cedar19 shipment: 30 units.\nCedar20 inventory: 852 units; Cedar20 shipment: 57 units.\nCedar21 inventory: 233 units; Cedar21 shipment: 12 units.\nCedar22 inventory: 768 units; Cedar22 shipment: 20 units.\nCedar23 inventory: 943 units; Cedar23 shipment: 60 units.\nZephyr opening inventory: 85 units.\nZephyr received: 27 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "3a7a8cb1cba02e02531c63efc7f45c947715f04082d2aefeae5cd63dc42d13f2"
+  },
+  {
+    "case_id": "heldout-addition-01-clean",
+    "family_id": "heldout-addition-01",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "clean",
+    "operands": [
+      85,
+      8,
+      0
+    ],
+    "answer": "93",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 8 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 85 units.\nZephyr received: 8 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "22c0cb5ef056dcd7459f6a93394eb2ad9e3133cadb195d2962a00375e6c7a77a"
+  },
+  {
+    "case_id": "heldout-addition-01-early",
+    "family_id": "heldout-addition-01",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "early",
+    "operands": [
+      85,
+      8,
+      0
+    ],
+    "answer": "93",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 8 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 85 units.\nZephyr received: 8 units.\nCedar0 inventory: 935 units; Cedar0 shipment: 82 units.\nCedar1 inventory: 622 units; Cedar1 shipment: 28 units.\nCedar2 inventory: 523 units; Cedar2 shipment: 77 units.\nCedar3 inventory: 230 units; Cedar3 shipment: 88 units.\nCedar4 inventory: 698 units; Cedar4 shipment: 74 units.\nCedar5 inventory: 359 units; Cedar5 shipment: 32 units.\nCedar6 inventory: 759 units; Cedar6 shipment: 30 units.\nCedar7 inventory: 229 units; Cedar7 shipment: 51 units.\nCedar8 inventory: 716 units; Cedar8 shipment: 70 units.\nCedar9 inventory: 928 units; Cedar9 shipment: 38 units.\nCedar10 inventory: 269 units; Cedar10 shipment: 44 units.\nCedar11 inventory: 829 units; Cedar11 shipment: 97 units.\nCedar12 inventory: 436 units; Cedar12 shipment: 88 units.\nCedar13 inventory: 641 units; Cedar13 shipment: 27 units.\nCedar14 inventory: 947 units; Cedar14 shipment: 94 units.\nCedar15 inventory: 675 units; Cedar15 shipment: 79 units.\nCedar16 inventory: 564 units; Cedar16 shipment: 37 units.\nCedar17 inventory: 947 units; Cedar17 shipment: 75 units.\nCedar18 inventory: 698 units; Cedar18 shipment: 55 units.\nCedar19 inventory: 362 units; Cedar19 shipment: 51 units.\nCedar20 inventory: 357 units; Cedar20 shipment: 88 units.\nCedar21 inventory: 959 units; Cedar21 shipment: 22 units.\nCedar22 inventory: 190 units; Cedar22 shipment: 25 units.\nCedar23 inventory: 281 units; Cedar23 shipment: 39 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "53a369b8b28b004cfd489b3dad65bd36553ae5f7d9976a3a03ff2ccf3e427207"
+  },
+  {
+    "case_id": "heldout-addition-01-middle",
+    "family_id": "heldout-addition-01",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "middle",
+    "operands": [
+      85,
+      8,
+      0
+    ],
+    "answer": "93",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 8 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 935 units; Cedar0 shipment: 82 units.\nCedar1 inventory: 622 units; Cedar1 shipment: 28 units.\nCedar2 inventory: 523 units; Cedar2 shipment: 77 units.\nCedar3 inventory: 230 units; Cedar3 shipment: 88 units.\nCedar4 inventory: 698 units; Cedar4 shipment: 74 units.\nCedar5 inventory: 359 units; Cedar5 shipment: 32 units.\nCedar6 inventory: 759 units; Cedar6 shipment: 30 units.\nCedar7 inventory: 229 units; Cedar7 shipment: 51 units.\nCedar8 inventory: 716 units; Cedar8 shipment: 70 units.\nCedar9 inventory: 928 units; Cedar9 shipment: 38 units.\nCedar10 inventory: 269 units; Cedar10 shipment: 44 units.\nCedar11 inventory: 829 units; Cedar11 shipment: 97 units.\nZephyr opening inventory: 85 units.\nZephyr received: 8 units.\nCedar12 inventory: 436 units; Cedar12 shipment: 88 units.\nCedar13 inventory: 641 units; Cedar13 shipment: 27 units.\nCedar14 inventory: 947 units; Cedar14 shipment: 94 units.\nCedar15 inventory: 675 units; Cedar15 shipment: 79 units.\nCedar16 inventory: 564 units; Cedar16 shipment: 37 units.\nCedar17 inventory: 947 units; Cedar17 shipment: 75 units.\nCedar18 inventory: 698 units; Cedar18 shipment: 55 units.\nCedar19 inventory: 362 units; Cedar19 shipment: 51 units.\nCedar20 inventory: 357 units; Cedar20 shipment: 88 units.\nCedar21 inventory: 959 units; Cedar21 shipment: 22 units.\nCedar22 inventory: 190 units; Cedar22 shipment: 25 units.\nCedar23 inventory: 281 units; Cedar23 shipment: 39 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "e9fc951867814f9570d3456fd64cc75b7d5831a4cb815c90aa078dd80a3d4e59"
+  },
+  {
+    "case_id": "heldout-addition-01-late",
+    "family_id": "heldout-addition-01",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "late",
+    "operands": [
+      85,
+      8,
+      0
+    ],
+    "answer": "93",
+    "evidence_text": [
+      "Zephyr opening inventory: 85 units.",
+      "Zephyr received: 8 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 935 units; Cedar0 shipment: 82 units.\nCedar1 inventory: 622 units; Cedar1 shipment: 28 units.\nCedar2 inventory: 523 units; Cedar2 shipment: 77 units.\nCedar3 inventory: 230 units; Cedar3 shipment: 88 units.\nCedar4 inventory: 698 units; Cedar4 shipment: 74 units.\nCedar5 inventory: 359 units; Cedar5 shipment: 32 units.\nCedar6 inventory: 759 units; Cedar6 shipment: 30 units.\nCedar7 inventory: 229 units; Cedar7 shipment: 51 units.\nCedar8 inventory: 716 units; Cedar8 shipment: 70 units.\nCedar9 inventory: 928 units; Cedar9 shipment: 38 units.\nCedar10 inventory: 269 units; Cedar10 shipment: 44 units.\nCedar11 inventory: 829 units; Cedar11 shipment: 97 units.\nCedar12 inventory: 436 units; Cedar12 shipment: 88 units.\nCedar13 inventory: 641 units; Cedar13 shipment: 27 units.\nCedar14 inventory: 947 units; Cedar14 shipment: 94 units.\nCedar15 inventory: 675 units; Cedar15 shipment: 79 units.\nCedar16 inventory: 564 units; Cedar16 shipment: 37 units.\nCedar17 inventory: 947 units; Cedar17 shipment: 75 units.\nCedar18 inventory: 698 units; Cedar18 shipment: 55 units.\nCedar19 inventory: 362 units; Cedar19 shipment: 51 units.\nCedar20 inventory: 357 units; Cedar20 shipment: 88 units.\nCedar21 inventory: 959 units; Cedar21 shipment: 22 units.\nCedar22 inventory: 190 units; Cedar22 shipment: 25 units.\nCedar23 inventory: 281 units; Cedar23 shipment: 39 units.\nZephyr opening inventory: 85 units.\nZephyr received: 8 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "06952024c05cb20bda5df7d43f645bf233bd05cb334e85c255f2f1a594d489b6"
+  },
+  {
+    "case_id": "heldout-addition-02-clean",
+    "family_id": "heldout-addition-02",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "clean",
+    "operands": [
+      84,
+      27,
+      0
+    ],
+    "answer": "111",
+    "evidence_text": [
+      "Zephyr opening inventory: 84 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 84 units.\nZephyr received: 27 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "21577d786051be5bebf15679299386c01aecc6a3428be4bf25c133b0bf34a5ca"
+  },
+  {
+    "case_id": "heldout-addition-02-early",
+    "family_id": "heldout-addition-02",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "early",
+    "operands": [
+      84,
+      27,
+      0
+    ],
+    "answer": "111",
+    "evidence_text": [
+      "Zephyr opening inventory: 84 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 84 units.\nZephyr received: 27 units.\nCedar0 inventory: 897 units; Cedar0 shipment: 74 units.\nCedar1 inventory: 210 units; Cedar1 shipment: 34 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 61 units.\nCedar3 inventory: 144 units; Cedar3 shipment: 40 units.\nCedar4 inventory: 839 units; Cedar4 shipment: 41 units.\nCedar5 inventory: 913 units; Cedar5 shipment: 82 units.\nCedar6 inventory: 184 units; Cedar6 shipment: 49 units.\nCedar7 inventory: 281 units; Cedar7 shipment: 15 units.\nCedar8 inventory: 600 units; Cedar8 shipment: 88 units.\nCedar9 inventory: 133 units; Cedar9 shipment: 71 units.\nCedar10 inventory: 371 units; Cedar10 shipment: 10 units.\nCedar11 inventory: 188 units; Cedar11 shipment: 96 units.\nCedar12 inventory: 172 units; Cedar12 shipment: 44 units.\nCedar13 inventory: 190 units; Cedar13 shipment: 88 units.\nCedar14 inventory: 439 units; Cedar14 shipment: 77 units.\nCedar15 inventory: 504 units; Cedar15 shipment: 45 units.\nCedar16 inventory: 444 units; Cedar16 shipment: 17 units.\nCedar17 inventory: 293 units; Cedar17 shipment: 29 units.\nCedar18 inventory: 669 units; Cedar18 shipment: 38 units.\nCedar19 inventory: 153 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 573 units; Cedar20 shipment: 11 units.\nCedar21 inventory: 801 units; Cedar21 shipment: 20 units.\nCedar22 inventory: 298 units; Cedar22 shipment: 74 units.\nCedar23 inventory: 469 units; Cedar23 shipment: 67 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "6bf9223904ed5fc7d3b886a208768582bbd298bdc6d486d6eecc705ff774bc86"
+  },
+  {
+    "case_id": "heldout-addition-02-middle",
+    "family_id": "heldout-addition-02",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "middle",
+    "operands": [
+      84,
+      27,
+      0
+    ],
+    "answer": "111",
+    "evidence_text": [
+      "Zephyr opening inventory: 84 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 897 units; Cedar0 shipment: 74 units.\nCedar1 inventory: 210 units; Cedar1 shipment: 34 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 61 units.\nCedar3 inventory: 144 units; Cedar3 shipment: 40 units.\nCedar4 inventory: 839 units; Cedar4 shipment: 41 units.\nCedar5 inventory: 913 units; Cedar5 shipment: 82 units.\nCedar6 inventory: 184 units; Cedar6 shipment: 49 units.\nCedar7 inventory: 281 units; Cedar7 shipment: 15 units.\nCedar8 inventory: 600 units; Cedar8 shipment: 88 units.\nCedar9 inventory: 133 units; Cedar9 shipment: 71 units.\nCedar10 inventory: 371 units; Cedar10 shipment: 10 units.\nCedar11 inventory: 188 units; Cedar11 shipment: 96 units.\nZephyr opening inventory: 84 units.\nZephyr received: 27 units.\nCedar12 inventory: 172 units; Cedar12 shipment: 44 units.\nCedar13 inventory: 190 units; Cedar13 shipment: 88 units.\nCedar14 inventory: 439 units; Cedar14 shipment: 77 units.\nCedar15 inventory: 504 units; Cedar15 shipment: 45 units.\nCedar16 inventory: 444 units; Cedar16 shipment: 17 units.\nCedar17 inventory: 293 units; Cedar17 shipment: 29 units.\nCedar18 inventory: 669 units; Cedar18 shipment: 38 units.\nCedar19 inventory: 153 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 573 units; Cedar20 shipment: 11 units.\nCedar21 inventory: 801 units; Cedar21 shipment: 20 units.\nCedar22 inventory: 298 units; Cedar22 shipment: 74 units.\nCedar23 inventory: 469 units; Cedar23 shipment: 67 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "7fb811441c828ab29cd9bac2b1a237e6fb4d50550a849df625330ce51c62475d"
+  },
+  {
+    "case_id": "heldout-addition-02-late",
+    "family_id": "heldout-addition-02",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "late",
+    "operands": [
+      84,
+      27,
+      0
+    ],
+    "answer": "111",
+    "evidence_text": [
+      "Zephyr opening inventory: 84 units.",
+      "Zephyr received: 27 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 897 units; Cedar0 shipment: 74 units.\nCedar1 inventory: 210 units; Cedar1 shipment: 34 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 61 units.\nCedar3 inventory: 144 units; Cedar3 shipment: 40 units.\nCedar4 inventory: 839 units; Cedar4 shipment: 41 units.\nCedar5 inventory: 913 units; Cedar5 shipment: 82 units.\nCedar6 inventory: 184 units; Cedar6 shipment: 49 units.\nCedar7 inventory: 281 units; Cedar7 shipment: 15 units.\nCedar8 inventory: 600 units; Cedar8 shipment: 88 units.\nCedar9 inventory: 133 units; Cedar9 shipment: 71 units.\nCedar10 inventory: 371 units; Cedar10 shipment: 10 units.\nCedar11 inventory: 188 units; Cedar11 shipment: 96 units.\nCedar12 inventory: 172 units; Cedar12 shipment: 44 units.\nCedar13 inventory: 190 units; Cedar13 shipment: 88 units.\nCedar14 inventory: 439 units; Cedar14 shipment: 77 units.\nCedar15 inventory: 504 units; Cedar15 shipment: 45 units.\nCedar16 inventory: 444 units; Cedar16 shipment: 17 units.\nCedar17 inventory: 293 units; Cedar17 shipment: 29 units.\nCedar18 inventory: 669 units; Cedar18 shipment: 38 units.\nCedar19 inventory: 153 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 573 units; Cedar20 shipment: 11 units.\nCedar21 inventory: 801 units; Cedar21 shipment: 20 units.\nCedar22 inventory: 298 units; Cedar22 shipment: 74 units.\nCedar23 inventory: 469 units; Cedar23 shipment: 67 units.\nZephyr opening inventory: 84 units.\nZephyr received: 27 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "a62bb1c7096ab319b36c7066938cc253364cda2f898ca75848ce21481efe13e1"
+  },
+  {
+    "case_id": "heldout-addition-03-clean",
+    "family_id": "heldout-addition-03",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "clean",
+    "operands": [
+      67,
+      2,
+      0
+    ],
+    "answer": "69",
+    "evidence_text": [
+      "Zephyr opening inventory: 67 units.",
+      "Zephyr received: 2 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 67 units.\nZephyr received: 2 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "b621593a0e155485f28bb162ab43304d55707aabbbc41d247eea6b9dd9b06bd2"
+  },
+  {
+    "case_id": "heldout-addition-03-early",
+    "family_id": "heldout-addition-03",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "early",
+    "operands": [
+      67,
+      2,
+      0
+    ],
+    "answer": "69",
+    "evidence_text": [
+      "Zephyr opening inventory: 67 units.",
+      "Zephyr received: 2 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 67 units.\nZephyr received: 2 units.\nCedar0 inventory: 265 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 942 units; Cedar1 shipment: 40 units.\nCedar2 inventory: 296 units; Cedar2 shipment: 36 units.\nCedar3 inventory: 351 units; Cedar3 shipment: 34 units.\nCedar4 inventory: 332 units; Cedar4 shipment: 21 units.\nCedar5 inventory: 982 units; Cedar5 shipment: 93 units.\nCedar6 inventory: 687 units; Cedar6 shipment: 81 units.\nCedar7 inventory: 643 units; Cedar7 shipment: 36 units.\nCedar8 inventory: 311 units; Cedar8 shipment: 51 units.\nCedar9 inventory: 303 units; Cedar9 shipment: 57 units.\nCedar10 inventory: 672 units; Cedar10 shipment: 60 units.\nCedar11 inventory: 897 units; Cedar11 shipment: 67 units.\nCedar12 inventory: 583 units; Cedar12 shipment: 48 units.\nCedar13 inventory: 617 units; Cedar13 shipment: 47 units.\nCedar14 inventory: 964 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 734 units; Cedar15 shipment: 39 units.\nCedar16 inventory: 570 units; Cedar16 shipment: 10 units.\nCedar17 inventory: 303 units; Cedar17 shipment: 60 units.\nCedar18 inventory: 917 units; Cedar18 shipment: 79 units.\nCedar19 inventory: 246 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 950 units; Cedar20 shipment: 20 units.\nCedar21 inventory: 528 units; Cedar21 shipment: 80 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 18 units.\nCedar23 inventory: 649 units; Cedar23 shipment: 54 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "bc0a074bd2e9b5bbaa3383566b7f545087fff001302e50d600d1610d165b0a4a"
+  },
+  {
+    "case_id": "heldout-addition-03-middle",
+    "family_id": "heldout-addition-03",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "middle",
+    "operands": [
+      67,
+      2,
+      0
+    ],
+    "answer": "69",
+    "evidence_text": [
+      "Zephyr opening inventory: 67 units.",
+      "Zephyr received: 2 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 265 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 942 units; Cedar1 shipment: 40 units.\nCedar2 inventory: 296 units; Cedar2 shipment: 36 units.\nCedar3 inventory: 351 units; Cedar3 shipment: 34 units.\nCedar4 inventory: 332 units; Cedar4 shipment: 21 units.\nCedar5 inventory: 982 units; Cedar5 shipment: 93 units.\nCedar6 inventory: 687 units; Cedar6 shipment: 81 units.\nCedar7 inventory: 643 units; Cedar7 shipment: 36 units.\nCedar8 inventory: 311 units; Cedar8 shipment: 51 units.\nCedar9 inventory: 303 units; Cedar9 shipment: 57 units.\nCedar10 inventory: 672 units; Cedar10 shipment: 60 units.\nCedar11 inventory: 897 units; Cedar11 shipment: 67 units.\nZephyr opening inventory: 67 units.\nZephyr received: 2 units.\nCedar12 inventory: 583 units; Cedar12 shipment: 48 units.\nCedar13 inventory: 617 units; Cedar13 shipment: 47 units.\nCedar14 inventory: 964 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 734 units; Cedar15 shipment: 39 units.\nCedar16 inventory: 570 units; Cedar16 shipment: 10 units.\nCedar17 inventory: 303 units; Cedar17 shipment: 60 units.\nCedar18 inventory: 917 units; Cedar18 shipment: 79 units.\nCedar19 inventory: 246 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 950 units; Cedar20 shipment: 20 units.\nCedar21 inventory: 528 units; Cedar21 shipment: 80 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 18 units.\nCedar23 inventory: 649 units; Cedar23 shipment: 54 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "dee16f5fc04d2d28b30515836ab9d9ba99b6acb03b340b338c15605b09b4200a"
+  },
+  {
+    "case_id": "heldout-addition-03-late",
+    "family_id": "heldout-addition-03",
+    "split": "heldout",
+    "operation": "addition",
+    "position": "late",
+    "operands": [
+      67,
+      2,
+      0
+    ],
+    "answer": "69",
+    "evidence_text": [
+      "Zephyr opening inventory: 67 units.",
+      "Zephyr received: 2 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 265 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 942 units; Cedar1 shipment: 40 units.\nCedar2 inventory: 296 units; Cedar2 shipment: 36 units.\nCedar3 inventory: 351 units; Cedar3 shipment: 34 units.\nCedar4 inventory: 332 units; Cedar4 shipment: 21 units.\nCedar5 inventory: 982 units; Cedar5 shipment: 93 units.\nCedar6 inventory: 687 units; Cedar6 shipment: 81 units.\nCedar7 inventory: 643 units; Cedar7 shipment: 36 units.\nCedar8 inventory: 311 units; Cedar8 shipment: 51 units.\nCedar9 inventory: 303 units; Cedar9 shipment: 57 units.\nCedar10 inventory: 672 units; Cedar10 shipment: 60 units.\nCedar11 inventory: 897 units; Cedar11 shipment: 67 units.\nCedar12 inventory: 583 units; Cedar12 shipment: 48 units.\nCedar13 inventory: 617 units; Cedar13 shipment: 47 units.\nCedar14 inventory: 964 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 734 units; Cedar15 shipment: 39 units.\nCedar16 inventory: 570 units; Cedar16 shipment: 10 units.\nCedar17 inventory: 303 units; Cedar17 shipment: 60 units.\nCedar18 inventory: 917 units; Cedar18 shipment: 79 units.\nCedar19 inventory: 246 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 950 units; Cedar20 shipment: 20 units.\nCedar21 inventory: 528 units; Cedar21 shipment: 80 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 18 units.\nCedar23 inventory: 649 units; Cedar23 shipment: 54 units.\nZephyr opening inventory: 67 units.\nZephyr received: 2 units.\n\nWhat is Zephyr inventory after receiving the delivery?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "cd5dc4b116d0eaa9d7723e6e8b51499c20c473395fe85e009f9e7d50d9277168"
+  },
+  {
+    "case_id": "heldout-subtraction-00-clean",
+    "family_id": "heldout-subtraction-00",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "clean",
+    "operands": [
+      44,
+      4,
+      0
+    ],
+    "answer": "40",
+    "evidence_text": [
+      "Zephyr opening inventory: 44 units.",
+      "Zephyr shipped: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 44 units.\nZephyr shipped: 4 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "29c3032b84c13215fc889e41220f1be3e251d3168bdbe114cd6136778475ab4a"
+  },
+  {
+    "case_id": "heldout-subtraction-00-early",
+    "family_id": "heldout-subtraction-00",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "early",
+    "operands": [
+      44,
+      4,
+      0
+    ],
+    "answer": "40",
+    "evidence_text": [
+      "Zephyr opening inventory: 44 units.",
+      "Zephyr shipped: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 44 units.\nZephyr shipped: 4 units.\nCedar0 inventory: 956 units; Cedar0 shipment: 56 units.\nCedar1 inventory: 761 units; Cedar1 shipment: 38 units.\nCedar2 inventory: 226 units; Cedar2 shipment: 18 units.\nCedar3 inventory: 565 units; Cedar3 shipment: 37 units.\nCedar4 inventory: 953 units; Cedar4 shipment: 36 units.\nCedar5 inventory: 617 units; Cedar5 shipment: 51 units.\nCedar6 inventory: 348 units; Cedar6 shipment: 52 units.\nCedar7 inventory: 727 units; Cedar7 shipment: 98 units.\nCedar8 inventory: 471 units; Cedar8 shipment: 29 units.\nCedar9 inventory: 826 units; Cedar9 shipment: 82 units.\nCedar10 inventory: 318 units; Cedar10 shipment: 69 units.\nCedar11 inventory: 651 units; Cedar11 shipment: 61 units.\nCedar12 inventory: 323 units; Cedar12 shipment: 14 units.\nCedar13 inventory: 237 units; Cedar13 shipment: 60 units.\nCedar14 inventory: 687 units; Cedar14 shipment: 69 units.\nCedar15 inventory: 752 units; Cedar15 shipment: 67 units.\nCedar16 inventory: 148 units; Cedar16 shipment: 36 units.\nCedar17 inventory: 678 units; Cedar17 shipment: 33 units.\nCedar18 inventory: 450 units; Cedar18 shipment: 95 units.\nCedar19 inventory: 935 units; Cedar19 shipment: 19 units.\nCedar20 inventory: 239 units; Cedar20 shipment: 53 units.\nCedar21 inventory: 583 units; Cedar21 shipment: 44 units.\nCedar22 inventory: 139 units; Cedar22 shipment: 63 units.\nCedar23 inventory: 293 units; Cedar23 shipment: 53 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "5683554835b2464354fe5d75e393540c8e0ed2283b8a99a3e0fa49c0dc3599e7"
+  },
+  {
+    "case_id": "heldout-subtraction-00-middle",
+    "family_id": "heldout-subtraction-00",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "middle",
+    "operands": [
+      44,
+      4,
+      0
+    ],
+    "answer": "40",
+    "evidence_text": [
+      "Zephyr opening inventory: 44 units.",
+      "Zephyr shipped: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 956 units; Cedar0 shipment: 56 units.\nCedar1 inventory: 761 units; Cedar1 shipment: 38 units.\nCedar2 inventory: 226 units; Cedar2 shipment: 18 units.\nCedar3 inventory: 565 units; Cedar3 shipment: 37 units.\nCedar4 inventory: 953 units; Cedar4 shipment: 36 units.\nCedar5 inventory: 617 units; Cedar5 shipment: 51 units.\nCedar6 inventory: 348 units; Cedar6 shipment: 52 units.\nCedar7 inventory: 727 units; Cedar7 shipment: 98 units.\nCedar8 inventory: 471 units; Cedar8 shipment: 29 units.\nCedar9 inventory: 826 units; Cedar9 shipment: 82 units.\nCedar10 inventory: 318 units; Cedar10 shipment: 69 units.\nCedar11 inventory: 651 units; Cedar11 shipment: 61 units.\nZephyr opening inventory: 44 units.\nZephyr shipped: 4 units.\nCedar12 inventory: 323 units; Cedar12 shipment: 14 units.\nCedar13 inventory: 237 units; Cedar13 shipment: 60 units.\nCedar14 inventory: 687 units; Cedar14 shipment: 69 units.\nCedar15 inventory: 752 units; Cedar15 shipment: 67 units.\nCedar16 inventory: 148 units; Cedar16 shipment: 36 units.\nCedar17 inventory: 678 units; Cedar17 shipment: 33 units.\nCedar18 inventory: 450 units; Cedar18 shipment: 95 units.\nCedar19 inventory: 935 units; Cedar19 shipment: 19 units.\nCedar20 inventory: 239 units; Cedar20 shipment: 53 units.\nCedar21 inventory: 583 units; Cedar21 shipment: 44 units.\nCedar22 inventory: 139 units; Cedar22 shipment: 63 units.\nCedar23 inventory: 293 units; Cedar23 shipment: 53 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "c46af886ec4ee37954fb746a5dfd7fe159756a149ce9f0a0c52f53c7864f9086"
+  },
+  {
+    "case_id": "heldout-subtraction-00-late",
+    "family_id": "heldout-subtraction-00",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "late",
+    "operands": [
+      44,
+      4,
+      0
+    ],
+    "answer": "40",
+    "evidence_text": [
+      "Zephyr opening inventory: 44 units.",
+      "Zephyr shipped: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 956 units; Cedar0 shipment: 56 units.\nCedar1 inventory: 761 units; Cedar1 shipment: 38 units.\nCedar2 inventory: 226 units; Cedar2 shipment: 18 units.\nCedar3 inventory: 565 units; Cedar3 shipment: 37 units.\nCedar4 inventory: 953 units; Cedar4 shipment: 36 units.\nCedar5 inventory: 617 units; Cedar5 shipment: 51 units.\nCedar6 inventory: 348 units; Cedar6 shipment: 52 units.\nCedar7 inventory: 727 units; Cedar7 shipment: 98 units.\nCedar8 inventory: 471 units; Cedar8 shipment: 29 units.\nCedar9 inventory: 826 units; Cedar9 shipment: 82 units.\nCedar10 inventory: 318 units; Cedar10 shipment: 69 units.\nCedar11 inventory: 651 units; Cedar11 shipment: 61 units.\nCedar12 inventory: 323 units; Cedar12 shipment: 14 units.\nCedar13 inventory: 237 units; Cedar13 shipment: 60 units.\nCedar14 inventory: 687 units; Cedar14 shipment: 69 units.\nCedar15 inventory: 752 units; Cedar15 shipment: 67 units.\nCedar16 inventory: 148 units; Cedar16 shipment: 36 units.\nCedar17 inventory: 678 units; Cedar17 shipment: 33 units.\nCedar18 inventory: 450 units; Cedar18 shipment: 95 units.\nCedar19 inventory: 935 units; Cedar19 shipment: 19 units.\nCedar20 inventory: 239 units; Cedar20 shipment: 53 units.\nCedar21 inventory: 583 units; Cedar21 shipment: 44 units.\nCedar22 inventory: 139 units; Cedar22 shipment: 63 units.\nCedar23 inventory: 293 units; Cedar23 shipment: 53 units.\nZephyr opening inventory: 44 units.\nZephyr shipped: 4 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "ef826f77f9f0e5306bc451c835eb39768ad24968e8b578e103e20ec915dfd1ea"
+  },
+  {
+    "case_id": "heldout-subtraction-01-clean",
+    "family_id": "heldout-subtraction-01",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "clean",
+    "operands": [
+      49,
+      17,
+      0
+    ],
+    "answer": "32",
+    "evidence_text": [
+      "Zephyr opening inventory: 49 units.",
+      "Zephyr shipped: 17 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 49 units.\nZephyr shipped: 17 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "ce5d53bd1e82719bba7a3be56220d5585a46bb4261497e4b9454aa6a2969ff43"
+  },
+  {
+    "case_id": "heldout-subtraction-01-early",
+    "family_id": "heldout-subtraction-01",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "early",
+    "operands": [
+      49,
+      17,
+      0
+    ],
+    "answer": "32",
+    "evidence_text": [
+      "Zephyr opening inventory: 49 units.",
+      "Zephyr shipped: 17 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 49 units.\nZephyr shipped: 17 units.\nCedar0 inventory: 483 units; Cedar0 shipment: 39 units.\nCedar1 inventory: 743 units; Cedar1 shipment: 83 units.\nCedar2 inventory: 833 units; Cedar2 shipment: 31 units.\nCedar3 inventory: 437 units; Cedar3 shipment: 50 units.\nCedar4 inventory: 566 units; Cedar4 shipment: 52 units.\nCedar5 inventory: 182 units; Cedar5 shipment: 45 units.\nCedar6 inventory: 520 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 230 units; Cedar7 shipment: 50 units.\nCedar8 inventory: 433 units; Cedar8 shipment: 99 units.\nCedar9 inventory: 243 units; Cedar9 shipment: 66 units.\nCedar10 inventory: 799 units; Cedar10 shipment: 45 units.\nCedar11 inventory: 961 units; Cedar11 shipment: 81 units.\nCedar12 inventory: 414 units; Cedar12 shipment: 19 units.\nCedar13 inventory: 620 units; Cedar13 shipment: 96 units.\nCedar14 inventory: 461 units; Cedar14 shipment: 31 units.\nCedar15 inventory: 222 units; Cedar15 shipment: 65 units.\nCedar16 inventory: 526 units; Cedar16 shipment: 98 units.\nCedar17 inventory: 605 units; Cedar17 shipment: 79 units.\nCedar18 inventory: 191 units; Cedar18 shipment: 86 units.\nCedar19 inventory: 412 units; Cedar19 shipment: 56 units.\nCedar20 inventory: 963 units; Cedar20 shipment: 34 units.\nCedar21 inventory: 854 units; Cedar21 shipment: 86 units.\nCedar22 inventory: 326 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 429 units; Cedar23 shipment: 10 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "25e5b1be36690e514f660e687c4de65375f11c7c3eb84f9644c0b683b4390ca1"
+  },
+  {
+    "case_id": "heldout-subtraction-01-middle",
+    "family_id": "heldout-subtraction-01",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "middle",
+    "operands": [
+      49,
+      17,
+      0
+    ],
+    "answer": "32",
+    "evidence_text": [
+      "Zephyr opening inventory: 49 units.",
+      "Zephyr shipped: 17 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 483 units; Cedar0 shipment: 39 units.\nCedar1 inventory: 743 units; Cedar1 shipment: 83 units.\nCedar2 inventory: 833 units; Cedar2 shipment: 31 units.\nCedar3 inventory: 437 units; Cedar3 shipment: 50 units.\nCedar4 inventory: 566 units; Cedar4 shipment: 52 units.\nCedar5 inventory: 182 units; Cedar5 shipment: 45 units.\nCedar6 inventory: 520 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 230 units; Cedar7 shipment: 50 units.\nCedar8 inventory: 433 units; Cedar8 shipment: 99 units.\nCedar9 inventory: 243 units; Cedar9 shipment: 66 units.\nCedar10 inventory: 799 units; Cedar10 shipment: 45 units.\nCedar11 inventory: 961 units; Cedar11 shipment: 81 units.\nZephyr opening inventory: 49 units.\nZephyr shipped: 17 units.\nCedar12 inventory: 414 units; Cedar12 shipment: 19 units.\nCedar13 inventory: 620 units; Cedar13 shipment: 96 units.\nCedar14 inventory: 461 units; Cedar14 shipment: 31 units.\nCedar15 inventory: 222 units; Cedar15 shipment: 65 units.\nCedar16 inventory: 526 units; Cedar16 shipment: 98 units.\nCedar17 inventory: 605 units; Cedar17 shipment: 79 units.\nCedar18 inventory: 191 units; Cedar18 shipment: 86 units.\nCedar19 inventory: 412 units; Cedar19 shipment: 56 units.\nCedar20 inventory: 963 units; Cedar20 shipment: 34 units.\nCedar21 inventory: 854 units; Cedar21 shipment: 86 units.\nCedar22 inventory: 326 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 429 units; Cedar23 shipment: 10 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "6e53b12e83da812f3d1d3d838ef6c73137566d9d9d5563209fa8f2f4c9aa2d2b"
+  },
+  {
+    "case_id": "heldout-subtraction-01-late",
+    "family_id": "heldout-subtraction-01",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "late",
+    "operands": [
+      49,
+      17,
+      0
+    ],
+    "answer": "32",
+    "evidence_text": [
+      "Zephyr opening inventory: 49 units.",
+      "Zephyr shipped: 17 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 483 units; Cedar0 shipment: 39 units.\nCedar1 inventory: 743 units; Cedar1 shipment: 83 units.\nCedar2 inventory: 833 units; Cedar2 shipment: 31 units.\nCedar3 inventory: 437 units; Cedar3 shipment: 50 units.\nCedar4 inventory: 566 units; Cedar4 shipment: 52 units.\nCedar5 inventory: 182 units; Cedar5 shipment: 45 units.\nCedar6 inventory: 520 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 230 units; Cedar7 shipment: 50 units.\nCedar8 inventory: 433 units; Cedar8 shipment: 99 units.\nCedar9 inventory: 243 units; Cedar9 shipment: 66 units.\nCedar10 inventory: 799 units; Cedar10 shipment: 45 units.\nCedar11 inventory: 961 units; Cedar11 shipment: 81 units.\nCedar12 inventory: 414 units; Cedar12 shipment: 19 units.\nCedar13 inventory: 620 units; Cedar13 shipment: 96 units.\nCedar14 inventory: 461 units; Cedar14 shipment: 31 units.\nCedar15 inventory: 222 units; Cedar15 shipment: 65 units.\nCedar16 inventory: 526 units; Cedar16 shipment: 98 units.\nCedar17 inventory: 605 units; Cedar17 shipment: 79 units.\nCedar18 inventory: 191 units; Cedar18 shipment: 86 units.\nCedar19 inventory: 412 units; Cedar19 shipment: 56 units.\nCedar20 inventory: 963 units; Cedar20 shipment: 34 units.\nCedar21 inventory: 854 units; Cedar21 shipment: 86 units.\nCedar22 inventory: 326 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 429 units; Cedar23 shipment: 10 units.\nZephyr opening inventory: 49 units.\nZephyr shipped: 17 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "0726831488d61512d02f6eef15c4dcc3c7cfd388dcd310af03e652fedfc2de5b"
+  },
+  {
+    "case_id": "heldout-subtraction-02-clean",
+    "family_id": "heldout-subtraction-02",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "clean",
+    "operands": [
+      45,
+      28,
+      0
+    ],
+    "answer": "17",
+    "evidence_text": [
+      "Zephyr opening inventory: 45 units.",
+      "Zephyr shipped: 28 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 45 units.\nZephyr shipped: 28 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "8b371bd788b72a2798c3be747943c97e34846adeee761f66deb9a8739c0342fb"
+  },
+  {
+    "case_id": "heldout-subtraction-02-early",
+    "family_id": "heldout-subtraction-02",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "early",
+    "operands": [
+      45,
+      28,
+      0
+    ],
+    "answer": "17",
+    "evidence_text": [
+      "Zephyr opening inventory: 45 units.",
+      "Zephyr shipped: 28 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 45 units.\nZephyr shipped: 28 units.\nCedar0 inventory: 698 units; Cedar0 shipment: 66 units.\nCedar1 inventory: 554 units; Cedar1 shipment: 93 units.\nCedar2 inventory: 940 units; Cedar2 shipment: 83 units.\nCedar3 inventory: 523 units; Cedar3 shipment: 84 units.\nCedar4 inventory: 612 units; Cedar4 shipment: 90 units.\nCedar5 inventory: 863 units; Cedar5 shipment: 68 units.\nCedar6 inventory: 792 units; Cedar6 shipment: 10 units.\nCedar7 inventory: 102 units; Cedar7 shipment: 48 units.\nCedar8 inventory: 949 units; Cedar8 shipment: 27 units.\nCedar9 inventory: 929 units; Cedar9 shipment: 84 units.\nCedar10 inventory: 574 units; Cedar10 shipment: 72 units.\nCedar11 inventory: 441 units; Cedar11 shipment: 29 units.\nCedar12 inventory: 997 units; Cedar12 shipment: 78 units.\nCedar13 inventory: 436 units; Cedar13 shipment: 71 units.\nCedar14 inventory: 496 units; Cedar14 shipment: 53 units.\nCedar15 inventory: 603 units; Cedar15 shipment: 83 units.\nCedar16 inventory: 910 units; Cedar16 shipment: 39 units.\nCedar17 inventory: 740 units; Cedar17 shipment: 61 units.\nCedar18 inventory: 783 units; Cedar18 shipment: 72 units.\nCedar19 inventory: 337 units; Cedar19 shipment: 83 units.\nCedar20 inventory: 692 units; Cedar20 shipment: 79 units.\nCedar21 inventory: 750 units; Cedar21 shipment: 30 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 31 units.\nCedar23 inventory: 694 units; Cedar23 shipment: 29 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "fec88bc373c75d0ceb12d1a6d56554e260e34643f0a51201d1f1690a408ce9b5"
+  },
+  {
+    "case_id": "heldout-subtraction-02-middle",
+    "family_id": "heldout-subtraction-02",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "middle",
+    "operands": [
+      45,
+      28,
+      0
+    ],
+    "answer": "17",
+    "evidence_text": [
+      "Zephyr opening inventory: 45 units.",
+      "Zephyr shipped: 28 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 698 units; Cedar0 shipment: 66 units.\nCedar1 inventory: 554 units; Cedar1 shipment: 93 units.\nCedar2 inventory: 940 units; Cedar2 shipment: 83 units.\nCedar3 inventory: 523 units; Cedar3 shipment: 84 units.\nCedar4 inventory: 612 units; Cedar4 shipment: 90 units.\nCedar5 inventory: 863 units; Cedar5 shipment: 68 units.\nCedar6 inventory: 792 units; Cedar6 shipment: 10 units.\nCedar7 inventory: 102 units; Cedar7 shipment: 48 units.\nCedar8 inventory: 949 units; Cedar8 shipment: 27 units.\nCedar9 inventory: 929 units; Cedar9 shipment: 84 units.\nCedar10 inventory: 574 units; Cedar10 shipment: 72 units.\nCedar11 inventory: 441 units; Cedar11 shipment: 29 units.\nZephyr opening inventory: 45 units.\nZephyr shipped: 28 units.\nCedar12 inventory: 997 units; Cedar12 shipment: 78 units.\nCedar13 inventory: 436 units; Cedar13 shipment: 71 units.\nCedar14 inventory: 496 units; Cedar14 shipment: 53 units.\nCedar15 inventory: 603 units; Cedar15 shipment: 83 units.\nCedar16 inventory: 910 units; Cedar16 shipment: 39 units.\nCedar17 inventory: 740 units; Cedar17 shipment: 61 units.\nCedar18 inventory: 783 units; Cedar18 shipment: 72 units.\nCedar19 inventory: 337 units; Cedar19 shipment: 83 units.\nCedar20 inventory: 692 units; Cedar20 shipment: 79 units.\nCedar21 inventory: 750 units; Cedar21 shipment: 30 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 31 units.\nCedar23 inventory: 694 units; Cedar23 shipment: 29 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "e854209942f6c58148490abf1dcd6ffe4d9ba76085c011ee6e458bfa0b87d324"
+  },
+  {
+    "case_id": "heldout-subtraction-02-late",
+    "family_id": "heldout-subtraction-02",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "late",
+    "operands": [
+      45,
+      28,
+      0
+    ],
+    "answer": "17",
+    "evidence_text": [
+      "Zephyr opening inventory: 45 units.",
+      "Zephyr shipped: 28 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 698 units; Cedar0 shipment: 66 units.\nCedar1 inventory: 554 units; Cedar1 shipment: 93 units.\nCedar2 inventory: 940 units; Cedar2 shipment: 83 units.\nCedar3 inventory: 523 units; Cedar3 shipment: 84 units.\nCedar4 inventory: 612 units; Cedar4 shipment: 90 units.\nCedar5 inventory: 863 units; Cedar5 shipment: 68 units.\nCedar6 inventory: 792 units; Cedar6 shipment: 10 units.\nCedar7 inventory: 102 units; Cedar7 shipment: 48 units.\nCedar8 inventory: 949 units; Cedar8 shipment: 27 units.\nCedar9 inventory: 929 units; Cedar9 shipment: 84 units.\nCedar10 inventory: 574 units; Cedar10 shipment: 72 units.\nCedar11 inventory: 441 units; Cedar11 shipment: 29 units.\nCedar12 inventory: 997 units; Cedar12 shipment: 78 units.\nCedar13 inventory: 436 units; Cedar13 shipment: 71 units.\nCedar14 inventory: 496 units; Cedar14 shipment: 53 units.\nCedar15 inventory: 603 units; Cedar15 shipment: 83 units.\nCedar16 inventory: 910 units; Cedar16 shipment: 39 units.\nCedar17 inventory: 740 units; Cedar17 shipment: 61 units.\nCedar18 inventory: 783 units; Cedar18 shipment: 72 units.\nCedar19 inventory: 337 units; Cedar19 shipment: 83 units.\nCedar20 inventory: 692 units; Cedar20 shipment: 79 units.\nCedar21 inventory: 750 units; Cedar21 shipment: 30 units.\nCedar22 inventory: 996 units; Cedar22 shipment: 31 units.\nCedar23 inventory: 694 units; Cedar23 shipment: 29 units.\nZephyr opening inventory: 45 units.\nZephyr shipped: 28 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "90672238cbf5661abda2e6e7c878d119987ad7b28a09cec97cafcecc82d88bc3"
+  },
+  {
+    "case_id": "heldout-subtraction-03-clean",
+    "family_id": "heldout-subtraction-03",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "clean",
+    "operands": [
+      88,
+      18,
+      0
+    ],
+    "answer": "70",
+    "evidence_text": [
+      "Zephyr opening inventory: 88 units.",
+      "Zephyr shipped: 18 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 88 units.\nZephyr shipped: 18 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "29f6c6bd35976a4be838fe1dadb18911b46c9ef24c10590e10d344eb61dfe06d"
+  },
+  {
+    "case_id": "heldout-subtraction-03-early",
+    "family_id": "heldout-subtraction-03",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "early",
+    "operands": [
+      88,
+      18,
+      0
+    ],
+    "answer": "70",
+    "evidence_text": [
+      "Zephyr opening inventory: 88 units.",
+      "Zephyr shipped: 18 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr opening inventory: 88 units.\nZephyr shipped: 18 units.\nCedar0 inventory: 272 units; Cedar0 shipment: 38 units.\nCedar1 inventory: 278 units; Cedar1 shipment: 48 units.\nCedar2 inventory: 130 units; Cedar2 shipment: 43 units.\nCedar3 inventory: 231 units; Cedar3 shipment: 43 units.\nCedar4 inventory: 130 units; Cedar4 shipment: 62 units.\nCedar5 inventory: 570 units; Cedar5 shipment: 31 units.\nCedar6 inventory: 303 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 555 units; Cedar7 shipment: 43 units.\nCedar8 inventory: 192 units; Cedar8 shipment: 82 units.\nCedar9 inventory: 386 units; Cedar9 shipment: 32 units.\nCedar10 inventory: 232 units; Cedar10 shipment: 80 units.\nCedar11 inventory: 225 units; Cedar11 shipment: 18 units.\nCedar12 inventory: 828 units; Cedar12 shipment: 43 units.\nCedar13 inventory: 347 units; Cedar13 shipment: 52 units.\nCedar14 inventory: 796 units; Cedar14 shipment: 93 units.\nCedar15 inventory: 526 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 932 units; Cedar16 shipment: 23 units.\nCedar17 inventory: 189 units; Cedar17 shipment: 47 units.\nCedar18 inventory: 413 units; Cedar18 shipment: 34 units.\nCedar19 inventory: 807 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 770 units; Cedar20 shipment: 93 units.\nCedar21 inventory: 776 units; Cedar21 shipment: 50 units.\nCedar22 inventory: 603 units; Cedar22 shipment: 56 units.\nCedar23 inventory: 973 units; Cedar23 shipment: 14 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "c1f5da7823ff645417f6b50c74754a1b28a106332cdd01e896b3d211974fc3d8"
+  },
+  {
+    "case_id": "heldout-subtraction-03-middle",
+    "family_id": "heldout-subtraction-03",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "middle",
+    "operands": [
+      88,
+      18,
+      0
+    ],
+    "answer": "70",
+    "evidence_text": [
+      "Zephyr opening inventory: 88 units.",
+      "Zephyr shipped: 18 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 272 units; Cedar0 shipment: 38 units.\nCedar1 inventory: 278 units; Cedar1 shipment: 48 units.\nCedar2 inventory: 130 units; Cedar2 shipment: 43 units.\nCedar3 inventory: 231 units; Cedar3 shipment: 43 units.\nCedar4 inventory: 130 units; Cedar4 shipment: 62 units.\nCedar5 inventory: 570 units; Cedar5 shipment: 31 units.\nCedar6 inventory: 303 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 555 units; Cedar7 shipment: 43 units.\nCedar8 inventory: 192 units; Cedar8 shipment: 82 units.\nCedar9 inventory: 386 units; Cedar9 shipment: 32 units.\nCedar10 inventory: 232 units; Cedar10 shipment: 80 units.\nCedar11 inventory: 225 units; Cedar11 shipment: 18 units.\nZephyr opening inventory: 88 units.\nZephyr shipped: 18 units.\nCedar12 inventory: 828 units; Cedar12 shipment: 43 units.\nCedar13 inventory: 347 units; Cedar13 shipment: 52 units.\nCedar14 inventory: 796 units; Cedar14 shipment: 93 units.\nCedar15 inventory: 526 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 932 units; Cedar16 shipment: 23 units.\nCedar17 inventory: 189 units; Cedar17 shipment: 47 units.\nCedar18 inventory: 413 units; Cedar18 shipment: 34 units.\nCedar19 inventory: 807 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 770 units; Cedar20 shipment: 93 units.\nCedar21 inventory: 776 units; Cedar21 shipment: 50 units.\nCedar22 inventory: 603 units; Cedar22 shipment: 56 units.\nCedar23 inventory: 973 units; Cedar23 shipment: 14 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "9f31dc36189142082ffdeaf6159bc61ee25d27470a7f0dd922d7c99ddaba9ac0"
+  },
+  {
+    "case_id": "heldout-subtraction-03-late",
+    "family_id": "heldout-subtraction-03",
+    "split": "heldout",
+    "operation": "subtraction",
+    "position": "late",
+    "operands": [
+      88,
+      18,
+      0
+    ],
+    "answer": "70",
+    "evidence_text": [
+      "Zephyr opening inventory: 88 units.",
+      "Zephyr shipped: 18 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 272 units; Cedar0 shipment: 38 units.\nCedar1 inventory: 278 units; Cedar1 shipment: 48 units.\nCedar2 inventory: 130 units; Cedar2 shipment: 43 units.\nCedar3 inventory: 231 units; Cedar3 shipment: 43 units.\nCedar4 inventory: 130 units; Cedar4 shipment: 62 units.\nCedar5 inventory: 570 units; Cedar5 shipment: 31 units.\nCedar6 inventory: 303 units; Cedar6 shipment: 62 units.\nCedar7 inventory: 555 units; Cedar7 shipment: 43 units.\nCedar8 inventory: 192 units; Cedar8 shipment: 82 units.\nCedar9 inventory: 386 units; Cedar9 shipment: 32 units.\nCedar10 inventory: 232 units; Cedar10 shipment: 80 units.\nCedar11 inventory: 225 units; Cedar11 shipment: 18 units.\nCedar12 inventory: 828 units; Cedar12 shipment: 43 units.\nCedar13 inventory: 347 units; Cedar13 shipment: 52 units.\nCedar14 inventory: 796 units; Cedar14 shipment: 93 units.\nCedar15 inventory: 526 units; Cedar15 shipment: 72 units.\nCedar16 inventory: 932 units; Cedar16 shipment: 23 units.\nCedar17 inventory: 189 units; Cedar17 shipment: 47 units.\nCedar18 inventory: 413 units; Cedar18 shipment: 34 units.\nCedar19 inventory: 807 units; Cedar19 shipment: 90 units.\nCedar20 inventory: 770 units; Cedar20 shipment: 93 units.\nCedar21 inventory: 776 units; Cedar21 shipment: 50 units.\nCedar22 inventory: 603 units; Cedar22 shipment: 56 units.\nCedar23 inventory: 973 units; Cedar23 shipment: 14 units.\nZephyr opening inventory: 88 units.\nZephyr shipped: 18 units.\n\nWhat is Zephyr inventory after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "bbcb2f93bf9b19ba151c66e2f963e4689c8b30b1810f1422f4f76dcb865e654c"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-00-clean",
+    "family_id": "heldout-multiply_subtract-00",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "clean",
+    "operands": [
+      7,
+      8,
+      4
+    ],
+    "answer": "52",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 7 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 4 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "ce3c2af0dd0c711b4313684acda2391dbaa109f20121e2c0c0d48edb6ab4f728"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-00-early",
+    "family_id": "heldout-multiply_subtract-00",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "early",
+    "operands": [
+      7,
+      8,
+      4
+    ],
+    "answer": "52",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 7 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 4 units.\nCedar0 inventory: 239 units; Cedar0 shipment: 31 units.\nCedar1 inventory: 867 units; Cedar1 shipment: 45 units.\nCedar2 inventory: 763 units; Cedar2 shipment: 50 units.\nCedar3 inventory: 884 units; Cedar3 shipment: 33 units.\nCedar4 inventory: 187 units; Cedar4 shipment: 14 units.\nCedar5 inventory: 575 units; Cedar5 shipment: 24 units.\nCedar6 inventory: 305 units; Cedar6 shipment: 33 units.\nCedar7 inventory: 474 units; Cedar7 shipment: 45 units.\nCedar8 inventory: 787 units; Cedar8 shipment: 58 units.\nCedar9 inventory: 428 units; Cedar9 shipment: 11 units.\nCedar10 inventory: 506 units; Cedar10 shipment: 74 units.\nCedar11 inventory: 454 units; Cedar11 shipment: 88 units.\nCedar12 inventory: 950 units; Cedar12 shipment: 59 units.\nCedar13 inventory: 927 units; Cedar13 shipment: 56 units.\nCedar14 inventory: 630 units; Cedar14 shipment: 74 units.\nCedar15 inventory: 991 units; Cedar15 shipment: 75 units.\nCedar16 inventory: 525 units; Cedar16 shipment: 50 units.\nCedar17 inventory: 168 units; Cedar17 shipment: 64 units.\nCedar18 inventory: 326 units; Cedar18 shipment: 84 units.\nCedar19 inventory: 714 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 714 units; Cedar20 shipment: 97 units.\nCedar21 inventory: 510 units; Cedar21 shipment: 45 units.\nCedar22 inventory: 888 units; Cedar22 shipment: 12 units.\nCedar23 inventory: 621 units; Cedar23 shipment: 89 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "4a4745c5737ad3e090efd200e1c548a86bfa4d0b673f6ecfaad050ab198a6c14"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-00-middle",
+    "family_id": "heldout-multiply_subtract-00",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "middle",
+    "operands": [
+      7,
+      8,
+      4
+    ],
+    "answer": "52",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 239 units; Cedar0 shipment: 31 units.\nCedar1 inventory: 867 units; Cedar1 shipment: 45 units.\nCedar2 inventory: 763 units; Cedar2 shipment: 50 units.\nCedar3 inventory: 884 units; Cedar3 shipment: 33 units.\nCedar4 inventory: 187 units; Cedar4 shipment: 14 units.\nCedar5 inventory: 575 units; Cedar5 shipment: 24 units.\nCedar6 inventory: 305 units; Cedar6 shipment: 33 units.\nCedar7 inventory: 474 units; Cedar7 shipment: 45 units.\nCedar8 inventory: 787 units; Cedar8 shipment: 58 units.\nCedar9 inventory: 428 units; Cedar9 shipment: 11 units.\nCedar10 inventory: 506 units; Cedar10 shipment: 74 units.\nCedar11 inventory: 454 units; Cedar11 shipment: 88 units.\nZephyr received: 7 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 4 units.\nCedar12 inventory: 950 units; Cedar12 shipment: 59 units.\nCedar13 inventory: 927 units; Cedar13 shipment: 56 units.\nCedar14 inventory: 630 units; Cedar14 shipment: 74 units.\nCedar15 inventory: 991 units; Cedar15 shipment: 75 units.\nCedar16 inventory: 525 units; Cedar16 shipment: 50 units.\nCedar17 inventory: 168 units; Cedar17 shipment: 64 units.\nCedar18 inventory: 326 units; Cedar18 shipment: 84 units.\nCedar19 inventory: 714 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 714 units; Cedar20 shipment: 97 units.\nCedar21 inventory: 510 units; Cedar21 shipment: 45 units.\nCedar22 inventory: 888 units; Cedar22 shipment: 12 units.\nCedar23 inventory: 621 units; Cedar23 shipment: 89 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "6ceaf54861b24c1e91364413ede651863ccb2f086ca05bc51a142edaece74564"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-00-late",
+    "family_id": "heldout-multiply_subtract-00",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "late",
+    "operands": [
+      7,
+      8,
+      4
+    ],
+    "answer": "52",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 4 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 239 units; Cedar0 shipment: 31 units.\nCedar1 inventory: 867 units; Cedar1 shipment: 45 units.\nCedar2 inventory: 763 units; Cedar2 shipment: 50 units.\nCedar3 inventory: 884 units; Cedar3 shipment: 33 units.\nCedar4 inventory: 187 units; Cedar4 shipment: 14 units.\nCedar5 inventory: 575 units; Cedar5 shipment: 24 units.\nCedar6 inventory: 305 units; Cedar6 shipment: 33 units.\nCedar7 inventory: 474 units; Cedar7 shipment: 45 units.\nCedar8 inventory: 787 units; Cedar8 shipment: 58 units.\nCedar9 inventory: 428 units; Cedar9 shipment: 11 units.\nCedar10 inventory: 506 units; Cedar10 shipment: 74 units.\nCedar11 inventory: 454 units; Cedar11 shipment: 88 units.\nCedar12 inventory: 950 units; Cedar12 shipment: 59 units.\nCedar13 inventory: 927 units; Cedar13 shipment: 56 units.\nCedar14 inventory: 630 units; Cedar14 shipment: 74 units.\nCedar15 inventory: 991 units; Cedar15 shipment: 75 units.\nCedar16 inventory: 525 units; Cedar16 shipment: 50 units.\nCedar17 inventory: 168 units; Cedar17 shipment: 64 units.\nCedar18 inventory: 326 units; Cedar18 shipment: 84 units.\nCedar19 inventory: 714 units; Cedar19 shipment: 85 units.\nCedar20 inventory: 714 units; Cedar20 shipment: 97 units.\nCedar21 inventory: 510 units; Cedar21 shipment: 45 units.\nCedar22 inventory: 888 units; Cedar22 shipment: 12 units.\nCedar23 inventory: 621 units; Cedar23 shipment: 89 units.\nZephyr received: 7 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 4 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "8300ec5c5d698c4fd4eaa38a5963da2aafa3ef7d6628bcf5522f6045307602e8"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-01-clean",
+    "family_id": "heldout-multiply_subtract-01",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "clean",
+    "operands": [
+      11,
+      12,
+      5
+    ],
+    "answer": "127",
+    "evidence_text": [
+      "Zephyr received: 11 crates.",
+      "Zephyr units per crate: 12.",
+      "Zephyr shipped after receiving: 5 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 11 crates.\nZephyr units per crate: 12.\nZephyr shipped after receiving: 5 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "445ab0b0bdc3d23d12519ad7b3b2c8ecca15199336aaf119a6ddf2e7f9b1fe6b"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-01-early",
+    "family_id": "heldout-multiply_subtract-01",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "early",
+    "operands": [
+      11,
+      12,
+      5
+    ],
+    "answer": "127",
+    "evidence_text": [
+      "Zephyr received: 11 crates.",
+      "Zephyr units per crate: 12.",
+      "Zephyr shipped after receiving: 5 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 11 crates.\nZephyr units per crate: 12.\nZephyr shipped after receiving: 5 units.\nCedar0 inventory: 510 units; Cedar0 shipment: 57 units.\nCedar1 inventory: 552 units; Cedar1 shipment: 66 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 32 units.\nCedar3 inventory: 185 units; Cedar3 shipment: 45 units.\nCedar4 inventory: 678 units; Cedar4 shipment: 72 units.\nCedar5 inventory: 271 units; Cedar5 shipment: 72 units.\nCedar6 inventory: 938 units; Cedar6 shipment: 87 units.\nCedar7 inventory: 283 units; Cedar7 shipment: 89 units.\nCedar8 inventory: 574 units; Cedar8 shipment: 67 units.\nCedar9 inventory: 195 units; Cedar9 shipment: 87 units.\nCedar10 inventory: 964 units; Cedar10 shipment: 56 units.\nCedar11 inventory: 699 units; Cedar11 shipment: 37 units.\nCedar12 inventory: 117 units; Cedar12 shipment: 13 units.\nCedar13 inventory: 352 units; Cedar13 shipment: 99 units.\nCedar14 inventory: 980 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 325 units; Cedar15 shipment: 59 units.\nCedar16 inventory: 888 units; Cedar16 shipment: 43 units.\nCedar17 inventory: 119 units; Cedar17 shipment: 88 units.\nCedar18 inventory: 126 units; Cedar18 shipment: 10 units.\nCedar19 inventory: 861 units; Cedar19 shipment: 79 units.\nCedar20 inventory: 980 units; Cedar20 shipment: 91 units.\nCedar21 inventory: 298 units; Cedar21 shipment: 82 units.\nCedar22 inventory: 700 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 924 units; Cedar23 shipment: 13 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "cb8e515118e553b40c2bce598a460ec3e18203c4aeeb075671bbaf45f6e50ece"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-01-middle",
+    "family_id": "heldout-multiply_subtract-01",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "middle",
+    "operands": [
+      11,
+      12,
+      5
+    ],
+    "answer": "127",
+    "evidence_text": [
+      "Zephyr received: 11 crates.",
+      "Zephyr units per crate: 12.",
+      "Zephyr shipped after receiving: 5 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 510 units; Cedar0 shipment: 57 units.\nCedar1 inventory: 552 units; Cedar1 shipment: 66 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 32 units.\nCedar3 inventory: 185 units; Cedar3 shipment: 45 units.\nCedar4 inventory: 678 units; Cedar4 shipment: 72 units.\nCedar5 inventory: 271 units; Cedar5 shipment: 72 units.\nCedar6 inventory: 938 units; Cedar6 shipment: 87 units.\nCedar7 inventory: 283 units; Cedar7 shipment: 89 units.\nCedar8 inventory: 574 units; Cedar8 shipment: 67 units.\nCedar9 inventory: 195 units; Cedar9 shipment: 87 units.\nCedar10 inventory: 964 units; Cedar10 shipment: 56 units.\nCedar11 inventory: 699 units; Cedar11 shipment: 37 units.\nZephyr received: 11 crates.\nZephyr units per crate: 12.\nZephyr shipped after receiving: 5 units.\nCedar12 inventory: 117 units; Cedar12 shipment: 13 units.\nCedar13 inventory: 352 units; Cedar13 shipment: 99 units.\nCedar14 inventory: 980 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 325 units; Cedar15 shipment: 59 units.\nCedar16 inventory: 888 units; Cedar16 shipment: 43 units.\nCedar17 inventory: 119 units; Cedar17 shipment: 88 units.\nCedar18 inventory: 126 units; Cedar18 shipment: 10 units.\nCedar19 inventory: 861 units; Cedar19 shipment: 79 units.\nCedar20 inventory: 980 units; Cedar20 shipment: 91 units.\nCedar21 inventory: 298 units; Cedar21 shipment: 82 units.\nCedar22 inventory: 700 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 924 units; Cedar23 shipment: 13 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "c79157c126c9c9e62ca2f2c1643eb8ce18fd24e7f4fd008fa043adebbc107d12"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-01-late",
+    "family_id": "heldout-multiply_subtract-01",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "late",
+    "operands": [
+      11,
+      12,
+      5
+    ],
+    "answer": "127",
+    "evidence_text": [
+      "Zephyr received: 11 crates.",
+      "Zephyr units per crate: 12.",
+      "Zephyr shipped after receiving: 5 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 510 units; Cedar0 shipment: 57 units.\nCedar1 inventory: 552 units; Cedar1 shipment: 66 units.\nCedar2 inventory: 283 units; Cedar2 shipment: 32 units.\nCedar3 inventory: 185 units; Cedar3 shipment: 45 units.\nCedar4 inventory: 678 units; Cedar4 shipment: 72 units.\nCedar5 inventory: 271 units; Cedar5 shipment: 72 units.\nCedar6 inventory: 938 units; Cedar6 shipment: 87 units.\nCedar7 inventory: 283 units; Cedar7 shipment: 89 units.\nCedar8 inventory: 574 units; Cedar8 shipment: 67 units.\nCedar9 inventory: 195 units; Cedar9 shipment: 87 units.\nCedar10 inventory: 964 units; Cedar10 shipment: 56 units.\nCedar11 inventory: 699 units; Cedar11 shipment: 37 units.\nCedar12 inventory: 117 units; Cedar12 shipment: 13 units.\nCedar13 inventory: 352 units; Cedar13 shipment: 99 units.\nCedar14 inventory: 980 units; Cedar14 shipment: 37 units.\nCedar15 inventory: 325 units; Cedar15 shipment: 59 units.\nCedar16 inventory: 888 units; Cedar16 shipment: 43 units.\nCedar17 inventory: 119 units; Cedar17 shipment: 88 units.\nCedar18 inventory: 126 units; Cedar18 shipment: 10 units.\nCedar19 inventory: 861 units; Cedar19 shipment: 79 units.\nCedar20 inventory: 980 units; Cedar20 shipment: 91 units.\nCedar21 inventory: 298 units; Cedar21 shipment: 82 units.\nCedar22 inventory: 700 units; Cedar22 shipment: 42 units.\nCedar23 inventory: 924 units; Cedar23 shipment: 13 units.\nZephyr received: 11 crates.\nZephyr units per crate: 12.\nZephyr shipped after receiving: 5 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "d18ad927c54ea63879923f101d528a9c252d84ca8ccba15e378b7bd57fed0dc7"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-02-clean",
+    "family_id": "heldout-multiply_subtract-02",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "clean",
+    "operands": [
+      7,
+      11,
+      9
+    ],
+    "answer": "68",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 11.",
+      "Zephyr shipped after receiving: 9 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 7 crates.\nZephyr units per crate: 11.\nZephyr shipped after receiving: 9 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "bcf5231f440075c5ddd2ee257692ae6b353b87a1356f80af073c0fae09164f18"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-02-early",
+    "family_id": "heldout-multiply_subtract-02",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "early",
+    "operands": [
+      7,
+      11,
+      9
+    ],
+    "answer": "68",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 11.",
+      "Zephyr shipped after receiving: 9 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 7 crates.\nZephyr units per crate: 11.\nZephyr shipped after receiving: 9 units.\nCedar0 inventory: 892 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 258 units; Cedar1 shipment: 91 units.\nCedar2 inventory: 585 units; Cedar2 shipment: 21 units.\nCedar3 inventory: 938 units; Cedar3 shipment: 16 units.\nCedar4 inventory: 911 units; Cedar4 shipment: 55 units.\nCedar5 inventory: 651 units; Cedar5 shipment: 78 units.\nCedar6 inventory: 120 units; Cedar6 shipment: 23 units.\nCedar7 inventory: 431 units; Cedar7 shipment: 95 units.\nCedar8 inventory: 447 units; Cedar8 shipment: 81 units.\nCedar9 inventory: 979 units; Cedar9 shipment: 72 units.\nCedar10 inventory: 819 units; Cedar10 shipment: 50 units.\nCedar11 inventory: 738 units; Cedar11 shipment: 58 units.\nCedar12 inventory: 534 units; Cedar12 shipment: 84 units.\nCedar13 inventory: 700 units; Cedar13 shipment: 81 units.\nCedar14 inventory: 885 units; Cedar14 shipment: 95 units.\nCedar15 inventory: 630 units; Cedar15 shipment: 51 units.\nCedar16 inventory: 668 units; Cedar16 shipment: 44 units.\nCedar17 inventory: 713 units; Cedar17 shipment: 84 units.\nCedar18 inventory: 969 units; Cedar18 shipment: 65 units.\nCedar19 inventory: 650 units; Cedar19 shipment: 67 units.\nCedar20 inventory: 299 units; Cedar20 shipment: 96 units.\nCedar21 inventory: 663 units; Cedar21 shipment: 94 units.\nCedar22 inventory: 669 units; Cedar22 shipment: 99 units.\nCedar23 inventory: 189 units; Cedar23 shipment: 75 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "2be6ae80e98ae83da3ecf9efdf8b7a8eae84b2994d64257e7077af1fa2e066e3"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-02-middle",
+    "family_id": "heldout-multiply_subtract-02",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "middle",
+    "operands": [
+      7,
+      11,
+      9
+    ],
+    "answer": "68",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 11.",
+      "Zephyr shipped after receiving: 9 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 892 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 258 units; Cedar1 shipment: 91 units.\nCedar2 inventory: 585 units; Cedar2 shipment: 21 units.\nCedar3 inventory: 938 units; Cedar3 shipment: 16 units.\nCedar4 inventory: 911 units; Cedar4 shipment: 55 units.\nCedar5 inventory: 651 units; Cedar5 shipment: 78 units.\nCedar6 inventory: 120 units; Cedar6 shipment: 23 units.\nCedar7 inventory: 431 units; Cedar7 shipment: 95 units.\nCedar8 inventory: 447 units; Cedar8 shipment: 81 units.\nCedar9 inventory: 979 units; Cedar9 shipment: 72 units.\nCedar10 inventory: 819 units; Cedar10 shipment: 50 units.\nCedar11 inventory: 738 units; Cedar11 shipment: 58 units.\nZephyr received: 7 crates.\nZephyr units per crate: 11.\nZephyr shipped after receiving: 9 units.\nCedar12 inventory: 534 units; Cedar12 shipment: 84 units.\nCedar13 inventory: 700 units; Cedar13 shipment: 81 units.\nCedar14 inventory: 885 units; Cedar14 shipment: 95 units.\nCedar15 inventory: 630 units; Cedar15 shipment: 51 units.\nCedar16 inventory: 668 units; Cedar16 shipment: 44 units.\nCedar17 inventory: 713 units; Cedar17 shipment: 84 units.\nCedar18 inventory: 969 units; Cedar18 shipment: 65 units.\nCedar19 inventory: 650 units; Cedar19 shipment: 67 units.\nCedar20 inventory: 299 units; Cedar20 shipment: 96 units.\nCedar21 inventory: 663 units; Cedar21 shipment: 94 units.\nCedar22 inventory: 669 units; Cedar22 shipment: 99 units.\nCedar23 inventory: 189 units; Cedar23 shipment: 75 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "4acc484265b5f8b15350e48d42f62e88dd5c0ceec34a16c2d5e3091dd66b6f44"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-02-late",
+    "family_id": "heldout-multiply_subtract-02",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "late",
+    "operands": [
+      7,
+      11,
+      9
+    ],
+    "answer": "68",
+    "evidence_text": [
+      "Zephyr received: 7 crates.",
+      "Zephyr units per crate: 11.",
+      "Zephyr shipped after receiving: 9 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 892 units; Cedar0 shipment: 11 units.\nCedar1 inventory: 258 units; Cedar1 shipment: 91 units.\nCedar2 inventory: 585 units; Cedar2 shipment: 21 units.\nCedar3 inventory: 938 units; Cedar3 shipment: 16 units.\nCedar4 inventory: 911 units; Cedar4 shipment: 55 units.\nCedar5 inventory: 651 units; Cedar5 shipment: 78 units.\nCedar6 inventory: 120 units; Cedar6 shipment: 23 units.\nCedar7 inventory: 431 units; Cedar7 shipment: 95 units.\nCedar8 inventory: 447 units; Cedar8 shipment: 81 units.\nCedar9 inventory: 979 units; Cedar9 shipment: 72 units.\nCedar10 inventory: 819 units; Cedar10 shipment: 50 units.\nCedar11 inventory: 738 units; Cedar11 shipment: 58 units.\nCedar12 inventory: 534 units; Cedar12 shipment: 84 units.\nCedar13 inventory: 700 units; Cedar13 shipment: 81 units.\nCedar14 inventory: 885 units; Cedar14 shipment: 95 units.\nCedar15 inventory: 630 units; Cedar15 shipment: 51 units.\nCedar16 inventory: 668 units; Cedar16 shipment: 44 units.\nCedar17 inventory: 713 units; Cedar17 shipment: 84 units.\nCedar18 inventory: 969 units; Cedar18 shipment: 65 units.\nCedar19 inventory: 650 units; Cedar19 shipment: 67 units.\nCedar20 inventory: 299 units; Cedar20 shipment: 96 units.\nCedar21 inventory: 663 units; Cedar21 shipment: 94 units.\nCedar22 inventory: 669 units; Cedar22 shipment: 99 units.\nCedar23 inventory: 189 units; Cedar23 shipment: 75 units.\nZephyr received: 7 crates.\nZephyr units per crate: 11.\nZephyr shipped after receiving: 9 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "f1e94336fe4ec17647c0f54f2578ad38cb0e7b44122359ce1f1a6df835999c52"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-03-clean",
+    "family_id": "heldout-multiply_subtract-03",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "clean",
+    "operands": [
+      12,
+      8,
+      6
+    ],
+    "answer": "90",
+    "evidence_text": [
+      "Zephyr received: 12 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 6 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 12 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 6 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "bbf1f2c8a3adb4cf0e6eb025e1f6209ff3782cd2449e81b24e21edacdf51abfd"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-03-early",
+    "family_id": "heldout-multiply_subtract-03",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "early",
+    "operands": [
+      12,
+      8,
+      6
+    ],
+    "answer": "90",
+    "evidence_text": [
+      "Zephyr received: 12 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 6 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Zephyr received: 12 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 6 units.\nCedar0 inventory: 712 units; Cedar0 shipment: 30 units.\nCedar1 inventory: 652 units; Cedar1 shipment: 12 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 669 units; Cedar3 shipment: 95 units.\nCedar4 inventory: 627 units; Cedar4 shipment: 84 units.\nCedar5 inventory: 668 units; Cedar5 shipment: 42 units.\nCedar6 inventory: 126 units; Cedar6 shipment: 32 units.\nCedar7 inventory: 859 units; Cedar7 shipment: 69 units.\nCedar8 inventory: 329 units; Cedar8 shipment: 94 units.\nCedar9 inventory: 798 units; Cedar9 shipment: 18 units.\nCedar10 inventory: 452 units; Cedar10 shipment: 61 units.\nCedar11 inventory: 227 units; Cedar11 shipment: 73 units.\nCedar12 inventory: 375 units; Cedar12 shipment: 99 units.\nCedar13 inventory: 867 units; Cedar13 shipment: 13 units.\nCedar14 inventory: 996 units; Cedar14 shipment: 27 units.\nCedar15 inventory: 193 units; Cedar15 shipment: 81 units.\nCedar16 inventory: 201 units; Cedar16 shipment: 61 units.\nCedar17 inventory: 167 units; Cedar17 shipment: 15 units.\nCedar18 inventory: 775 units; Cedar18 shipment: 26 units.\nCedar19 inventory: 489 units; Cedar19 shipment: 44 units.\nCedar20 inventory: 482 units; Cedar20 shipment: 44 units.\nCedar21 inventory: 428 units; Cedar21 shipment: 76 units.\nCedar22 inventory: 140 units; Cedar22 shipment: 71 units.\nCedar23 inventory: 978 units; Cedar23 shipment: 92 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "83c6d2760ae1addf7d717813b64f32cb9f1169390dbc1cfd45f9ed875ea747b7"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-03-middle",
+    "family_id": "heldout-multiply_subtract-03",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "middle",
+    "operands": [
+      12,
+      8,
+      6
+    ],
+    "answer": "90",
+    "evidence_text": [
+      "Zephyr received: 12 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 6 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 712 units; Cedar0 shipment: 30 units.\nCedar1 inventory: 652 units; Cedar1 shipment: 12 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 669 units; Cedar3 shipment: 95 units.\nCedar4 inventory: 627 units; Cedar4 shipment: 84 units.\nCedar5 inventory: 668 units; Cedar5 shipment: 42 units.\nCedar6 inventory: 126 units; Cedar6 shipment: 32 units.\nCedar7 inventory: 859 units; Cedar7 shipment: 69 units.\nCedar8 inventory: 329 units; Cedar8 shipment: 94 units.\nCedar9 inventory: 798 units; Cedar9 shipment: 18 units.\nCedar10 inventory: 452 units; Cedar10 shipment: 61 units.\nCedar11 inventory: 227 units; Cedar11 shipment: 73 units.\nZephyr received: 12 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 6 units.\nCedar12 inventory: 375 units; Cedar12 shipment: 99 units.\nCedar13 inventory: 867 units; Cedar13 shipment: 13 units.\nCedar14 inventory: 996 units; Cedar14 shipment: 27 units.\nCedar15 inventory: 193 units; Cedar15 shipment: 81 units.\nCedar16 inventory: 201 units; Cedar16 shipment: 61 units.\nCedar17 inventory: 167 units; Cedar17 shipment: 15 units.\nCedar18 inventory: 775 units; Cedar18 shipment: 26 units.\nCedar19 inventory: 489 units; Cedar19 shipment: 44 units.\nCedar20 inventory: 482 units; Cedar20 shipment: 44 units.\nCedar21 inventory: 428 units; Cedar21 shipment: 76 units.\nCedar22 inventory: 140 units; Cedar22 shipment: 71 units.\nCedar23 inventory: 978 units; Cedar23 shipment: 92 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "feb2279f7ec95a413f38b22eba54a576914ed7f73d4a21b94f69d537e9b4856e"
+  },
+  {
+    "case_id": "heldout-multiply_subtract-03-late",
+    "family_id": "heldout-multiply_subtract-03",
+    "split": "heldout",
+    "operation": "multiply_subtract",
+    "position": "late",
+    "operands": [
+      12,
+      8,
+      6
+    ],
+    "answer": "90",
+    "evidence_text": [
+      "Zephyr received: 12 crates.",
+      "Zephyr units per crate: 8.",
+      "Zephyr shipped after receiving: 6 units."
+    ],
+    "messages": [
+      {
+        "role": "system",
+        "content": "Solve the requested inventory calculation using only the Zephyr records. Other projects are unrelated. Return only the final integer, without units or explanation."
+      },
+      {
+        "role": "user",
+        "content": "Cedar0 inventory: 712 units; Cedar0 shipment: 30 units.\nCedar1 inventory: 652 units; Cedar1 shipment: 12 units.\nCedar2 inventory: 678 units; Cedar2 shipment: 76 units.\nCedar3 inventory: 669 units; Cedar3 shipment: 95 units.\nCedar4 inventory: 627 units; Cedar4 shipment: 84 units.\nCedar5 inventory: 668 units; Cedar5 shipment: 42 units.\nCedar6 inventory: 126 units; Cedar6 shipment: 32 units.\nCedar7 inventory: 859 units; Cedar7 shipment: 69 units.\nCedar8 inventory: 329 units; Cedar8 shipment: 94 units.\nCedar9 inventory: 798 units; Cedar9 shipment: 18 units.\nCedar10 inventory: 452 units; Cedar10 shipment: 61 units.\nCedar11 inventory: 227 units; Cedar11 shipment: 73 units.\nCedar12 inventory: 375 units; Cedar12 shipment: 99 units.\nCedar13 inventory: 867 units; Cedar13 shipment: 13 units.\nCedar14 inventory: 996 units; Cedar14 shipment: 27 units.\nCedar15 inventory: 193 units; Cedar15 shipment: 81 units.\nCedar16 inventory: 201 units; Cedar16 shipment: 61 units.\nCedar17 inventory: 167 units; Cedar17 shipment: 15 units.\nCedar18 inventory: 775 units; Cedar18 shipment: 26 units.\nCedar19 inventory: 489 units; Cedar19 shipment: 44 units.\nCedar20 inventory: 482 units; Cedar20 shipment: 44 units.\nCedar21 inventory: 428 units; Cedar21 shipment: 76 units.\nCedar22 inventory: 140 units; Cedar22 shipment: 71 units.\nCedar23 inventory: 978 units; Cedar23 shipment: 92 units.\nZephyr received: 12 crates.\nZephyr units per crate: 8.\nZephyr shipped after receiving: 6 units.\n\nHow many Zephyr units remain after shipping?\nReturn only the integer."
+      }
+    ],
+    "messages_sha256": "6c0e20055eba13480f4e7fe25891fd4bd8186d17d45d749f58a9b73397284067"
+  }
+]
