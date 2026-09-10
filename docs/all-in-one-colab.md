@@ -1,5 +1,11 @@
 # Complete T4 notebook
 
+**Next validation step:** use the
+[FP16-only development notebook](../notebooks/AnchorKV_T4_FP16_Development.ipynb)
+and [frozen evaluation protocol](arithmetic-evaluation-v1.md). It runs 12 new
+development prompts before any held-out compression sweep. Baseline readiness
+is not yet measured; existing pilot scores remain unchanged.
+
 The completed 64-token arithmetic follow-up has a
 [CPU-only rescoring report](experiments/data/arithmetic-followup-rescore/report.md).
 It preserves strict scores and adds a post-hoc, conservative final-integer
