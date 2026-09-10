@@ -81,10 +81,15 @@ if PROFILE == 'quick':
     settings.max_new_tokens = 16
 elif PROFILE == 'full':
     suite = SuiteSettings()
+elif PROFILE == 'arithmetic':
+    suite = SuiteSettings(tasks=('arithmetic',), content_seeds=(7, 19), lengths=(768,),
+                          positions=('middle',), budgets=(0.25,), random_seeds=(7, 19),
+                          decode_lengths=(128,), decode_repeats=2)
+    settings.max_new_tokens = 64
 else:
-    raise ValueError('PROFILE must be quick or full')
+    raise ValueError('PROFILE must be quick, full, or arithmetic')
 RUN_EXPANDED_QUALITY = True
-RUN_CONTROLLED_DECODE = True
+RUN_CONTROLLED_DECODE = PROFILE != 'arithmetic'
 # Short wiring check only (not strong statistical evidence):
 # suite.content_seeds = (7,)
 # suite.lengths = (768,)
@@ -100,7 +105,8 @@ RUN_CONTROLLED_DECODE = True
 REQUEST_PACKED_KERNEL = True
 RUN_SENSITIVITY_AUDIT = True
 OUTPUT = (Path(RESUME_DIRECTORY) if RESUME_DIRECTORY else
-          Path('/content/anchorkv-complete-results') / time.strftime('%Y%m%d-%H%M%S'))
+          Path('/content/anchorkv-arithmetic-results' if PROFILE == 'arithmetic' else
+               '/content/anchorkv-complete-results') / time.strftime('%Y%m%d-%H%M%S'))
 OUTPUT.mkdir(parents=True, exist_ok=True)
 torch.manual_seed(settings.seed)
 torch.cuda.manual_seed_all(settings.seed)
@@ -131,7 +137,7 @@ checkpoint.save('suite-settings.json', asdict(suite))
 variants = 4 + len(suite.budgets) * (3 + len(suite.random_seeds))
 print(f'Plan: {len(expanded_cases)} prompts x {variants} variants; '
       f'{len(expanded_cases) * (2 * variants + 1)} quality forwards/replays. '
-      f'Decode: {6 * len(suite.decode_lengths) * (suite.decode_repeats + 1)} workloads.')
+      f'Decode: {6 * len(suite.decode_lengths) * (suite.decode_repeats + 1) if RUN_CONTROLLED_DECODE else 0} workloads.')
 print('Soft phase limits:', QUALITY_MINUTES, 'quality minutes;', DECODE_MINUTES, 'decode minutes.')
 print('To resume, keep this folder and set RESUME_DIRECTORY to:', str(OUTPUT))
 print('Expanded quality:', len(expanded_cases), 'prompts;',
@@ -188,8 +194,9 @@ BACKEND = 'dense'
 if REQUEST_PACKED_KERNEL:
     try:
         gates['attention_checks'] = kernel_gate()
-        source = prefill_case(model, cases[0])
-        gates['model_checks'] = model_gate(model, tokenizer, source, cases[0], settings)
+        gate_case = expanded_cases[0] if PROFILE == 'arithmetic' else cases[0]
+        source = prefill_case(model, gate_case)
+        gates['model_checks'] = model_gate(model, tokenizer, source, gate_case, settings)
         del source
         gates['packed_status'] = 'passed'
         BACKEND = 'packed'

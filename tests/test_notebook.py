@@ -5,6 +5,42 @@ from pathlib import Path
 
 
 class NotebookTests(unittest.TestCase):
+    def test_arithmetic_followup_is_standalone_and_scoped(self):
+        from types import SimpleNamespace
+        from anchorkv.benchmark_suite import SuiteSettings
+        root = Path(__file__).parents[1]
+        nb = json.loads((root / 'notebooks/AnchorKV_T4_Arithmetic_Followup.ipynb').read_text())
+        config = None
+        for index, cell in enumerate(nb['cells']):
+            if cell['cell_type'] != 'code':
+                continue
+            code = ''.join(cell['source'])
+            compile(code, f'arithmetic-cell-{index}', 'exec')
+            self.assertIsNone(cell['execution_count'])
+            self.assertFalse(cell['outputs'])
+            if 'settings = Settings()' in code:
+                config = code[code.index('settings = Settings()'):code.index('# Short wiring check')]
+            if code.startswith('# Embedded runtime:'):
+                tree = ast.parse(code)
+                embedded = next(ast.literal_eval(n.value) for n in tree.body
+                                if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Name)
+                                and n.targets[0].id == 'EMBEDDED_SOURCES')
+                for name, source in embedded.items():
+                    if name != '__init__.py':
+                        self.assertEqual(source, (root / 'src/anchorkv' / name).read_text())
+        self.assertIsNotNone(config)
+        env = {'Settings': SimpleNamespace, 'SuiteSettings': SuiteSettings}
+        exec(config, env)
+        self.assertEqual(env['PROFILE'], 'arithmetic')
+        self.assertEqual(env['suite'].tasks, ('arithmetic',))
+        self.assertEqual(env['suite'].content_seeds, (7, 19))
+        self.assertEqual(env['suite'].positions, ('middle',))
+        self.assertEqual(env['suite'].lengths, (768,))
+        self.assertEqual(env['settings'].max_new_tokens, 64)
+        self.assertFalse(env['RUN_LEGACY_PILOT'])
+        self.assertFalse(env['RUN_CONTROLLED_DECODE'])
+        self.assertTrue(env['RUN_EXPANDED_QUALITY'])
+
     def test_all_in_one_embeds_current_sources_and_compiles(self) -> None:
         root = Path(__file__).parents[1]
         path = root / 'notebooks' / 'AnchorKV_T4_All_In_One.ipynb'

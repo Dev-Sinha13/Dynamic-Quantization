@@ -1,5 +1,15 @@
 # Complete T4 notebook
 
+For the arithmetic follow-up to the completed quick run, upload
+[`AnchorKV_T4_Arithmetic_Followup.ipynb`](../notebooks/AnchorKV_T4_Arithmetic_Followup.ipynb)
+to a fresh T4 runtime and Run all. It reruns the same two arithmetic prompts and
+nine policy variants with a 64-token cap, while skipping retrieval evaluation,
+the historical pilot and throughput. Numerical gates still run. It retains the
+10-minute soft quality budget, checkpoints, strict exact-answer scoring and zip
+export. Use a new folder, not the incompatible 16-token run's checkpoint.
+If paused, rerun the quality cell followed by report/download cells. Regenerate
+this companion with `python notebooks/build_all_in_one.py --arithmetic-only`.
+
 Upload [`AnchorKV_T4_All_In_One.ipynb`](../notebooks/AnchorKV_T4_All_In_One.ipynb)
 to a **fresh** Colab T4 runtime. The file embeds its Python and Triton sources;
 it does not clone the repository or import a separately installed AnchorKV.
